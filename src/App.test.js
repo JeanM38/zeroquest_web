@@ -1,6 +1,8 @@
-// import { render, screen } from '@testing-library/react';
-// import App from './App';
+import { render } from '@testing-library/react';
+import App from './App';
 
-test('test works', () => {
-  expect(1 + 1).toBe(2);
-});
+test('isKnightIsRenderedInApp', () => {
+  /* 'player' testid corresponds to the Knight Component */
+  const { getByTestId } = render(<App />);
+  expect(getByTestId('player')).toBeInTheDocument();
+})
