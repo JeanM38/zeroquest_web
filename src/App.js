@@ -5,7 +5,7 @@ import {Droppable} from './Components/Droppable';
 import {Draggable} from './Components/Draggable';
 
 function App() {
-  const [squares, setSquares] = useState(['deck', 'B', 'C', 'D', 'E', 'F']);
+  const [squares, setSquares] = useState(['deck', '1', '2', '3', '4', '5']);
 
   const [pieces, setPieces] = useState([
     {title: "Orc", parent: "deck"}, 
@@ -14,23 +14,27 @@ function App() {
 
   const handleDragEnd = (event) => {
     const {over} = event;
+    let empty = true;
     let newPieces = [...pieces];
 
-    if (over) {
-      newPieces = newPieces.map(p => {
-        if (p.title === event.active.id) {
+    newPieces = newPieces.map(p => {
+      if (p.title === event.active.id && over) {
+        if (over.id !== "deck") {
+          newPieces.map(p => {
+            if (p.parent === over.id) {
+              empty = false;
+            }
+          })
+        }
+        if (empty) {
           return {...p, parent: over.id}
+        } else {
+          return p
         }
-        return p;
-      })
-    } else {
-      newPieces = newPieces.map(p => {
-        if (p.title === event.active.id) {
-          return {...p, parent: p.parent}
-        }
-        return p;
-      })
-    }
+      } else {
+        return {...p, parent: p.parent}
+      }
+    })
 
     setPieces(newPieces);
   }
