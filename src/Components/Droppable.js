@@ -1,5 +1,6 @@
 import React from 'react';
 import {useDroppable} from '@dnd-kit/core';
+import { setSquareBg } from '../utils/functions';
 
 export const Droppable = (props) => {
   const {isOver, setNodeRef} = useDroppable({
@@ -7,23 +8,11 @@ export const Droppable = (props) => {
     data: props.data
   });
 
-  // const setbackground = (type) =>  {
-  //   switch (type) {
-  //     case "corridor":
-  //       return "grey";
-  //     case "r1":
-  //       return "green";
-  //     default:
-  //       return "#fff";
-  //   }
-  // }
-
   const style = {
-    color: isOver ? 'green' : undefined,
-    border: "1px dashed red",
-    margin: "10px",
-    padding: "10px",
-    // backgroundColor: setbackground(props.type)
+    border: props.data === "enemy" || props.data === "trap" ? "1px solid red" : "1px solid blue",
+    position: "relative",
+    height: "30px",
+    backgroundColor: setSquareBg(props.data),
   };
 
   return (

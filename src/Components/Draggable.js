@@ -9,7 +9,9 @@ export const Draggable = (props) => {
   });
   
   const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    width: "30px!important",
+    height: "30px"
   } : undefined;
   
   return (

@@ -8,6 +8,7 @@ import {Draggable} from './Components/Draggable';
 /* Pieces and grid elements */
 import { grid } from './grid';
 import { enemies } from './enemies';
+import styled from 'styled-components';
 
 function App() {
   const [pieces, setPieces] = useState(enemies);
@@ -16,6 +17,24 @@ function App() {
     "trap"
   ]
 
+  const Grid = styled.div`
+    position: absolute;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: repeat(26, 1fr);
+    grid-template-rows: repeat(19, 1fr);
+    grid-auto-flow: row;
+    gap: 0px;
+  `
+
+  const GridWrapper = styled.div`
+    width: 60%;
+    height: 100%;
+    position: relative;
+  `
+
+  /* Handle drag ending */
   const handleDragEnd = (event) => {
     const {over} = event;
     let newPieces = [...pieces];
@@ -61,6 +80,7 @@ function App() {
     setPieces(newPieces);
   }
 
+  /* Return each piece at his position */
   const renderPiece = (id) => {
     let piecesToRender = [];
 
@@ -72,11 +92,10 @@ function App() {
     
     if (piecesToRender.length > 0) {
       return(piecesToRender);
-    } else {
-      return(<p>Drop here !</p>)
     }
   }
 
+  /* Reset all the board */
   // const resetPieces = () => {
   //   const newPieces = pieces.map(p => {
   //     return {...p, parent: "[-1,-1]"}
@@ -95,12 +114,16 @@ function App() {
         </Droppable>
       ))}
 
-      {/* Foreach squares of the desk */}
-      {grid.map((square) => (
-        <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} data={square.type}>
-          {renderPiece(`[${square.posX},${square.posY}]`)}
-        </Droppable>
-      ))}
+      <GridWrapper>
+        <Grid>
+          {/* Foreach squares of the desk */}
+          {grid.map((square) => (
+            <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} data={square.type}>
+              {renderPiece(`[${square.posX},${square.posY}]`)}
+            </Droppable>
+          ))}
+        </Grid>
+      </GridWrapper>
 
     </DndContext>
   );
