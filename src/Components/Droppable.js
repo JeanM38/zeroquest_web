@@ -5,11 +5,24 @@ export const Droppable = (props) => {
   const {isOver, setNodeRef} = useDroppable({
     id: props.id,
   });
+
+  // const setbackground = (type) =>  {
+  //   switch (type) {
+  //     case "corridor":
+  //       return "grey";
+  //     case "r1":
+  //       return "green";
+  //     default:
+  //       return "#fff";
+  //   }
+  // }
+
   const style = {
     color: isOver ? 'green' : undefined,
     border: "1px dashed red",
     margin: "10px",
-    padding: "10px"
+    padding: "10px",
+    // backgroundColor: setbackground(props.type)
   };
 
   return (
