@@ -4,7 +4,8 @@ import {useDraggable} from '@dnd-kit/core';
 export const Draggable = (props) => {
   
   const {attributes, listeners, setNodeRef, transform} = useDraggable({
-    id: props.id
+    id: props.id,
+    data: props.data
   });
   
   const style = transform ? {

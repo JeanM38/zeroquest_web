@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import {DndContext} from '@dnd-kit/core';
 
+/* Dnd contextt components */
 import {Droppable} from './Components/Droppable';
 import {Draggable} from './Components/Draggable';
+
+/* Pieces and grid elements */
 import { grid } from './grid';
+import { enemies } from './enemies';
 
 function App() {
-  const [pieces, setPieces] = useState([
-    {title: "Orc", parent: "[-1,-1]"}, 
-    {title: "Mummy", parent: "[-1,-1]"}
-  ]);
+  const [pieces, setPieces] = useState(enemies);
+  const decks = [
+    "enemy"
+  ]
 
   const handleDragEnd = (event) => {
     const {over} = event;
@@ -18,10 +22,10 @@ function App() {
 
     newPieces = newPieces.map(p => {
       /** User drag on a valid droppable element */
-      if (p.title === event.active.id && over) {
+      if (p.name === event.active.id && over) {
         
         /** User drag on the deck */
-        if (over.id !== "[-1,-1]") {
+        if (!decks.includes(over.id)) {
           newPieces.map(p => {
 
             /** Check if a piece is already assigned to this droppable element */
@@ -54,7 +58,7 @@ function App() {
 
     pieces.forEach((p) => {
       if(p.parent === id) {
-        piecesToRender = [...piecesToRender, <Draggable key={p.title} id={p.title}>{p.title}</Draggable>]
+        piecesToRender = [...piecesToRender, <Draggable key={p.name} id={p.name} data={p.data}>{p.name}</Draggable>]
       }
     })
     
@@ -75,12 +79,21 @@ function App() {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       {/* <button onClick={resetPieces}>Reset</button> */}
+      
+      {/* Generate multiple decks by deck type */}
+      {decks.map((deck) => (
+        <Droppable key={deck} id={deck} type="deck" posX={-1} posY={-1}>
+            {renderPiece(deck)}
+        </Droppable>
+      ))}
+
       {/* Foreach squares of the desk */}
       {grid.map((square) => (
         <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} type={square.type} posX={square.posX} posY={square.posY}>
           {renderPiece(`[${square.posX},${square.posY}]`)}
         </Droppable>
       ))}
+
     </DndContext>
   );
 };
