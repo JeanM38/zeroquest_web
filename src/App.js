@@ -6,8 +6,6 @@ import {Draggable} from './Components/Draggable';
 import { grid } from './grid';
 
 function App() {
-  const [squares, setSquares] = useState(grid);
-
   const [pieces, setPieces] = useState([
     {title: "Orc", parent: "[-1,-1]"}, 
     {title: "Mummy", parent: "[-1,-1]"}
@@ -30,6 +28,7 @@ function App() {
             if (p.parent === over.id) {
               empty = false;
             }
+            return empty
           })
         }
 
@@ -77,7 +76,7 @@ function App() {
     <DndContext onDragEnd={handleDragEnd}>
       {/* <button onClick={resetPieces}>Reset</button> */}
       {/* Foreach squares of the desk */}
-      {squares.map((square) => (
+      {grid.map((square) => (
         <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} type={square.type} posX={square.posX} posY={square.posY}>
           {renderPiece(`[${square.posX},${square.posY}]`)}
         </Droppable>
