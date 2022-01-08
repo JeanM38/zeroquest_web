@@ -4,6 +4,7 @@ import {useDroppable} from '@dnd-kit/core';
 export const Droppable = (props) => {
   const {isOver, setNodeRef} = useDroppable({
     id: props.id,
+    data: props.data
   });
 
   // const setbackground = (type) =>  {

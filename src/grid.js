@@ -1,9 +1,4 @@
 export const grid = [
-    /************  
-    PIECES DECK
-    *************/
-    {type: "deck", posX: -1, posY: -1},
-
     /* FROM BOARD TOP & LEFT TO RIGHT */
 
     /************  

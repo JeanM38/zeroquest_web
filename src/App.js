@@ -12,7 +12,8 @@ import { enemies } from './enemies';
 function App() {
   const [pieces, setPieces] = useState(enemies);
   const decks = [
-    "enemy"
+    "enemy",
+    "trap"
   ]
 
   const handleDragEnd = (event) => {
@@ -30,6 +31,13 @@ function App() {
 
             /** Check if a piece is already assigned to this droppable element */
             if (p.parent === over.id) {
+              empty = false;
+            }
+            return empty
+          });
+        } else {
+          newPieces.map(p => {
+            if (over.data.current !== event.active.data.current) {
               empty = false;
             }
             return empty
@@ -58,7 +66,7 @@ function App() {
 
     pieces.forEach((p) => {
       if(p.parent === id) {
-        piecesToRender = [...piecesToRender, <Draggable key={p.name} id={p.name} data={p.data}>{p.name}</Draggable>]
+        piecesToRender = [...piecesToRender, <Draggable key={p.name} id={p.name} data={p.type}>{p.name}</Draggable>]
       }
     })
     
@@ -82,14 +90,14 @@ function App() {
       
       {/* Generate multiple decks by deck type */}
       {decks.map((deck) => (
-        <Droppable key={deck} id={deck} type="deck" posX={-1} posY={-1}>
+        <Droppable key={deck} id={deck} data={deck}>
             {renderPiece(deck)}
         </Droppable>
       ))}
 
       {/* Foreach squares of the desk */}
       {grid.map((square) => (
-        <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} type={square.type} posX={square.posX} posY={square.posY}>
+        <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} data={square.type}>
           {renderPiece(`[${square.posX},${square.posY}]`)}
         </Droppable>
       ))}
