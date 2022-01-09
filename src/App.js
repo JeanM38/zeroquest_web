@@ -20,16 +20,16 @@ function App() {
   const Grid = styled.div`
     position: absolute;
     display: grid;
-    width: 100%;
-    height: 100%;
     grid-template-columns: repeat(26, 1fr);
     grid-template-rows: repeat(19, 1fr);
     grid-auto-flow: row;
     gap: 0px;
+    background-image: url("${process.env.PUBLIC_URL}/Resources/board.jpg");
+    background-size: contain;
   `
 
   const GridWrapper = styled.div`
-    width: 60%;
+    width: 50%;
     height: 100%;
     position: relative;
   `
