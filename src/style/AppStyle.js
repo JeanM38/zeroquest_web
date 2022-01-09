@@ -1,5 +1,15 @@
 import styled from "styled-components"
 
+export const ChapterEditor = styled.div`
+  display: flex;
+`
+
+export const DecksWrapper = styled.div`
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+`
+
 export const Deck = styled.div`
   border-radius: 5px;
   background-color: lightgrey;
@@ -15,16 +25,6 @@ export const Deck = styled.div`
 export const DeckItems = styled.div`
   display: flex;
   flex-wrap: wrap;
-`
-
-export const ChapterEditor = styled.div`
-  display: flex;
-`
-
-export const DecksWrapper = styled.div`
-  width: 20%;
-  display: flex;
-  flex-direction: column;
 `
 
 export const GridWrapper = styled.div`
