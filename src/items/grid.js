@@ -735,3 +735,8 @@ export const grid = [
     {type: "corridor", posX: 24, posY: 18},
     {type: "corridor", posX: 25, posY: 18},
 ]
+
+export const decks = [
+    {title: "Enemies", type: "enemy"},
+    {title: "Traps", type: "trap"}
+]

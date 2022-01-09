@@ -6,37 +6,26 @@ import {Droppable} from './Components/Droppable';
 import {Draggable} from './Components/Draggable';
 
 /* Pieces and grid elements */
-import { grid } from './grid';
-import { enemies } from './enemies';
-import styled from 'styled-components';
+import { grid, decks } from './items/grid';
+import { enemies } from './items/enemies';
+
+/* Styled Components */
+import { 
+  Deck, 
+  DeckItems,
+  ChapterEditor, 
+  DecksWrapper, 
+  GridWrapper, 
+  Grid 
+} from './style/AppStyle';
 
 function App() {
   const [pieces, setPieces] = useState(enemies);
-  const decks = [
-    "enemy",
-    "trap"
-  ]
-
-  const Grid = styled.div`
-    position: absolute;
-    display: grid;
-    grid-template-columns: repeat(26, 1fr);
-    grid-template-rows: repeat(19, 1fr);
-    grid-auto-flow: row;
-    gap: 0px;
-    background-image: url("${process.env.PUBLIC_URL}/Resources/board.jpg");
-    background-size: contain;
-  `
-
-  const GridWrapper = styled.div`
-    width: 50%;
-    height: 100%;
-    position: relative;
-  `
 
   /* Handle drag ending */
   const handleDragEnd = (event) => {
     const {over} = event;
+    
     let newPieces = [...pieces];
     let empty = true;
 
@@ -45,21 +34,29 @@ function App() {
       if (p.name === event.active.id && over) {
         
         /** User drag on the deck */
-        if (!decks.includes(over.id)) {
+        if (decks.filter(d => d.type === over.id).length === 0) {
           newPieces.map(p => {
 
             /** Check if a piece is already assigned to this droppable element */
             if (p.parent === over.id) {
               empty = false;
+            } else if (
+              /** Check if type of draggable element is allowed on the droppable element */
+              (over.data.current !== "corridor" && event.active.data.current === "enemy") ||
+              (over.data.current === "corridor" && event.active.data.current === "trap")
+            ) {
+              return empty
+            } else {
+              return empty = false;
             }
-            return empty
           });
         } else {
           newPieces.map(p => {
             if (over.data.current !== event.active.data.current) {
               empty = false;
+            } else {
+              return empty
             }
-            return empty
           })
         }
 
@@ -95,35 +92,62 @@ function App() {
     }
   }
 
-  /* Reset all the board */
-  // const resetPieces = () => {
-  //   const newPieces = pieces.map(p => {
-  //     return {...p, parent: "[-1,-1]"}
-  //   });
-  //   setPieces(newPieces);
-  // }
+  /* Handle over action, if dragged element is assignable to a droppable element  */
+  const handleDragOver = (event) => {
+    const {over} = event;
+
+    if (over) {
+      const activeType = event.active.data.current;
+      const overType = event.over.data.current;
+
+      if (activeType === "trap" && overType !== "corridor") {
+        //
+      } 
+    }
+  }
+
+  /* Reset all board */
+  const resetBoard = () => {
+    const newPieces = pieces.map(p => {
+      return {...p, parent: p.type}
+    });
+    setPieces(newPieces);
+  }
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      {/* <button onClick={resetPieces}>Reset</button> */}
-      
-      {/* Generate multiple decks by deck type */}
-      {decks.map((deck) => (
-        <Droppable key={deck} id={deck} data={deck}>
-            {renderPiece(deck)}
-        </Droppable>
-      ))}
+    <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+      <ChapterEditor>
 
-      <GridWrapper>
-        <Grid>
-          {/* Foreach squares of the desk */}
-          {grid.map((square) => (
-            <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} data={square.type}>
-              {renderPiece(`[${square.posX},${square.posY}]`)}
-            </Droppable>
+        <DecksWrapper>
+          <button onClick={resetBoard}>Reset</button>
+          
+          {/* Generate multiple decks by deck type */}
+          {decks.map((deck) => (
+            <Deck mb key={deck.type}>
+              <h1>{deck.title}</h1>
+              <DeckItems>
+                <Droppable key={deck.type} id={deck.type} data={deck.type}>
+                    {renderPiece(deck.type)}
+                </Droppable>
+              </DeckItems>
+            </Deck>
           ))}
-        </Grid>
-      </GridWrapper>
+
+        </DecksWrapper>
+
+        <GridWrapper>
+          <Grid>
+
+            {/* Foreach squares of the desk */}
+            {grid.map((square) => (
+              <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} data={square.type}>
+                {renderPiece(`[${square.posX},${square.posY}]`)}
+              </Droppable>
+            ))}
+
+          </Grid>
+        </GridWrapper>
+      </ChapterEditor>
 
     </DndContext>
   );

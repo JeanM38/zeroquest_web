@@ -16,6 +16,7 @@ export const Draggable = (props) => {
     border: "1px solid black",
     alignItems: "center",
     transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0) rotate(${rotate}deg)` : `rotate(${rotate}deg)`,
+    opacity: transform ? "0.4" : "1",
     width: "30px!important",
     height: "30px",
     backgroundColor: "white"
