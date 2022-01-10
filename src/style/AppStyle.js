@@ -2,6 +2,8 @@ import styled from "styled-components"
 
 export const ChapterEditor = styled.div`
   display: flex;
+  align-items: center;
+  height: 100vh;
 `
 
 export const DecksWrapper = styled.div`
@@ -35,7 +37,6 @@ export const GridWrapper = styled.div`
 `
 
 export const Grid = styled.div`
-  position: absolute;
   display: grid;
   grid-template-columns: repeat(26, 1fr);
   grid-template-rows: repeat(19, 1fr);

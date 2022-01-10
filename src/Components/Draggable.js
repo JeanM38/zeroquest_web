@@ -13,13 +13,14 @@ export const Draggable = (props) => {
     zIndex: 1000,
     display: "flex",
     justifyContent: "center",
-    border: "1px solid black",
     alignItems: "center",
     transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0) rotate(${rotate}deg)` : `rotate(${rotate}deg)`,
-    opacity: transform ? "0.4" : "1",
-    width: "30px!important",
+    opacity: transform ? "0.6" : "1",
+    width: "30px",
     height: "30px",
-    backgroundColor: "white"
+    backgroundImage: `url("${process.env.PUBLIC_URL}/Resources/Characters/${props.image}.png")`,
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat"
   }
 
   const rotatePiece = (key) => {
@@ -29,8 +30,6 @@ export const Draggable = (props) => {
   }
   
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes} onKeyPress={(e) => rotatePiece(e)}>
-      {props.children}
-    </div>
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes} onKeyPress={(e) => rotatePiece(e)}></div>
   );
 }

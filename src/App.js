@@ -24,56 +24,38 @@ function App() {
 
   /* Handle drag ending */
   const handleDragEnd = (event) => {
+    /* Get the hovered element*/
     const {over} = event;
-    
+
+    /* Create a new instance from pieces */
     let newPieces = [...pieces];
-    let empty = true;
 
+    /* Foreach pieces of the game */
     newPieces = newPieces.map(p => {
-      /** User drag on a valid droppable element */
-      if (p.name === event.active.id && over) {
-        
-        /** User drag on the deck */
-        if (decks.filter(d => d.type === over.id).length === 0) {
-          newPieces.map(p => {
 
-            /** Check if a piece is already assigned to this droppable element */
-            if (p.parent === over.id) {
-              empty = false;
-            } else if (
-              /** Check if type of draggable element is allowed on the droppable element */
-              (over.data.current !== "corridor" && event.active.data.current === "enemy") ||
-              (over.data.current === "corridor" && event.active.data.current === "trap")
-            ) {
-              return empty
-            } else {
-              return empty = false;
-            }
-          });
-        } else {
-          newPieces.map(p => {
-            if (over.data.current !== event.active.data.current) {
-              empty = false;
-            } else {
-              return empty
-            }
-          })
-        }
+      /* If hover on a droppable element and p is the dragged element*/
+      if (over && event.active.id === p.index) {
 
-        /** If droppable element is not containing a piece */
-        if (empty) {
-          return {...p, parent: over.id}
+        /* Droppable element is filled */
+        if (p.parent === over.id) {
+          return p
+        } else if (
+          (event.active.data.current === "enemy" && !["corridor", "trap"].includes(over.data.current)) || /* Enemy */
+          (event.active.data.current === "trap" && ["corridor", "trap"].includes(over.data.current)) /* Trap */
+          ) {
+            console.log(over);
+            /* Draggable element is dropped on his own desk or in an unfilled droppable element */
+            return {...p, parent: over.id}
         } else {
           return p
         }
-
-      /** User drag on an unvalid droppable element */
       } else {
-        return {...p, parent: p.parent}
+        /* Hover not on a droppable element */
+        return p
       }
     })
 
-    /** Assign new pieces */
+    /** Assign new instance of pieces */
     setPieces(newPieces);
   }
 
@@ -83,7 +65,7 @@ function App() {
 
     pieces.forEach((p) => {
       if(p.parent === id) {
-        piecesToRender = [...piecesToRender, <Draggable key={p.name} id={p.name} data={p.type}>{p.name}</Draggable>]
+        piecesToRender = [...piecesToRender, <Draggable key={p.index} id={p.index} data={p.type} image={p.key}></Draggable>]
       }
     })
     
@@ -114,12 +96,24 @@ function App() {
     setPieces(newPieces);
   }
 
+  /* Add a new special enemy */
+  // const addEnemy = () => {
+  //   const newEnemy = {
+  //     name: "New",
+  //     parent: "enemy",
+  //     type: "enemy",
+  //     key: "gargoyle"
+  //   }
+  //   setPieces([...pieces, newEnemy]);
+  // }
+
   return (
     <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
       <ChapterEditor>
 
         <DecksWrapper>
-          <button onClick={resetBoard}>Reset</button>
+          <button onClick={resetBoard}>Reset the board</button>
+          {/* <button onClick={addEnemy}>Add an enemy</button> */}
           
           {/* Generate multiple decks by deck type */}
           {decks.map((deck) => (
