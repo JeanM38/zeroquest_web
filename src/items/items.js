@@ -1,4 +1,4 @@
-export const enemies = [
+export const items = [
     {
         name: "Orc", 
         index: "orc1",
@@ -209,4 +209,40 @@ export const enemies = [
         type: "enemy",
         key: "zombie"
     },
+    {
+        name: "Table",
+        index: "table1",
+        parent: "furniture",
+        type: "furniture",
+        key: "table",
+        properties : {
+            width: 3,
+            height: 2,
+            rotate: 0
+        }
+    },
+    {
+        name: "Chest",
+        index: "chest1",
+        parent: "furniture",
+        type: "furniture",
+        key: "chest",
+        properties : {
+            width: 1,
+            height: 1,
+            rotate: 0
+        }
+    },
+    {
+        name: "Wardrobe",
+        index: "wardrobe1",
+        parent: "furniture",
+        type: "furniture",
+        key: "wardrobe",
+        properties : {
+            width: 3,
+            height: 1,
+            rotate: 0
+        }
+    }
 ]

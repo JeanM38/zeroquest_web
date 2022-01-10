@@ -13,8 +13,8 @@ export const Droppable = (props) => {
   const isADeck = decks.filter(d => d.type === props.data).length === 1;
 
   const style = {
-    display: "flex",
-    flexWrap: "wrap",
+    display: isADeck ? "flex" : undefined,
+    flexWrap: isADeck ? "wrap" : undefined,
     minHeight: "30px",
     backgroundColor: isADeck ? "purple" : "",
     borderRadius: isADeck ? "5px": "0",

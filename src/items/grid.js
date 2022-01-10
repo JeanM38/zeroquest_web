@@ -738,5 +738,6 @@ export const grid = [
 
 export const decks = [
     {title: "Enemies", type: "enemy"},
-    {title: "Traps", type: "trap"}
+    {title: "Traps", type: "trap"},
+    {title: "Furnitures", type: "furniture"}
 ]

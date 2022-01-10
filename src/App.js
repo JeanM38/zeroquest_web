@@ -7,7 +7,7 @@ import {Draggable} from './Components/Draggable';
 
 /* Pieces and grid elements */
 import { grid, decks } from './items/grid';
-import { enemies } from './items/enemies';
+import { items } from './items/items';
 
 /* Styled Components */
 import { 
@@ -20,12 +20,14 @@ import {
 } from './style/AppStyle';
 
 function App() {
-  const [pieces, setPieces] = useState(enemies);
+  const [pieces, setPieces] = useState(items);
 
   /* Handle drag ending */
   const handleDragEnd = (event) => {
     /* Get the hovered element*/
     const {over} = event;
+    const activeType = event.active.data.current;
+    const overType = over.data.current;
 
     /* Create a new instance from pieces */
     let newPieces = [...pieces];
@@ -40,10 +42,10 @@ function App() {
         if (p.parent === over.id) {
           return p
         } else if (
-          (event.active.data.current === "enemy" && !["corridor", "trap"].includes(over.data.current)) || /* Enemy */
-          (event.active.data.current === "trap" && ["corridor", "trap"].includes(over.data.current)) /* Trap */
+          (activeType === "enemy" && !["corridor", "trap", 'furniture'].includes(overType)) || /* Enemy */
+          (activeType === "trap" && ["corridor", "trap", "furniture"].includes(overType)) || /* Trap */
+          (activeType === "furniture" && !["corridor", "trap", "enemy"].includes(overType)) /* Furniture */
           ) {
-            console.log(over);
             /* Draggable element is dropped on his own desk or in an unfilled droppable element */
             return {...p, parent: over.id}
         } else {
@@ -65,7 +67,16 @@ function App() {
 
     pieces.forEach((p) => {
       if(p.parent === id) {
-        piecesToRender = [...piecesToRender, <Draggable key={p.index} id={p.index} data={p.type} image={p.key}></Draggable>]
+        piecesToRender = [...piecesToRender, 
+          <Draggable 
+            key={p.index} 
+            id={p.index} 
+            data={p.type} 
+            image={p.key} 
+            properties={p.properties ? p.properties : null}
+            rotate={setRotate}
+          ></Draggable>
+        ]
       }
     })
     
@@ -93,6 +104,23 @@ function App() {
     const newPieces = pieces.map(p => {
       return {...p, parent: p.type}
     });
+    setPieces(newPieces);
+  }
+
+  /* Register new rotate value */
+  const setRotate = (key) => {
+    const newPieces = pieces.map(p => {
+      if (p.index === key && p.properties) {
+        if (p.properties.rotate < 3) {
+          ++p.properties.rotate
+        } else {
+          p.properties.rotate = 0
+        }
+        return p
+      } else {
+        return p
+      }
+    })
     setPieces(newPieces);
   }
 
