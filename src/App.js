@@ -28,30 +28,38 @@ function App() {
     const {over} = event;
     const activeType = event.active.data.current;
     const overType = over.data.current;
+    let isFilled = 0;
 
     /* Create a new instance from pieces */
     let newPieces = [...pieces];
 
     /* Foreach pieces of the game */
     newPieces = newPieces.map(p => {
+      /* Check if a piece has only the same parent */
+      if (p.parent === over.id || activeType === overType) {
+        ++isFilled;
+      }
 
       /* If hover on a droppable element and p is the dragged element*/
       if (over && event.active.id === p.index) {
-
         /* Droppable element is filled */
         if (p.parent === over.id) {
           return p
         } else if (
           (activeType === "enemy" && !["corridor", "trap", 'furniture'].includes(overType)) || /* Enemy */
           (activeType === "trap" && ["corridor", "trap", "furniture"].includes(overType)) || /* Trap */
-          (activeType === "furniture" && !["corridor", "trap", "enemy"].includes(overType)) /* Furniture */
+          (activeType === "furniture" && !["corridor", "trap", "enemy"].includes(overType))  /* Furniture */
           ) {
             /* If piece is a furniture, reset his rotate */
             if (p.type === "furniture" && over.id === "furniture" && p.properties.rotate !== 0) {
               p.properties.rotate = 0;
             }
             /* Draggable element is dropped on his own desk or in an unfilled droppable element */
-            return {...p, parent: over.id}
+            if (isFilled === 0 || activeType === overType) {
+              return {...p, parent: over.id}
+            } else {
+              return p
+            }
         } else {
           return p
         }
@@ -119,10 +127,8 @@ function App() {
     const newPieces = pieces.map(p => {
       if (p.index === key && p.properties) {
         p.properties.rotate === 0 ? p.properties.rotate = 1 : p.properties.rotate = 0;
-        return p
-      } else {
-        return p
       }
+      return p
     })
     setPieces(newPieces);
   }
