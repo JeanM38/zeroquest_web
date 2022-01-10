@@ -2,6 +2,8 @@ import React from 'react';
 import {useDraggable} from '@dnd-kit/core';
 
 export const Draggable = (props) => {  
+  let styleByWidth = {};
+
   const {attributes, listeners, setNodeRef, transform} = useDraggable({
     id: props.id,
     data: props.data,
@@ -30,6 +32,16 @@ export const Draggable = (props) => {
     border: "1px solid black"
   } : undefined;
 
+  if (props.properties) {
+    if (props.properties.height === 2) {
+      styleByWidth = {...styleByWidth, transformOrigin: "center 15px"}
+    } else if (props.properties.width === 1 && props.properties.height === 1) {
+      styleByWidth = {...styleByWidth, transformOrigin: "center"}
+    } else {
+      styleByWidth = {...styleByWidth, transformOrigin: "30px 0px"}
+    }
+  }
+
   const rotatePiece = (key) => {
     if (key.code === "KeyR" && ["furniture", "trap"].includes(props.data)) {
       props.rotate(props.id);
@@ -37,6 +49,6 @@ export const Draggable = (props) => {
   }
   
   return (
-    <div ref={setNodeRef} style={{...style, ...styleByType}} {...listeners} {...attributes} onKeyDown={(e) => rotatePiece(e)}></div>
+    <div ref={setNodeRef} style={{...style, ...styleByType, ...styleByWidth}} {...listeners} {...attributes} onKeyDown={(e) => rotatePiece(e)}></div>
   );
 }

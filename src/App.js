@@ -26,6 +26,7 @@ function App() {
   const handleDragEnd = (event) => {
     /* Get the hovered element*/
     const {over} = event;
+    console.log(event);
     const activeType = event.active.data.current;
     const overType = over.data.current;
 
@@ -111,11 +112,7 @@ function App() {
   const setRotate = (key) => {
     const newPieces = pieces.map(p => {
       if (p.index === key && p.properties) {
-        if (p.properties.rotate < 3) {
-          ++p.properties.rotate
-        } else {
-          p.properties.rotate = 0
-        }
+        p.properties.rotate === 0 ? p.properties.rotate = 1 : p.properties.rotate = 0;
         return p
       } else {
         return p
@@ -136,7 +133,7 @@ function App() {
   // }
 
   return (
-    <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+    <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver} >
       <ChapterEditor>
 
         <DecksWrapper>
