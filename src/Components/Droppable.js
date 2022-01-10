@@ -19,7 +19,8 @@ export const Droppable = (props) => {
     backgroundColor: isADeck ? "purple" : "",
     borderRadius: isADeck ? "5px": "0",
     height: isADeck ? "100%" : "30px",
-    width: isADeck ? "100%" : "30px"
+    width: isADeck ? "100%" : "30px",
+    cursor: props.cursor
   };
 
   return (

@@ -21,6 +21,7 @@ import {
 
 function App() {
   const [pieces, setPieces] = useState(items);
+  const [cursor, setCursor] = useState("grab");
 
   /* Handle drag ending */
   const handleDragEnd = (event) => {
@@ -73,6 +74,26 @@ function App() {
     setPieces(newPieces);
   }
 
+  /* Handle over action, if dragged element is assignable to a droppable element  */
+  const handleDragOver = (event) => {
+    const {over} = event;
+
+    if (over) {
+      const activeType = event.active.data.current;
+      const overType = event.over.data.current;
+
+      if (
+        (activeType === "enemy" && overType !== "corridor" && !["trap", "furniture"].includes(overType)) ||
+        (activeType === "furniture" && overType !== "corridor" && !["trap", "enemy"].includes(overType)) ||
+        (activeType === "trap" && overType === "corridor" && !["trap", "enemy"].includes(overType))
+      ) {
+        setCursor("grab");
+      } else {
+        setCursor("not-allowed");
+      }
+    }
+  }
+
   /* Return each piece at his position */
   const renderPiece = (id) => {
     let piecesToRender = [];
@@ -87,6 +108,7 @@ function App() {
             image={p.key} 
             properties={p.properties ? p.properties : null}
             rotate={setRotate}
+            cursor={cursor}
           ></Draggable>
         ]
       }
@@ -94,20 +116,6 @@ function App() {
     
     if (piecesToRender.length > 0) {
       return(piecesToRender);
-    }
-  }
-
-  /* Handle over action, if dragged element is assignable to a droppable element  */
-  const handleDragOver = (event) => {
-    const {over} = event;
-
-    if (over) {
-      const activeType = event.active.data.current;
-      const overType = event.over.data.current;
-
-      if (activeType === "trap" && overType !== "corridor") {
-        //
-      } 
     }
   }
 
