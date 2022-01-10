@@ -26,7 +26,6 @@ function App() {
   const handleDragEnd = (event) => {
     /* Get the hovered element*/
     const {over} = event;
-    console.log(event);
     const activeType = event.active.data.current;
     const overType = over.data.current;
 
@@ -47,6 +46,10 @@ function App() {
           (activeType === "trap" && ["corridor", "trap", "furniture"].includes(overType)) || /* Trap */
           (activeType === "furniture" && !["corridor", "trap", "enemy"].includes(overType)) /* Furniture */
           ) {
+            /* If piece is a furniture, reset his rotate */
+            if (p.type === "furniture" && over.id === "furniture" && p.properties.rotate !== 0) {
+              p.properties.rotate = 0;
+            }
             /* Draggable element is dropped on his own desk or in an unfilled droppable element */
             return {...p, parent: over.id}
         } else {
@@ -103,6 +106,9 @@ function App() {
   /* Reset all board */
   const resetBoard = () => {
     const newPieces = pieces.map(p => {
+      if (p.type === "furniture" && p.properties.rotate !== 0) {
+        p.properties.rotate = 0;
+      }
       return {...p, parent: p.type}
     });
     setPieces(newPieces);
