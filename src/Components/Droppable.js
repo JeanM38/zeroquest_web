@@ -5,7 +5,7 @@ import { decks } from '../items/grid';
 
 export const Droppable = (props) => {
 
-  const {isOver, setNodeRef} = useDroppable({
+  const {setNodeRef} = useDroppable({
     id: props.id,
     data: props.data
   });
