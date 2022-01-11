@@ -156,7 +156,6 @@ function App() {
     <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver} >
       <ChapterEditor>
         <DecksWrapper>
-          <h1>Hello world !</h1>
           <button onClick={resetBoard}>Reset the board</button>
           {/* <button onClick={addEnemy}>Add an enemy</button> */}
           
