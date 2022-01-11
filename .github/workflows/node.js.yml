@@ -37,8 +37,8 @@ jobs:
     - name: 'Store Build'
       uses: actions/upload-artifact@v2
       with:
-        name: build
-        path: build
+        name: Code coverage
+        path: output
 
   deploy:
     needs: build
