@@ -1,8 +1,7 @@
-import { render } from '@testing-library/react';
-import App from './App';
+import { sayHello } from './utils/functions';
 
-test('isKnightIsRenderedInApp', () => {
-  /* 'player' testid corresponds to the Knight Component */
-  const { getByTestId } = render(<App />);
-  expect(getByTestId('player')).toBeInTheDocument();
+describe('Global testing', () => {
+  test('isTestWorkingProperly', () => {
+    expect(1 + 1).toBe(2)
+  })
 })

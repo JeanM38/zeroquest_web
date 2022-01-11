@@ -24,3 +24,4 @@ yarn-error.log*
 
 # tests
 src/__snapshots__
+output
