@@ -5,15 +5,16 @@ import { decks } from '../items/grid';
 
 export const Droppable = (props) => {
 
-  const {setNodeRef} = useDroppable({
+  const {isOver, setNodeRef} = useDroppable({
     id: props.id,
-    data: props.data
+    data: props.type
   });
 
-  const isADeck = decks.filter(d => d.type === props.data).length === 1;
+  const isADeck = decks.filter(d => d.type === props.type).length === 1;
 
   const style = {
     display: isADeck ? "flex" : undefined,
+    position: !isADeck ? "relative" : undefined,
     flexWrap: isADeck ? "wrap" : undefined,
     minHeight: "30px",
     backgroundColor: isADeck ? "purple" : "",
@@ -23,8 +24,22 @@ export const Droppable = (props) => {
     cursor: props.cursor
   };
 
+  const layer = {
+    display: "block",
+    position: "absolute",
+    zIndex: !isADeck && isOver ? 0 : undefined, 
+    top: 0,
+    left: 0,
+    width: "30px",
+    height: "30px",
+    backgroundColor: props.overBg,
+    opacity: 0.6
+  }
+
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} data-testid={"droppable"}>
+      <div style={!isADeck && isOver ? layer : null}>
+      </div>
       {props.children}
     </div>
   );

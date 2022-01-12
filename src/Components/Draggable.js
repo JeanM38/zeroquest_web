@@ -4,13 +4,13 @@ import {useDraggable} from '@dnd-kit/core';
 export const Draggable = (props) => {  
   let styleByWidth = {};
 
-  const {attributes, listeners, setNodeRef, transform} = useDraggable({
+  const {attributes, listeners, isDragging, setNodeRef, transform} = useDraggable({
     id: props.id,
     data: props.data,
   });
   
   const style = {
-    zIndex: 1000,
+    zIndex: isDragging ? 999: undefined,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -19,7 +19,7 @@ export const Draggable = (props) => {
     transform: transform ? `
       translate3d(${transform.x}px, ${transform.y}px, 0) rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)` : 
       `rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)`,
-    opacity: transform ? "0.6" : "1",
+    opacity: transform ? "0.8" : "1",
     backgroundImage: `url("${process.env.PUBLIC_URL}/Resources/Characters/${props.image}.png")`,
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
@@ -50,6 +50,6 @@ export const Draggable = (props) => {
   }
   
   return (
-    <div ref={setNodeRef} style={{...style, ...styleByType, ...styleByWidth}} {...listeners} {...attributes} onKeyDown={(e) => rotatePiece(e)}></div>
+    <div ref={setNodeRef} style={{...style, ...styleByType, ...styleByWidth}} {...listeners} {...attributes} onKeyDown={(e) => rotatePiece(e)} data-testid={"draggable"}></div>
   );
 }

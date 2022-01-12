@@ -1,3 +1,9 @@
+export const decks = [
+    {title: "Enemies", type: "enemy"},
+    {title: "Traps", type: "trap"},
+    {title: "Furnitures", type: "furniture"}
+]
+
 export const grid = [
     /* FROM BOARD TOP & LEFT TO RIGHT */
 
@@ -734,10 +740,4 @@ export const grid = [
     {type: "corridor", posX: 23, posY: 18},
     {type: "corridor", posX: 24, posY: 18},
     {type: "corridor", posX: 25, posY: 18},
-]
-
-export const decks = [
-    {title: "Enemies", type: "enemy"},
-    {title: "Traps", type: "trap"},
-    {title: "Furnitures", type: "furniture"}
 ]

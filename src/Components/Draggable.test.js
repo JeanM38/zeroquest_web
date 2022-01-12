@@ -12,22 +12,3 @@ it("isDraggableIsRenderedCorrectly", () => {
     });
     expect(container).not.toBeNull();
 })
-
-// it("isRotateThePieceWhenPressR", () => {
-//     const properties = {
-//         width: 3,
-//         height: 1,
-//         rotate: 0
-//     }
-//     act(() => {
-//         render(<Draggable 
-//             key={"chest1"}
-//             id={'chest1'}
-//             data={'furniture'}
-//             image={'wardrobe'}
-//             properties={properties}
-//             rotate={0}
-//             cursor={"grab"}
-//         />, container);
-//     });
-// })
