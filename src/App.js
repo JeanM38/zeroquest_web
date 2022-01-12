@@ -163,6 +163,7 @@ export function App() {
           {decks.map((deck, index) => (
             <Deck mb key={deck.type} data-testid={"deck"}>
               <h1>{deck.title}</h1>
+              <h1>Hello world</h1>
               <DeckItems data-testid={"deckitem"}>
                 <Droppable key={deck.type} id={deck.type} data={deck.type} >
                     {renderPiece(deck.type)}
