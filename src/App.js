@@ -19,7 +19,7 @@ import {
   Grid 
 } from './style/AppStyle';
 
-function App() {
+export function App() {
   const [pieces, setPieces] = useState(items);
   const [cursor, setCursor] = useState("grab");
 
@@ -153,18 +153,18 @@ function App() {
   // }
 
   return (
-    <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver} >
-      <ChapterEditor>
-        <DecksWrapper>
-          <button onClick={resetBoard}>Reset the board</button>
+    <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+      <ChapterEditor data-testid="chaptereditor">
+        <DecksWrapper data-testid="deckswrapper">
+          <button onClick={resetBoard} data-testid="resestboard">Reset the board</button>
           {/* <button onClick={addEnemy}>Add an enemy</button> */}
           
           {/* Generate multiple decks by deck type */}
-          {decks.map((deck) => (
-            <Deck mb key={deck.type}>
+          {decks.map((deck, index) => (
+            <Deck mb key={deck.type} data-testid={"deck"}>
               <h1>{deck.title}</h1>
-              <DeckItems>
-                <Droppable key={deck.type} id={deck.type} data={deck.type}>
+              <DeckItems data-testid={"deckitem"}>
+                <Droppable key={deck.type} id={deck.type} data={deck.type} >
                     {renderPiece(deck.type)}
                 </Droppable>
               </DeckItems>
@@ -173,8 +173,8 @@ function App() {
 
         </DecksWrapper>
 
-        <GridWrapper>
-          <Grid>
+        <GridWrapper data-testid="gridwrapper">
+          <Grid data-testid="grid">
 
             {/* Foreach squares of the desk */}
             {grid.map((square) => (
@@ -186,7 +186,6 @@ function App() {
           </Grid>
         </GridWrapper>
       </ChapterEditor>
-
     </DndContext>
   );
 };
