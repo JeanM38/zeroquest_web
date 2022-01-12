@@ -118,7 +118,7 @@ export function App() {
 
     pieces.map((p) => {
       if(p.parent === id) {
-        piecesToRender = [...piecesToRender, 
+        return piecesToRender = [...piecesToRender, 
           <Draggable 
             key={p.index} 
             id={p.index} 
