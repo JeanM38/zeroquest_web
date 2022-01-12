@@ -118,7 +118,7 @@ export function App() {
 
     pieces.map((p) => {
       if(p.parent === id) {
-        return piecesToRender = [...piecesToRender, 
+        piecesToRender = [...piecesToRender, 
           <Draggable 
             key={p.index} 
             id={p.index} 
@@ -130,6 +130,7 @@ export function App() {
           ></Draggable>
         ]
       }
+      return piecesToRender;
     })
     
     if (piecesToRender.length > 0) {
