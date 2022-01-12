@@ -23,13 +23,12 @@ it("isAppIsRenderedCorrectly", () => {
 })
 
 it("isAppComponentsAreRenderedCorrectly", () => {
-  act(() => { render(<App />, container) })
+  act(() => { render(<App />, container) });
   appIdsToTest.map(id => { expect(screen.queryAllByTestId(id).length).toBe(1) })
 })
 
 it("isDecksAreAllRendered", () => {
   act(() => { render(<App />, container) });
-
   expect(screen.queryAllByTestId("deck").length).toBe(decks.length);
 })
 
