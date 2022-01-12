@@ -33,6 +33,7 @@ jobs:
    
     # Install node modules
     - name: Install dependencies for testing
+      if: steps.cache-nodemodules.outputs.cache-hit != 'true' #if node_modules not cached
       run: npm ci
 
     # Run all tests
@@ -45,11 +46,6 @@ jobs:
       with:
         name: Code coverage
         path: output
-
-    # Install dependencies for build
-    - name: Install dependencies for build
-      if: steps.cache-nodemodules.outputs.cache-hit != 'true' #if node_modules not cached
-      run: npm ci
       
     # Build projet
     - name: Build projet
