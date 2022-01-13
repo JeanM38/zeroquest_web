@@ -51,9 +51,11 @@ export function App() {
   
       /* Foreach pieces of the game */
       newPieces.map(p => {
-        /* Check if a piece has only the same parent */
-        if (p.parent.includes(overIndex) || activeType === overType) {
-          ++isFilled;
+        if (event.active.id !== p.index) {
+          /* Check if a piece has only the same parent */
+          if (p.parent.includes(overIndex) || activeType === overType) {
+            ++isFilled;
+          }
         }
       })
 
