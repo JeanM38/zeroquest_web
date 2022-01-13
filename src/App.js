@@ -30,6 +30,9 @@ export function App() {
 
   /* Handle drag ending */
   const handleDragEnd = (event) => {
+    /* Reset OverBg */
+    setOverBg("green");
+
     /* Get the hovered element */
     const {over} = event;
 
@@ -54,10 +57,9 @@ export function App() {
         if (event.active.id !== p.index) {
           /* Check if a item has a same parent */
           if (p.parent.includes(overIndex) || activeType === overType) {
-            ++isFilled;
+            return isFilled + 1;
           }
         }
-        setOverBg("green");
       })
 
       newItems = items.map(p => {
@@ -118,6 +120,7 @@ export function App() {
                           }
                         }
                       }
+                      return itemsInTheArea;
                     })
   
                     const noItemsCoveredAndIsInASingleRoom = itemsInTheArea.length === 0 && allEqual(tilesTypesInTheArea);
