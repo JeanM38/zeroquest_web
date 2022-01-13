@@ -7,7 +7,9 @@ export const Droppable = (props) => {
 
   const {isOver, setNodeRef} = useDroppable({
     id: props.id,
-    data: props.type
+    data: {
+      type: props.type
+    }
   });
 
   const isADeck = decks.filter(d => d.type === props.type).length === 1;
@@ -37,7 +39,7 @@ export const Droppable = (props) => {
   }
 
   return (
-    <div ref={setNodeRef} style={style} data-testid={"droppable"}>
+    <div ref={setNodeRef} style={style} data-testid={"droppable"} id={props.index}>
       <div style={!isADeck && isOver ? layer : null}>
       </div>
       {props.children}

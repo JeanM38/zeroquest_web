@@ -1,7 +1,7 @@
 export const furnitures = [
     {
         index: "table1",
-        parent: "furniture",
+        parent: ["furniture"],
         type: "furniture",
         subtype: "table",
         properties : {
@@ -12,7 +12,7 @@ export const furnitures = [
     },
     {
         index: "chest1",
-        parent: "furniture",
+        parent: ["furniture"],
         type: "furniture",
         subtype: "chest",
         properties : {
@@ -23,7 +23,7 @@ export const furnitures = [
     },
     {
         index: "wardrobe1",
-        parent: "furniture",
+        parent: ["furniture"],
         type: "furniture",
         subtype: "wardrobe",
         properties : {

@@ -35,7 +35,7 @@ export const Draggable = (props) => {
 
   if (props.properties) {
     if (props.properties.height === 2) {
-      styleByWidth = {...styleByWidth, transformOrigin: "center 15px"}
+      styleByWidth = {...styleByWidth, transformOrigin: "30px"}
     } else if (props.properties.width === 1 && props.properties.height === 1) {
       styleByWidth = {...styleByWidth, transformOrigin: "center"}
     } else {

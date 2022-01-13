@@ -1,7 +1,7 @@
 export const traps = [
     {
         index: "trap1",
-        parent: "trap",
+        parent: ["trap"],
         type: "trap",
         subtype: "trap",
         properties : {
@@ -12,7 +12,7 @@ export const traps = [
     },
     {
         index: "trap2",
-        parent: "trap",
+        parent: ["trap"],
         type: "trap",
         subtype: "trap",
         properties : {

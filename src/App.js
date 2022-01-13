@@ -22,6 +22,7 @@ import {
   GridWrapper, 
   Grid 
 } from './style/AppStyle';
+import { allEqual } from './utils/functions';
 
 export function App() {
   const [pieces, setPieces] = useState([...enemies, ...furnitures, ...traps]);
@@ -30,53 +31,94 @@ export function App() {
 
   /* Handle drag ending */
   const handleDragEnd = (event) => {
-    /* Get the hovered element*/
+    /* Get the hovered element */
     const {over} = event;
 
+    /* Get type of the draggable element */
     const activeType = event.active.data.current;
-    const overType = over === null ? null : over.data.current;
-    
-    let isFilled = 0;
+
+    /* Get type of the hovered element */
+    const overType = over === null ? null : over.data.current.type;
+
+    /* Get index in the grid array for the hovered element */
+    const overIndex = over === null ? null : over.id;
 
     /* If overType is valid */
     if (overType) {
       /* Create a new instance from pieces */
       let newPieces = [...pieces];
+      let isFilled = 0;
   
       /* Foreach pieces of the game */
-      newPieces = newPieces.map(p => {
+      newPieces.map(p => {
         /* Check if a piece has only the same parent */
-        if (p.parent === over.id || activeType === overType) {
+        if (p.parent.includes(overIndex) || activeType === overType) {
           ++isFilled;
         }
-  
-        /* If hover on a droppable element and p is the dragged element*/
-        if (over && event.active.id === p.index) {
-  
+      })
+
+      newPieces = newPieces.map(p => {
+        if (isFilled === 0 || activeType === overType) {
           /* Droppable element is filled */
-          if (p.parent === over.id) {
-            return p
-          } else if (
-            /* Droppable element is not filled and draggable element is allowed */
-            (activeType === "enemy" && !["trap", "furniture"].includes(overType)) || /* Enemy */
+          if (
+            /* Select the draggable piece */
+            ((event.active.id === p.index)) &&
+            ((activeType === "enemy" && !["trap", "furniture"].includes(overType)) || /* Enemy */
             (activeType === "trap" && !["enemy", "furniture"].includes(overType)) || /* Trap */
-            (activeType === "furniture" && !["corridor", "trap", "enemy"].includes(overType))  /* Furniture */
-            ) {
-              /* If piece is a furniture, reset his rotate */
+            (activeType === "furniture" && !["corridor", "trap", "enemy"].includes(overType)))  /* Furniture */
+          ) {
+              /* If user drag a furniture on his desk, reset his rotate */
               if (p.type === "furniture" && over.id === "furniture" && p.properties.rotate !== 0) {
                 p.properties.rotate = 0;
               }
-              /* Draggable element is dropped on his own desk or in an unfilled droppable element */
-              if (isFilled === 0 || activeType === overType) {
-                return {...p, parent: over.id}
+              if (p.properties && p.properties.width * p.properties.height > 1) {
+                /* All tiles that needs to be checked before larg item is dropped */
+                let coveredArea = []; /* All tiles covered by the future item */
+                let itemsInTheArea = []; /* All items already in coveredArea */
+                let tilesTypesInTheArea = []; /* All items types in coveredArea */
+                
+                /* If rotate is on an initial value */
+                if (p.properties.rotate === 0) {
+                  /* Rotation mode is on horizontal */
+                  for (let h = 0; h < p.properties.height; ++h) {
+                    for (let w = 0; w < p.properties.width; ++w) {
+                      /* Set all tiles covered by the item */
+                      coveredArea = [...coveredArea, overIndex + (26 * h) + w]
+                      /* Set all types will be covered by the item */
+                      tilesTypesInTheArea = [...tilesTypesInTheArea, grid[overIndex + (26 * h) + w].type]
+                    }
+                  }
+                } else {
+                  /* Rotation mode is on vertical */
+                  for (let w = 0; w < p.properties.width; ++w) {
+                    for (let h = 0; h < p.properties.height; ++h) {
+                      coveredArea = [...coveredArea, overIndex + (26 * w) + h]
+                      tilesTypesInTheArea = [...tilesTypesInTheArea, grid[overIndex + (26 * w) + h].type]
+                    }
+                  }
+                }
+
+                newPieces.map(p => {
+                  if (p.index !== event.active.id) {
+                    for (const parent of p.parent) {
+                      if (coveredArea.includes(parent)) {
+
+                        /* If a piece has already a parent located in this covered area */
+                        itemsInTheArea = [...itemsInTheArea, p];
+                      }
+                    }
+                  }
+                })
+
+                /* If there are no items in the area, and types of tiles are all equal, else return the last parent */
+                return {...p, parent: itemsInTheArea.length === 0 && allEqual(tilesTypesInTheArea) ? coveredArea : p.parent};
               } else {
-                return p
+                return {...p, parent: [overIndex]}
               }
           } else {
             return p
           }
         } else {
-          /* Hover not on a droppable element */
           return p
         }
       })
@@ -93,7 +135,7 @@ export function App() {
     /* Check first if over is a valid element of the context */
     if (over) {
       const activeType = event.active.data.current;
-      const overType = event.over.data.current;
+      const overType = over.data.current.type;
 
       /* Check valid types of drop elements for draggable elements */
       if (
@@ -117,7 +159,7 @@ export function App() {
     let piecesToRender = [];
 
     pieces.map((p) => {
-      if(p.parent === id) {
+      if(p.parent === id || p.parent[0] === id) {
         piecesToRender = [...piecesToRender, 
           <Draggable 
             key={p.index} 
@@ -157,7 +199,7 @@ export function App() {
     const newPieces = pieces.map(p => {
       
       /* Check if item is furniture/trap, and it's scale is bigger than 1 */
-      if (p.index === key && p.properties && p.properties.width * p.properties.height > 1) {
+      if (p.index === key && p.properties) {
         p.properties.rotate === 0 ? p.properties.rotate = 1 : p.properties.rotate = 0;
       }
       return p
@@ -193,11 +235,11 @@ export function App() {
           {/* <button onClick={addEnemy}>Add an enemy</button> */}
           
           {/* Generate multiple decks by deck type */}
-          {decks.map((deck) => (
+          {decks.map(deck => (
             <Deck mb key={deck.type} data-testid={"deck"}>
               <h1>{deck.title}</h1>
               <DeckItems data-testid={"deckitem"}>
-                <Droppable key={deck.type} id={deck.type} type={deck.type} >
+                <Droppable key={"drop-" + deck.type} id={deck.type} type={deck.type}>
                     {renderPiece(deck.type)}
                 </Droppable>
               </DeckItems>
@@ -216,9 +258,9 @@ export function App() {
           <Grid data-testid={"grid"}>
 
             {/* Foreach squares of the desk */}
-            {grid.map((square) => (
-              <Droppable key={`[${square.posX},${square.posY}]`} id={`[${square.posX},${square.posY}]`} type={square.type} overBg={overBg}>
-                {renderPiece(`[${square.posX},${square.posY}]`)}
+            {grid.map((square, index) => (
+              <Droppable key={"drop" + index} id={index} type={square.type} overBg={overBg}>
+                {renderPiece(index)}
               </Droppable>
             ))}
 

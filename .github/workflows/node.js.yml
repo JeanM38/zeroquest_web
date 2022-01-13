@@ -30,14 +30,14 @@ jobs:
           ${{ runner.os }}-
    
     # Install node modules
-    - name: Install dependencies for testing
+    - name: Install dependencies
       if: steps.cache-nodemodules.outputs.cache-hit != 'true' #if node_modules not cached
       run: npm ci
 
     # Run all tests
     - name: Run test
       if: github.ref == 'refs/heads/dev' #If on branch dev
-      run: npm run test
+      run: npm run test --coverage
 
     # Create an artifact which store the code cov
     - name: 'Store Code Coverage'
