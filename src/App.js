@@ -59,7 +59,7 @@ export function App() {
         }
       })
 
-      newPieces = newPieces.map(p => {
+      newPieces = pieces.map(p => {
         if (isFilled === 0 || activeType === overType) {
           /* Droppable element is filled */
           if (
@@ -79,41 +79,49 @@ export function App() {
                 let itemsInTheArea = []; /* All items already in coveredArea */
                 let tilesTypesInTheArea = []; /* All items types in coveredArea */
                 
-                /* If rotate is on an initial value */
-                if (p.properties.rotate === 0) {
-                  /* Rotation mode is on horizontal */
-                  for (let h = 0; h < p.properties.height; ++h) {
-                    for (let w = 0; w < p.properties.width; ++w) {
-                      /* Set all tiles covered by the item */
-                      coveredArea = [...coveredArea, overIndex + (26 * h) + w]
-                      /* Set all types will be covered by the item */
-                      tilesTypesInTheArea = [...tilesTypesInTheArea, grid[overIndex + (26 * h) + w].type]
-                    }
-                  }
-                } else {
-                  /* Rotation mode is on vertical */
-                  for (let w = 0; w < p.properties.width; ++w) {
+                if(!["trap", "furniture"].includes(overType)) {
+                  /* If rotate is on an initial value */
+                  if (p.properties.rotate === 0) {
+                    console.log('horizontal')
+                    /* Rotation mode is on horizontal */
                     for (let h = 0; h < p.properties.height; ++h) {
-                      coveredArea = [...coveredArea, overIndex + (26 * w) + h]
-                      tilesTypesInTheArea = [...tilesTypesInTheArea, grid[overIndex + (26 * w) + h].type]
+                      for (let w = 0; w < p.properties.width; ++w) {
+                        /* Set all tiles covered by the item */
+                        coveredArea = [...coveredArea, overIndex + (26 * h) + w]
+                        /* Set all types will be covered by the item */
+                        tilesTypesInTheArea = [...tilesTypesInTheArea, grid[overIndex + (26 * h) + w].type]
+                      }
                     }
-                  }
-                }
-
-                newPieces.map(p => {
-                  if (p.index !== event.active.id) {
-                    for (const parent of p.parent) {
-                      if (coveredArea.includes(parent)) {
-
-                        /* If a piece has already a parent located in this covered area */
-                        itemsInTheArea = [...itemsInTheArea, p];
+                  } else {
+                    console.log('vertical')
+                    /* Rotation mode is on vertical */
+                    for (let w = 0; w < p.properties.width; ++w) {
+                      for (let h = 0; h < p.properties.height; ++h) {
+                        coveredArea = [...coveredArea, overIndex + (26 * w) + h]
+                        tilesTypesInTheArea = [...tilesTypesInTheArea, grid[overIndex + (26 * w) + h].type]
                       }
                     }
                   }
-                })
+  
+                  newPieces.map(p => {
+                    if (p.index !== event.active.id) {
+                      for (const parent of p.parent) {
+                        if (coveredArea.includes(parent)) {
+  
+                          /* If a piece has already a parent located in this covered area */
+                          itemsInTheArea = [...itemsInTheArea, p];
+                        }
+                      }
+                    }
+                  })
 
-                /* If there are no items in the area, and types of tiles are all equal, else return the last parent */
-                return {...p, parent: itemsInTheArea.length === 0 && allEqual(tilesTypesInTheArea) ? coveredArea : p.parent};
+                  const noItemsCoveredAndIsInASingleRoom = itemsInTheArea.length === 0 && allEqual(tilesTypesInTheArea);
+  
+                  /* If there are no items in the area, and types of tiles are all equal, else return the last parent */
+                  return {...p, parent: noItemsCoveredAndIsInASingleRoom ? coveredArea : p.type};
+                } else {
+                  return {...p, parent: p.type}
+                }
               } else {
                 return {...p, parent: [overIndex]}
               }
@@ -161,6 +169,9 @@ export function App() {
     let piecesToRender = [];
 
     pieces.map((p) => {
+      if (["furniture", "trap"].includes(p.type) && p.properties.rotate !== 0 && p.parent === p.type) {
+        p.properties.rotate = 0;
+      }
       if(p.parent === id || p.parent[0] === id) {
         piecesToRender = [...piecesToRender, 
           <Draggable 

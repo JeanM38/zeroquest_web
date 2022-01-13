@@ -5,7 +5,7 @@ export const traps = [
         type: "trap",
         subtype: "trap",
         properties : {
-            width: 1,
+            width: 2,
             height: 1,
             rotate: 0
         }
@@ -16,8 +16,19 @@ export const traps = [
         type: "trap",
         subtype: "trap",
         properties : {
-            width: 3,
-            height: 2,
+            width: 2,
+            height: 1,
+            rotate: 0
+        }
+    },
+    {
+        index: "trap3",
+        parent: ["trap"],
+        type: "trap",
+        subtype: "trap",
+        properties : {
+            width: 1,
+            height: 1,
             rotate: 0
         }
     }
