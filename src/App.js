@@ -57,9 +57,10 @@ export function App() {
         if (event.active.id !== p.index) {
           /* Check if a item has a same parent */
           if (p.parent.includes(overIndex) || activeType === overType) {
-            return isFilled + 1;
+            ++isFilled;
           }
         }
+        return isFilled;
       })
 
       newItems = items.map(p => {
