@@ -22,8 +22,7 @@ export const Draggable = (props) => {
     opacity: transform ? "0.8" : "1",
     backgroundImage: `url("${process.env.PUBLIC_URL}/Resources/Characters/${props.image}.png")`,
     backgroundSize: "contain",
-    backgroundRepeat: "no-repeat",
-    cursor: props.cursor
+    backgroundRepeat: "no-repeat"
   }
 
   const styleByType = ["furniture", "trap"].includes(props.data) ? {
