@@ -22,7 +22,7 @@ import {
   GridWrapper, 
   Grid 
 } from './style/AppStyle';
-import { allEqual } from './utils/functions';
+import { allEqual, resetBoard } from './utils/functions';
 
 export function App() {
   const [items, setItems] = useState([...enemies, ...furnitures, ...traps]);
@@ -208,20 +208,6 @@ export function App() {
     }
   }
 
-  /* Reset all board */
-  const resetBoard = () => {
-    const newItems = items.map(p => {
-
-      /* Reset all rotation positions to 0 to fit well in the deck */
-      if (p.type === "furniture" && p.properties.rotate !== 0) {
-        p.properties.rotate = 0;
-      }
-      /* Reset initial parent */
-      return {...p, parent: p.type}
-    });
-    setItems(newItems);
-  }
-
   /* Register new rotate value */
   const setRotate = (key) => {
     const newItems = items.map(p => {
@@ -259,7 +245,7 @@ export function App() {
               - Furnitures
           =================================================
           */}
-          <button onClick={resetBoard} data-testid={"resestboard"}>Reset the board</button>
+          <button onClick={() => setItems(resetBoard(items))} data-testid={"resestboard"}>Reset the board</button>
           {/* <button onClick={addEnemy}>Add an enemy</button> */}
           
           {/* Generate multiple decks by deck type */}
