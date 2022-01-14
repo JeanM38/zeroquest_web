@@ -136,7 +136,7 @@ export const setParentToItem = (items, item, over, event, grid) => {
     } else {
         if (
             /* Check if item is not overflow the grid on the horizontal way */
-            (over.id < 468 && item.properties.rotate !== 0) ||
+            (over.id < 468 && item.properties.rotate === 1) ||
             /* Check if item is not overflow the grid on the vertical way */
             ((over.id + 1) % 26 !== 0 && item.properties.rotate === 0)
         ) {
@@ -149,15 +149,15 @@ export const setParentToItem = (items, item, over, event, grid) => {
                 } else {
                     /* If there items in the area, or types of tiles are not all equal, else return item to its deck */
                     item.properties.rotate = 0;
-                    return {...item, parent: item.type};
+                    return {...item, parent: [item.type]};
                 }
             } else {
                 item.properties.rotate = 0;
-                return {...item, parent: item.type}
+                return {...item, parent: [item.type]}
             }
         } else {
             item.properties.rotate = 0;
-            return {...item, parent: item.type}
+            return {...item, parent: [item.type]}
         }
     }
 }

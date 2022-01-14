@@ -22,7 +22,7 @@ export const itemsTest = [
     },
     {
         index: "table1",
-        parent: [27],
+        parent: [25],
         type: "furniture",
         subtype: "table",
         properties: {
@@ -71,6 +71,17 @@ export const itemsTest = [
         subtype: "trap",
         properties : {
             width: 2,
+            height: 1,
+            rotate: 0
+        }
+    },
+    {
+        index: "trap3",
+        parent: [25],
+        type: "trap",
+        subtype: "trap",
+        properties : {
+            width: 3,
             height: 1,
             rotate: 0
         }

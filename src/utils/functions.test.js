@@ -25,7 +25,8 @@ import { decks } from '../items/grid';
  */
 describe("isAllEqualFuncTests", () => {
     it("isAllEqualFunctionWorksCorrectlyOnAllEqualArray", () => {
-        const testArray = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        const testArray = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+        expect(typeof(testArray)).toBe("object");
         expect(allEqual(testArray)).toBeTruthy();
     })
     
@@ -53,6 +54,7 @@ describe("resetBoardFunc", () => {
     const testedItems = resetBoard(items);
 
     /* Test if all parent have been reset */
+    expect(typeof(testedItems)).toBe("object");
     expect(testedItems[0].parent).toStrictEqual(["furniture"]);
     expect(testedItems[1].parent).toStrictEqual(["trap"]);
     expect(testedItems[2].parent).toStrictEqual(["enemy"]);
@@ -122,6 +124,7 @@ describe("handleDragOverHasTheCorrectBehavior", () => {
         over: { data: { current: { type: 'corridor'} }},
         /* ... */
     };
+    expect(typeof(handleDragOver(event))).toBe("string");
     expect(handleDragOver(event)).toBe("green");
     expect(handleDragOver(eventUnvalid)).toBe("red");
     expect(handleDragOver(null)).toBeUndefined();

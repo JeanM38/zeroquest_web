@@ -52,6 +52,7 @@ describe("checkIfAPieceHasAlreadyTheSameParentFunc", () => {
            will be return 1 */
        const result = checkIfAPieceHasAlreadyTheSameParent(itemsTest, eventTest);
        expect(result).toBe(1);
+       expect(typeof(result)).toBe("number");
     });
     it("overElementIsNull", () => {
         const resultUndefined = checkIfAPieceHasAlreadyTheSameParent(itemsTest, eventTestOverNull);
@@ -95,6 +96,7 @@ describe("getAreaByRotationModeFunc", () => {
 
     /* Expected coveredArea results for differents items props */
     it("getAreaForDifferentsWidthHeighAndRotate", () => {
+        expect(typeof(result)).toBe("object");
         expect(result.coveredArea).toStrictEqual([0, 1, 2, 26, 27, 28]);
         expect(result2.coveredArea).toStrictEqual([0, 1, 2]);
         expect(result3.coveredArea).toStrictEqual([0, 26, 52]);
@@ -119,6 +121,7 @@ describe("setRotateToZeroOnDeckFunc", () => {
     it("itemIsDroppedOnADeck", () => {
         const result = setRotateToZeroOnDeck(properties, overAllowed);
         expect(result).toBe(0);
+        expect(typeof(result)).toBe("number");
     })
     it("itemIsDroppedOutOfDesk", () => {
         const result = setRotateToZeroOnDeck(properties, overNotAllowed);
@@ -177,6 +180,7 @@ describe("isItemCanBeDroppedFunc", () => {
 
     it("isItemCanBeDroppedTrue", () => {
         /* Can be dropped if tile is not filled || if dragged on its deck */
+        expect(typeof(isItemCanBeDropped(eventTest, enemy, isNotFilled, "enemy", "r1"))).toBe("boolean");
         expect(isItemCanBeDropped(eventTest, enemy, isNotFilled, "enemy", "r1")).toBeTruthy();
         expect(isItemCanBeDropped(eventTestFurniture, furniture, isNotFilled, "furniture", "r27")).toBeTruthy();
         expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "enemy")).toBeTruthy();
@@ -204,6 +208,8 @@ describe("getLargeObjectAreaFunc", () => {
     it("returnAValidLargeObjectArea", () => {
         /* Replace the table to the closest tile */
         const largeObjectArea = getLargeObjectArea(itemsTest, itemsTest[3], event, grid);
+        expect(typeof(largeObjectArea.isAvailable)).toBe("boolean");
+        expect(typeof(largeObjectArea.coveredArea)).toBe("object");
         expect(largeObjectArea.isAvailable).toBeTruthy();
         expect(largeObjectArea.coveredArea.length).toBe(itemsTest[3].properties.width * itemsTest[3].properties.height);
         expect(largeObjectArea.coveredArea).toStrictEqual([28, 29, 30, 54, 55, 56]);
@@ -227,5 +233,54 @@ describe("getLargeObjectAreaFunc", () => {
  * Test suites for setParentToItem(items, item, over, event, grid)
  */
 describe("setParentToItemFunc", () => {
+    const eventTest = {
+        active: {
+            data: {
+                current: "enemy"
+            }
+            /* ... */
+        },
+        over: {
+            id: 25,
+            data: {
+                current: {
+                    type: "corridor"
+                }
+            }
+            /* ... */
+        }
+        /* ... */
+    }
 
+    it("itemIsAnEnemy", () =>  {
+        const result = setParentToItem(itemsTest, itemsTest[0], eventTest.over, eventTest, grid);
+        expect(typeof(result)).toBe("object");
+        expect(result.parent[0]).toBe(25);
+    })
+
+    it("itemIsNotAnEnemyAndAtTheBottomOfTheBoard", () => {
+        /* Item is on vertical mode and at the extrem bottom of the board */
+        eventTest.over.id = 468;
+        itemsTest[3].properties.rotate = 1;
+        const result = setParentToItem(itemsTest, itemsTest[3], eventTest.over, eventTest, grid);
+        expect(result.parent[0]).toBe(itemsTest[3].type);
+    })
+    it("itemIsNotAnEnemyAndAtTheRightOfTheBoard", () => {
+        /* Item is on horizontal mode and at the extrem right of the board */
+        eventTest.over.id = 25;
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
+        expect(result.parent[0]).toBe(itemsTest[8].type);
+    })
+    it("itemIsNotAnEnemyAndAreaIsAvailable", () => {
+        /* Item is on an available area */
+        eventTest.over.id = 27;
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
+        expect(result.parent[0]).toBe(27);
+    })
+    it("itemIsNotAnEnemyAndAreaIsUnavailable", () => {
+        /* Item is on an available area */
+        eventTest.over.id = 29;
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
+        expect(result.parent[0]).toBe(itemsTest[8].type);
+    })
 })
