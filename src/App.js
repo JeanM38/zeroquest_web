@@ -3,7 +3,6 @@ import {DndContext} from '@dnd-kit/core';
 
 /* Dnd contextt components */
 import {Droppable} from './Components/Droppable';
-import {Draggable} from './Components/Draggable';
 
 /* Grid */
 import { grid, decks } from './items/grid';
@@ -24,7 +23,7 @@ import {
 } from './style/AppStyle';
 
 /* Utils */
-import { allEqual, resetBoard, setRotate } from './utils/functions';
+import { allEqual, resetBoard, renderItem } from './utils/functions';
 
 export function App() {
   const [items, setItems] = useState([...enemies, ...furnitures, ...traps]);
@@ -182,45 +181,6 @@ export function App() {
     }
   }
 
-  /* Return each item at his position */
-  const renderItem = (id) => {
-    let itemsToRender = [];
-
-    items.map((p) => {
-      if (["furniture", "trap"].includes(p.type) && p.properties.rotate !== 0 && p.parent === p.type) {
-        p.properties.rotate = 0;
-      }
-      if(p.parent === id || p.parent[0] === id) {
-        itemsToRender = [...itemsToRender, 
-          <Draggable 
-            key={p.index} 
-            id={p.index} 
-            data={p.type} 
-            image={p.subtype} 
-            properties={p.properties ? p.properties : null} /* For furnitures & traps not 1*1 item */
-            rotate={() => setRotate(p.index, items)} /* Pass rotate func to the draggable element, she will return rotate value's of it at the run time */
-          ></Draggable>
-        ]
-      }
-      return itemsToRender;
-    })
-    
-    if (itemsToRender.length > 0) {
-      return(itemsToRender);
-    }
-  }
-
-  /* Add a new special enemy */
-  // const addEnemy = () => {
-  //   const newEnemy = {
-  //     name: "New",
-  //     parent: "enemy",
-  //     type: "enemy",
-  //     key: "gargoyle"
-  //   }
-  //   setItems([...items, newEnemy]);
-  // }
-
   return (
     <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
       <ChapterEditor data-testid={"chaptereditor"}>
@@ -243,7 +203,7 @@ export function App() {
               <h1>{deck.title}</h1>
               <DeckItems data-testid={"deckitem"}>
                 <Droppable key={"drop-" + deck.type} id={deck.type} type={deck.type}>
-                    {renderItem(deck.type)}
+                    {renderItem(deck.type, items)}
                 </Droppable>
               </DeckItems>
             </Deck>
@@ -253,9 +213,9 @@ export function App() {
         <GridWrapper data-testid={"gridwrapper"}>
           {/* 
             =================================================
-            This is the main board game,
-            User could drag items and the board if the 
-            droppable element is available
+              This is the main board game,
+              User could drag items and the board if the 
+              droppable element is available
             =================================================
           */}
           <Grid data-testid={"grid"}>
@@ -263,7 +223,7 @@ export function App() {
             {/* Foreach squares of the desk */}
             {grid.map((square, index) => (
               <Droppable key={"drop" + index} id={index} type={square.type} overBg={overBg}>
-                {renderItem(index)}
+                {renderItem(index, items)}
               </Droppable>
             ))}
 

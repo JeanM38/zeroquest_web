@@ -1,4 +1,16 @@
-import { allEqual, resetBoard, setRotate } from "./functions";
+import { allEqual, renderItem, resetBoard, setRotate } from "./functions";
+import { act } from "react-dom/test-utils";
+import React from 'react';
+import {screen} from '@testing-library/dom'
+
+/* Items */
+import { enemies } from '../items/enemies';
+import { furnitures } from '../items/furnitures';
+import { traps } from '../items/traps';
+import { decks, grid } from '../items/grid';
+
+import { render } from '@testing-library/react';
+import { container } from '../setupTests';
 
 /**
  * Test suite for allEqual(arr) func
@@ -59,4 +71,29 @@ describe("setRotateFunc", () => {
 
     const enemyTest = setRotate("enemy1", items);
     expect(enemyTest).toStrictEqual(items);
+})
+
+/**
+ * Test suite for renderPiece(key) func
+ */
+ describe("renderPieceFunc", () => {
+    const gridItems = [...traps];
+    /* Set a rotate 1 to all items */
+    const gridItemsWithRotateToOne = gridItems.map(item => {
+        if (item.properties) {
+            item.properties.rotate = 1;
+            return item
+        } else {
+            return item
+        }
+    })
+    
+    /* Check if render method reset all rotate on the deck */
+    act(() => { <div>{render(decks.map(deck => renderItem(deck.type, gridItemsWithRotateToOne)))}</div>, container });
+    expect(screen.queryAllByTestId("draggable").length).toBe(gridItems.length);
+    
+    const draggableElements = screen.queryAllByTestId("draggable");
+    draggableElements.map((e) => {
+        expect(e).toHaveStyle("transform: rotate(0deg)")
+    })
 })
