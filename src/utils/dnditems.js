@@ -9,7 +9,7 @@ export const itemsTest = [
     {
         name: "Orc", 
         index: "orc2",
-        parent: ["r1"],
+        parent: [1],
         type: "enemy",
         subtype: "orc"
     },
@@ -22,10 +22,21 @@ export const itemsTest = [
     },
     {
         index: "table1",
-        parent: ["r2"],
+        parent: [27],
         type: "furniture",
         subtype: "table",
-        properties : {
+        properties: {
+            width: 3,
+            height: 2,
+            rotate: 0
+        }
+    },
+    {
+        index: "table2",
+        parent: [192, 193, 194, 218, 219, 220],
+        type: "furniture",
+        subtype: "table",
+        properties: {
             width: 3,
             height: 2,
             rotate: 0
@@ -33,7 +44,7 @@ export const itemsTest = [
     },
     {
         index: "chest1",
-        parent: ["r3"],
+        parent: ["r9"],
         type: "furniture",
         subtype: "chest",
         properties : {
@@ -44,7 +55,7 @@ export const itemsTest = [
     },
     {
         index: "trap1",
-        parent: ["r4"],
+        parent: [5],
         type: "trap",
         subtype: "trap",
         properties : {
@@ -55,7 +66,7 @@ export const itemsTest = [
     },
     {
         index: "trap2",
-        parent: ["r5"],
+        parent: [10],
         type: "trap",
         subtype: "trap",
         properties : {

@@ -45,14 +45,14 @@ export const getLargeObjectArea = (items, item, event, grid) =>  {
     let area = getAreaByRotationMode(item, event, grid);
 
     items.map(item => {
-        /* Excude the current active element, so he can move on index he already has on its own parent's indexes */
+        /* Exclude the current active element, so he can move on index he already has on its own parent's indexes */
         if (item.index !== event.active.id) {
-        for (const parent of item.parent) {
-            if (area.coveredArea.includes(parent)) {
-            /* If a item has already a parent located in this covered area */
-            itemsInTheArea = [...itemsInTheArea, item];
+            for (const parent of item.parent) {
+                if (area.coveredArea.includes(parent)) {
+                    /* If a item has already a parent located in this covered area */
+                    itemsInTheArea = [...itemsInTheArea, item];
+                }
             }
-        }
         }
         return itemsInTheArea;
     })
@@ -135,26 +135,26 @@ export const setParentToItem = (items, item, over, event, grid) => {
         return {...item, parent: [over.id]}
     } else {
         if (
-        /* Check if item is not overflow the grid on the horizontal way */
-        (over.id < 468 && item.properties.rotate !== 0) ||
-        /* Check if item is not overflow the grid on the vertical way */
-        ((over.id + 1) % 26 !== 0 && item.properties.rotate === 0)
+            /* Check if item is not overflow the grid on the horizontal way */
+            (over.id < 468 && item.properties.rotate !== 0) ||
+            /* Check if item is not overflow the grid on the vertical way */
+            ((over.id + 1) % 26 !== 0 && item.properties.rotate === 0)
         ) {
-        if(!["trap", "furniture"].includes(over.data.current.type)) {
-            const objectArea = getLargeObjectArea(items, item, event, grid);
+            if(!["trap", "furniture"].includes(over.data.current.type)) {
+                const objectArea = getLargeObjectArea(items, item, event, grid);
 
-            if (objectArea.isAvailable) {
-            /* If there are no items in the area, and types of tiles are all equal, else return the last parent */
-            return {...item, parent: objectArea.coveredArea};
+                if (objectArea.isAvailable) {
+                    /* If there are no items in the area, and types of tiles are all equal, else return the last parent */
+                    return {...item, parent: objectArea.coveredArea};
+                } else {
+                    /* If there items in the area, or types of tiles are not all equal, else return item to its deck */
+                    item.properties.rotate = 0;
+                    return {...item, parent: item.type};
+                }
             } else {
-            /* If there items in the area, or types of tiles are not all equal, else return item to its deck */
-            item.properties.rotate = 0;
-            return {...item, parent: item.type};
+                item.properties.rotate = 0;
+                return {...item, parent: item.type}
             }
-        } else {
-            item.properties.rotate = 0;
-            return {...item, parent: item.type}
-        }
         } else {
             item.properties.rotate = 0;
             return {...item, parent: item.type}

@@ -3,7 +3,8 @@ import {
     checkIfAPieceHasAlreadyTheSameParent, 
     getAreaByRotationMode, 
     setRotateToZeroOnDeck,
-    isItemCanBeDropped
+    isItemCanBeDropped,
+    getLargeObjectArea
 } from "./dnd";
 
 import { itemsTest } from './dnditems';
@@ -18,7 +19,7 @@ const eventTest = {
         /* ... */
     },
     over: {
-        id: "r1",
+        id: 1,
         data: {
             current: {
                 type: "r1"
@@ -157,4 +158,36 @@ describe("isItemCanBeDroppedFunc", () => {
         expect(isItemCanBeDropped(eventTest, furniture, isFilled, "furniture", "corridor")).toBeFalsy()
         expect(isItemCanBeDropped(eventTest, furniture, isNotFilled, "furniture", "corridor")).toBeFalsy()
     });
+})
+
+/**
+ * Test suites for getLargeObjectArea(items, item, event, grid)
+ */
+describe("getLargeObjectAreaFunc", () => {
+    const event = {
+        active: {id: "table1"},
+        over: {id: 28}
+    };
+
+    it("returnAValidLargeObjectArea", () => {
+        /* Replace the table to the closest tile */
+        const largeObjectArea = getLargeObjectArea(itemsTest, itemsTest[3], event, grid);
+        expect(largeObjectArea.isAvailable).toBeTruthy();
+        expect(largeObjectArea.coveredArea.length).toBe(itemsTest[3].properties.width * itemsTest[3].properties.height);
+        expect(largeObjectArea.coveredArea).toStrictEqual([28, 29, 30, 54, 55, 56]);
+    })
+
+    it("returnAnUnvalidLargeObjectArea", () => {
+        /* Replace the table in two differents rooms at the same time, an impossible move */
+        event.over.id = 29
+        const largeObjectArea2 = getLargeObjectArea(itemsTest, itemsTest[3], event, grid);
+        expect(largeObjectArea2.isAvailable).toBeFalsy();
+
+        /* Places the table where an item is already located (f.e. itemsTest[4]) */
+        event.over.id = 220;
+        const largeObjectArea3 = getLargeObjectArea(itemsTest, itemsTest[3], event, grid);
+        console.log(largeObjectArea3.coveredArea);
+        expect(largeObjectArea3.isAvailable).toBeFalsy();
+    })
+
 })
