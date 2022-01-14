@@ -1,6 +1,9 @@
 /* Utils */
 import { 
-    checkIfAPieceHasAlreadyTheSameParent, getAreaByRotationMode, setRotateToZeroOnDeck
+    checkIfAPieceHasAlreadyTheSameParent, 
+    getAreaByRotationMode, 
+    setRotateToZeroOnDeck,
+    isItemCanBeDropped
 } from "./dnd";
 
 import { itemsTest } from './dnditems';
@@ -25,22 +28,23 @@ const eventTest = {
     }
     /* ... */
 }
-const eventTestOverNull = {
-    active: {
-        id: "trap1",
-        data: {
-            current: "corridor"
-        }
-        /* ... */
-    },
-    over: null
-    /* ... */
-}
 
 /**
  * Test suites for checkIfAPieceHasAlreadyTheSameParent(items, event)
  */
 describe("checkIfAPieceHasAlreadyTheSameParentFunc", () => {
+    const eventTestOverNull = {
+        active: {
+            id: "trap1",
+            data: {
+                current: "corridor"
+            }
+            /* ... */
+        },
+        over: null
+        /* ... */
+    }
+
     it("anItemIsAlreadyPresentOnTheOverItem", () => {
         /* On the items test table, an orc is already located in r1, so func will
            will be return 1 */
@@ -69,9 +73,7 @@ describe("checkIfAPieceHasAlreadyTheSameParentFunc", () => {
  * Test suites for getAreaByRotationMode(item, event, grid)
  */
 describe("getAreaByRotationModeFunc", () => {
-    const event = {
-        over: { id: 0}
-    };
+    const event = { over: { id: 0} };
     const item = {
         /* ... */
         properties: {
@@ -120,18 +122,9 @@ describe("getAreaByRotationModeFunc", () => {
  * Test suites for setRotateToZeroOnDeck(itemProps, over)
  */
 describe("setRotateToZeroOnDeckFunc", () => {
-    const properties = {
-        /* ... */
-        rotate: 1
-    };
-    const overAllowed = {
-        /* ... */
-        id: "trap"
-    };
-    const overNotAllowed = {
-        /* ... */
-        id: "r1"
-    }
+    const properties = { /* ... */ rotate: 1 };
+    const overAllowed = { /* ... */ id: "trap" };
+    const overNotAllowed = { /* ... */ id: "r1" };
 
     it("itemIsDroppedOnADeck", () => {
         const result = setRotateToZeroOnDeck(properties, overAllowed);
@@ -141,4 +134,27 @@ describe("setRotateToZeroOnDeckFunc", () => {
         const result = setRotateToZeroOnDeck(properties, overNotAllowed);
         expect(result).toBe(1);
     })
+})
+
+/**
+ * Test suites for isItemCanBeDropped(event, item, isFilled, activeType, overType)
+ */
+describe("isItemCanBeDroppedFunc", () => {
+    const isFilled = 1;
+    const isNotFilled = 0;
+    const enemy = {/* ... */ index: "orc1"};
+    const furniture = {/* ... */ index: "orc2"};
+
+    it("isItemCanBeDroppedTrue", () => {
+        /* Can be dropped if tile is not filled || if dragged on its deck */
+        expect(isItemCanBeDropped(eventTest, enemy, isNotFilled, "enemy", "r1")).toBeTruthy();
+        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "enemy")).toBeTruthy();
+    });
+    it("isItemCanBeDroppedFalse", () => {
+        /* Cannot be dropped when tile is filled and not the deck || not in the good deck */
+        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "r1")).toBeFalsy();
+        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "furniture")).toBeFalsy();
+        expect(isItemCanBeDropped(eventTest, furniture, isFilled, "furniture", "corridor")).toBeFalsy()
+        expect(isItemCanBeDropped(eventTest, furniture, isNotFilled, "furniture", "corridor")).toBeFalsy()
+    });
 })
