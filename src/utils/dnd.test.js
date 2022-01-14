@@ -1,6 +1,6 @@
 /* Utils */
 import { 
-    checkIfAPieceHasAlreadyTheSameParent, getAreaByRotationMode
+    checkIfAPieceHasAlreadyTheSameParent, getAreaByRotationMode, setRotateToZeroOnDeck
 } from "./dnd";
 
 import { itemsTest } from './dnditems';
@@ -113,5 +113,32 @@ describe("getAreaByRotationModeFunc", () => {
         expect(result.tilesTypesInTheArea).toStrictEqual(["corridor", "corridor", "corridor", "corridor", "r1", "r1"]);
         expect(result2.tilesTypesInTheArea).toStrictEqual(["corridor", "corridor", "corridor"]);
         expect(result3.tilesTypesInTheArea).toStrictEqual(["corridor", "corridor", "corridor"]);
+    })
+})
+
+/**
+ * Test suites for setRotateToZeroOnDeck(itemProps, over)
+ */
+describe("setRotateToZeroOnDeckFunc", () => {
+    const properties = {
+        /* ... */
+        rotate: 1
+    };
+    const overAllowed = {
+        /* ... */
+        id: "trap"
+    };
+    const overNotAllowed = {
+        /* ... */
+        id: "r1"
+    }
+
+    it("itemIsDroppedOnADeck", () => {
+        const result = setRotateToZeroOnDeck(properties, overAllowed);
+        expect(result).toBe(0);
+    })
+    it("itemIsDroppedOutOfDesk", () => {
+        const result = setRotateToZeroOnDeck(properties, overNotAllowed);
+        expect(result).toBe(1);
     })
 })
