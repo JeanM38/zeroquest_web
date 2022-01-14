@@ -1,19 +1,21 @@
-import { allEqual, renderItem, resetBoard, setRotate } from "./functions";
-import { act } from "react-dom/test-utils";
 import React from 'react';
+import { act } from "react-dom/test-utils";
 import {screen} from '@testing-library/dom'
+import { render } from '@testing-library/react';
+
+/* Utils */
+import { allEqual, renderItem, resetBoard, setRotate } from "./functions";
+import { container } from '../setupTests';
 
 /* Items */
 import { enemies } from '../items/enemies';
 import { furnitures } from '../items/furnitures';
 import { traps } from '../items/traps';
-import { decks, grid } from '../items/grid';
+import { decks } from '../items/grid';
 
-import { render } from '@testing-library/react';
-import { container } from '../setupTests';
 
 /**
- * Test suite for allEqual(arr) func
+ * Test suites for allEqual(arr) func
  */
 describe("isAllEqualFuncTests", () => {
     it("isAllEqualFunctionWorksCorrectlyOnAllEqualArray", () => {
@@ -33,7 +35,7 @@ describe("isAllEqualFuncTests", () => {
 })
 
 /**
- * Test suite for resetBoard(items) func
+ * Test suites for resetBoard(items) func
  */
 describe("resetBoardFunc", () => {
     const items = [
@@ -55,7 +57,7 @@ describe("resetBoardFunc", () => {
 })
 
 /**
- * Test suite for setRotate(key) func
+ * Test suites for setRotate(key) func
  */
 describe("setRotateFunc", () => {
     const items = [
@@ -74,10 +76,10 @@ describe("setRotateFunc", () => {
 })
 
 /**
- * Test suite for renderPiece(key) func
+ * Test suites for renderPiece(key) func
  */
  describe("renderPieceFunc", () => {
-    const gridItems = [...traps];
+    const gridItems = [...enemies, ...furnitures, ...traps];
     /* Set a rotate 1 to all items */
     const gridItemsWithRotateToOne = gridItems.map(item => {
         if (item.properties) {

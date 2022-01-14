@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import {DndContext} from '@dnd-kit/core';
+import { DndContext } from '@dnd-kit/core';
 
-/* Dnd contextt components */
-import {Droppable} from './Components/Droppable';
+/* Dnd context components */
+import { Droppable } from './Components/Droppable';
 
 /* Grid */
 import { grid, decks } from './items/grid';
