@@ -14,18 +14,20 @@ export const checkIfAPieceHasAlreadyTheSameParent = (items, event) => {
     const overType = event.over === null ? null : event.over.data.current.type; /* Type of hovered element */
     const overIndex = event.over === null ? null : event.over.id; /* Index of hovered element */
 
-    /* Foreach items of the game */
-    items.map(p => {
-        /* Exclude draggable item */
-        if (event.active.id !== p.index) {
-        /* Check if a item has a same parent */
-        if (p.parent.includes(overIndex) || activeType === overType) {
-            ++isFilled;
-        }
-        }
+    if (overType) {
+        /* Foreach items of the game */
+        items.map(p => {
+            /* Exclude draggable item */
+            if (event.active.id !== p.index) {
+                /* Check if a item has a same parent */
+                if (p.parent.includes(overIndex) || activeType === overType) {
+                    ++isFilled;
+                }
+            }
+            return isFilled;
+        })
         return isFilled;
-    })
-    return isFilled;
+    }
 }
 
 /**
@@ -198,7 +200,7 @@ export const setNewItems = (event, items, grid) => {
     const overType = over === null ? null : over.data.current.type; /* Type of hovered element */
 
     /* If hovered element has a valid type */
-    if (overType) {
+    if (over) {
         const isFilled = checkIfAPieceHasAlreadyTheSameParent(items, event);
 
         /* Create a new instance from items */
@@ -215,5 +217,7 @@ export const setNewItems = (event, items, grid) => {
                 return item
             }
         )
+    } else {
+        return items
     }
 }
