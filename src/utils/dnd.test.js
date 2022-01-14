@@ -4,7 +4,8 @@ import {
     getAreaByRotationMode, 
     setRotateToZeroOnDeck,
     isItemCanBeDropped,
-    getLargeObjectArea
+    getLargeObjectArea,
+    setParentToItem
 } from "./dnd";
 
 import { itemsTest } from './dnditems';
@@ -57,18 +58,6 @@ describe("checkIfAPieceHasAlreadyTheSameParentFunc", () => {
         expect(resultUndefined).toBeUndefined();
     })
 })
-
-/**
- * Test suites for getLargeObjectArea
- */
-// describe("getLargeObjectAreaFunc", () => {
-//     it("objectCanBeDroppedHere", () => {
-
-//     })
-//     it("objectCantBeDroppedHere", () =>  {
-
-//     })
-// })
 
 /**
  * Test suites for getAreaByRotationMode(item, event, grid)
@@ -144,16 +133,59 @@ describe("isItemCanBeDroppedFunc", () => {
     const isFilled = 1;
     const isNotFilled = 0;
     const enemy = {/* ... */ index: "orc1"};
-    const furniture = {/* ... */ index: "orc2"};
+    const furniture = {/* ... */ index: "table1"};
+    const trap = {/* ... */ index: "trap1"};
+
+    const eventTestFurniture = {
+        active: {
+            id: "table1",
+            data: {
+                current: "furniture"
+            }
+            /* ... */
+        },
+        over: {
+            id: 28,
+            data: {
+                current: {
+                    type: "r28"
+                }
+            }
+            /* ... */
+        }
+        /* ... */
+    }
+    const eventTesTrap = {
+        active: {
+            id: "trap1",
+            data: {
+                current: "trap"
+            }
+            /* ... */
+        },
+        over: {
+            id: 28,
+            data: {
+                current: {
+                    type: "r28"
+                }
+            }
+            /* ... */
+        }
+        /* ... */
+    }
 
     it("isItemCanBeDroppedTrue", () => {
         /* Can be dropped if tile is not filled || if dragged on its deck */
         expect(isItemCanBeDropped(eventTest, enemy, isNotFilled, "enemy", "r1")).toBeTruthy();
+        expect(isItemCanBeDropped(eventTestFurniture, furniture, isNotFilled, "furniture", "r27")).toBeTruthy();
         expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "enemy")).toBeTruthy();
+        expect(isItemCanBeDropped(eventTesTrap, trap, isNotFilled, "trap", "r27")).toBeTruthy();
     });
     it("isItemCanBeDroppedFalse", () => {
         /* Cannot be dropped when tile is filled and not the deck || not in the good deck */
         expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "r1")).toBeFalsy();
+        expect(isItemCanBeDropped(eventTestFurniture, furniture, isFilled, "furniture", "r27")).toBeFalsy();
         expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "furniture")).toBeFalsy();
         expect(isItemCanBeDropped(eventTest, furniture, isFilled, "furniture", "corridor")).toBeFalsy()
         expect(isItemCanBeDropped(eventTest, furniture, isNotFilled, "furniture", "corridor")).toBeFalsy()
@@ -186,8 +218,14 @@ describe("getLargeObjectAreaFunc", () => {
         /* Places the table where an item is already located (f.e. itemsTest[4]) */
         event.over.id = 220;
         const largeObjectArea3 = getLargeObjectArea(itemsTest, itemsTest[3], event, grid);
-        console.log(largeObjectArea3.coveredArea);
         expect(largeObjectArea3.isAvailable).toBeFalsy();
     })
+
+})
+
+/**
+ * Test suites for setParentToItem(items, item, over, event, grid)
+ */
+describe("setParentToItemFunc", () => {
 
 })
