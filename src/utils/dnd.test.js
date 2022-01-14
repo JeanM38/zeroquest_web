@@ -283,4 +283,12 @@ describe("setParentToItemFunc", () => {
         const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })
+    it("itemIsNotAnEnemyAndDraggedOnTheDeck", () => {
+        /* Item is on an available area */
+        eventTest.over.id = "trap";
+        itemsTest[8].properties.rotate = 1;
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
+        expect(result.properties.rotate).toBe(0);
+        expect(result.parent[0]).toBe(itemsTest[8].type);
+    })
 })
