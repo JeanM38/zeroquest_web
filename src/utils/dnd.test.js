@@ -5,7 +5,8 @@ import {
     setRotateToZeroOnDeck,
     isItemCanBeDropped,
     getLargeObjectArea,
-    setParentToItem
+    setParentToItem,
+    setNewItems
 } from "./dnd";
 
 import { itemsTest } from './dnditems';
@@ -30,22 +31,22 @@ const eventTest = {
     }
     /* ... */
 }
+const eventTestOverNull = {
+    active: {
+        id: "trap1",
+        data: {
+            current: "corridor"
+        }
+        /* ... */
+    },
+    over: null
+    /* ... */
+}
 
 /**
  * Test suites for checkIfAPieceHasAlreadyTheSameParent(items, event)
  */
 describe("checkIfAPieceHasAlreadyTheSameParentFunc", () => {
-    const eventTestOverNull = {
-        active: {
-            id: "trap1",
-            data: {
-                current: "corridor"
-            }
-            /* ... */
-        },
-        over: null
-        /* ... */
-    }
 
     it("anItemIsAlreadyPresentOnTheOverItem", () => {
         /* On the items test table, an orc is already located in r1, so func will
@@ -284,11 +285,25 @@ describe("setParentToItemFunc", () => {
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })
     it("itemIsNotAnEnemyAndDraggedOnTheDeck", () => {
-        /* Item is on an available area */
+        /* Item is dragged on a desk */
         eventTest.over.id = "trap";
         itemsTest[8].properties.rotate = 1;
         const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
         expect(result.properties.rotate).toBe(0);
         expect(result.parent[0]).toBe(itemsTest[8].type);
+    })
+})
+
+/**
+ * Test suites for setNewItems
+ */
+describe("setNewItemsFunc", () => {
+    it("overIsUnvalid", () => {
+        /* If hovered element has an unvalid type */
+        expect(setNewItems(eventTestOverNull, itemsTest, grid)).toBe(itemsTest);
+    })
+    it("overIsValid", () => {
+        /* If hovered element has a valid type */
+        expect(setNewItems(eventTest, itemsTest, grid)).not.toBe(itemsTest);
     })
 })
