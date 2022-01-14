@@ -48,6 +48,7 @@ describe("resetBoardFunc", () => {
         {type: "furniture", index: "furniture1", parent: ["12", "13", "14"], properties: {rotate: 0}}, 
         {type: "trap", index: "trap1", parent: ["toChange"], properties: {rotate: 1}}, 
         {type: "enemy", index: "enemy1", parent: null, properties: {rotate: 1}}
+        /* ... */
     ]
     const testedItems = resetBoard(items);
 
@@ -70,6 +71,7 @@ describe("setRotateFunc", () => {
         {type: "furniture", index: "furniture1", parent: ["12", "13", "14"], properties: {rotate: 0}}, 
         {type: "trap", index: "trap1", parent: ["toChange"], properties: {rotate: 1}}, 
         {type: "enemy", index: "enemy1", parent: null}
+        /* ... */
     ]
     const furnitureTest = setRotate("furniture1", items);
     expect(furnitureTest[0].properties.rotate).toBe(1);
@@ -112,11 +114,13 @@ describe("setRotateFunc", () => {
 describe("handleDragOverHasTheCorrectBehavior", () => {
     const event = {
         active: { data: { current: 'trap'} },
-        over: { data: { current: { type: 'corridor'} }}
+        over: { data: { current: { type: 'corridor'} }},
+        /* ... */
     };
     const eventUnvalid = {
         active: { data: { current: 'furniture'} },
-        over: { data: { current: { type: 'corridor'} }}
+        over: { data: { current: { type: 'corridor'} }},
+        /* ... */
     };
     expect(handleDragOver(event)).toBe("green");
     expect(handleDragOver(eventUnvalid)).toBe("red");

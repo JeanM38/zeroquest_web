@@ -79,20 +79,20 @@ export const getAreaByRotationMode = (item, event, grid) => {
     if (item.properties.rotate === 0) {
         /* Horizontal mode */
         for (let h = 0; h < item.properties.height; ++h) {
-        for (let w = 0; w < item.properties.width; ++w) {
-            /* Set all tiles covered by the item */
-            coveredArea = [...coveredArea, event.over.id + (26 * h) + w]
-            /* Set all types will be covered by the item */
-            tilesTypesInTheArea = [...tilesTypesInTheArea, grid[event.over.id + (26 * h) + w].type]
-        }
+            for (let w = 0; w < item.properties.width; ++w) {
+                /* Set all tiles covered by the item */
+                coveredArea = [...coveredArea, event.over.id + (26 * h) + w]
+                /* Set all types will be covered by the item */
+                tilesTypesInTheArea = [...tilesTypesInTheArea, grid[event.over.id + (26 * h) + w].type]
+            }
         }
     } else {
         /* Vertical mode */
         for (let w = 0; w < item.properties.width; ++w) {
-        for (let h = 0; h < item.properties.height; ++h) {
-            coveredArea = [...coveredArea, event.over.id + (26 * w) + h]
-            tilesTypesInTheArea = [...tilesTypesInTheArea, grid[event.over.id + (26 * w) + h].type]
-        }
+            for (let h = 0; h < item.properties.height; ++h) {
+                coveredArea = [...coveredArea, event.over.id + (26 * w) + h]
+                tilesTypesInTheArea = [...tilesTypesInTheArea, grid[event.over.id + (26 * w) + h].type]
+            }
         }
     }
 
