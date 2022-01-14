@@ -44,7 +44,7 @@ export const Draggable = (props) => {
 
   const rotatePiece = (key) => {
     if (key.code === "KeyR" && ["furniture", "trap"].includes(props.data)) {
-      props.rotate(props.id);
+      props.rotate();
     }
   }
   

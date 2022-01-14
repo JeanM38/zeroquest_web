@@ -22,7 +22,9 @@ import {
   GridWrapper, 
   Grid 
 } from './style/AppStyle';
-import { allEqual, resetBoard } from './utils/functions';
+
+/* Utils */
+import { allEqual, resetBoard, setRotate } from './utils/functions';
 
 export function App() {
   const [items, setItems] = useState([...enemies, ...furnitures, ...traps]);
@@ -196,7 +198,7 @@ export function App() {
             data={p.type} 
             image={p.subtype} 
             properties={p.properties ? p.properties : null} /* For furnitures & traps not 1*1 item */
-            rotate={setRotate} /* Pass rotate func to the draggable element, she will return rotate value's of it at the run time */
+            rotate={() => setRotate(p.index, items)} /* Pass rotate func to the draggable element, she will return rotate value's of it at the run time */
           ></Draggable>
         ]
       }
@@ -206,19 +208,6 @@ export function App() {
     if (itemsToRender.length > 0) {
       return(itemsToRender);
     }
-  }
-
-  /* Register new rotate value */
-  const setRotate = (key) => {
-    const newItems = items.map(p => {
-      
-      /* Check if item is furniture/trap, and it's scale is bigger than 1 */
-      if (p.index === key && p.properties) {
-        p.properties.rotate === 0 ? p.properties.rotate = 1 : p.properties.rotate = 0;
-      }
-      return p
-    })
-    setItems(newItems);
   }
 
   /* Add a new special enemy */
