@@ -23,7 +23,7 @@ import {
 } from './style/AppStyle';
 
 /* Utils */
-import { allEqual, resetBoard, renderItem } from './utils/functions';
+import { allEqual, resetBoard, renderItem, handleDragOver } from './utils/functions';
 
 export function App() {
   const [items, setItems] = useState([...enemies, ...furnitures, ...traps]);
@@ -157,32 +157,8 @@ export function App() {
     }
   }
 
-  /* Handle over action, if dragged element is assignable to a droppable element  */
-  const handleDragOver = (event) => {
-    const {over} = event;
-
-    /* Check first if over is a valid element of the context */
-    if (over) {
-      const activeType = event.active.data.current;
-      const overType = over.data.current.type;
-
-      /* Check valid types of drop elements for draggable elements */
-      if (
-        (activeType === "enemy" && !["trap", "furniture"].includes(overType)) ||
-        (activeType === "furniture" && !["trap", "enemy", "corridor"].includes(overType)) ||
-        (activeType === "trap" && !["trap", "enemy"].includes(overType))
-      ) {
-        /* User can drop here, square overlay pass to green */
-        setOverBg("green");
-      } else {
-        /* User can't drop here, square overlay pass to red */
-        setOverBg("red");
-      }
-    }
-  }
-
   return (
-    <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+    <DndContext onDragEnd={handleDragEnd} onDragOver={(e) => setOverBg(handleDragOver(e))}>
       <ChapterEditor data-testid={"chaptereditor"}>
         <DecksWrapper data-testid={"deckswrapper"}>
           {/* 

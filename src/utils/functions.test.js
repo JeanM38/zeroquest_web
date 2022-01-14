@@ -4,7 +4,13 @@ import {screen} from '@testing-library/dom'
 import { render } from '@testing-library/react';
 
 /* Utils */
-import { allEqual, renderItem, resetBoard, setRotate } from "./functions";
+import { 
+    allEqual, 
+    renderItem, 
+    resetBoard, 
+    setRotate,
+    handleDragOver
+} from "./functions";
 import { container } from '../setupTests';
 
 /* Items */
@@ -98,4 +104,21 @@ describe("setRotateFunc", () => {
     draggableElements.map((e) => {
         expect(e).toHaveStyle("transform: rotate(0deg)")
     })
+})
+
+/**
+ * Test suites for handleDragOver(event) func
+ */
+describe("handleDragOverHasTheCorrectBehavior", () => {
+    const event = {
+        active: { data: { current: 'trap'} },
+        over: { data: { current: { type: 'corridor'} }}
+    };
+    const eventUnvalid = {
+        active: { data: { current: 'furniture'} },
+        over: { data: { current: { type: 'corridor'} }}
+    };
+    expect(handleDragOver(event)).toBe("green");
+    expect(handleDragOver(eventUnvalid)).toBe("red");
+    expect(handleDragOver(null)).toBeUndefined();
 })

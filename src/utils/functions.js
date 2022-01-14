@@ -77,3 +77,32 @@ export const renderItem = (id, items) => {
       return(itemsToRender);
     }
 }
+
+/**
+ * 
+ * @description When a piece is dragged an overed an element, check if he is available
+ * @param {Object} event 
+ * @returns an hex color to indicates if a square is available as a droppable element or not
+ */
+export const handleDragOver = (event) => {
+    const over = event === null ? null : event.over;
+
+    /* Check first if over is a valid element of the context */
+    if (over) {
+      const activeType = event.active.data.current;
+      const overType = over.data.current.type;
+
+      /* Check valid types of drop elements for draggable elements */
+      if (
+        (activeType === "enemy" && !["trap", "furniture"].includes(overType)) ||
+        (activeType === "furniture" && !["trap", "enemy", "corridor"].includes(overType)) ||
+        (activeType === "trap" && !["trap", "enemy"].includes(overType))
+      ) {
+        /* User can drop here, square overlay pass to green */
+        return "green";
+      } else {
+        /* User can't drop here, square overlay pass to red */
+        return "red";
+      }
+    }
+}
