@@ -11,6 +11,7 @@ import { grid, decks } from './items/grid';
 import { enemies } from './items/enemies';
 import { furnitures } from './items/furnitures';
 import { traps } from './items/traps';
+import { doors } from './items/doors';
 
 /* Styled Components */
 import { 
@@ -31,7 +32,7 @@ import {
 } from './utils/functions';
 
 export function App() {
-  const [items, setItems] = useState([...enemies, ...furnitures, ...traps]);
+  const [items, setItems] = useState([...enemies, ...furnitures, ...traps, ...doors]);
   const [overBg, setOverBg] = useState("green");
 
   /* Handle drag ending */

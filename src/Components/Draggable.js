@@ -10,12 +10,13 @@ export const Draggable = (props) => {
   });
   
   const style = {
-    zIndex: isDragging ? 999: undefined,
     display: "flex",
+    position: props.parent[0] !== props.data ? "absolute" : undefined,
     justifyContent: "center",
     alignItems: "center",
     width: "30px",
     height: "30px",
+    zIndex: isDragging ? 999: undefined,
     transform: transform ? `
       translate3d(${transform.x}px, ${transform.y}px, 0) rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)` : 
       `rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)`,
@@ -25,11 +26,13 @@ export const Draggable = (props) => {
     backgroundRepeat: "no-repeat"
   }
 
-  const styleByType = ["furniture", "trap"].includes(props.data) ? {
+  const styleByType = ["furniture", "trap", "door"].includes(props.data) ? {
     width: `${30 * props.properties.width}px`,
     height: `${30 * props.properties.height}px`,
-    backgroundColor: "red",
-    border: "1px solid black"
+    zIndex: props.data === "door" ? 998 : undefined,
+    backgroundColor: props.data !== "door" ? "red": undefined,
+    border: props.data !== "door" ? "1px solid black" : undefined,
+    borderBottom: props.data === "door" ? "6px solid red" : undefined
   } : undefined;
 
   if (props.properties) {
@@ -43,7 +46,7 @@ export const Draggable = (props) => {
   }
 
   const rotatePiece = (key) => {
-    if (key.code === "KeyR" && ["furniture", "trap"].includes(props.data)) {
+    if (key.code === "KeyR" && ["furniture", "trap", "door"].includes(props.data)) {
       props.rotate();
     }
   }

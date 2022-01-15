@@ -18,7 +18,7 @@ export const checkIfAPieceHasAlreadyTheSameParent = (items, event) => {
         /* Foreach items of the game */
         items.map(p => {
             /* Exclude draggable item */
-            if (event.active.id !== p.index) {
+            if (event.active.id !== p.index && p.type !== "door") {
                 /* Check if a item has a same parent */
                 if (p.parent.includes(overIndex) || activeType === overType) {
                     ++isFilled;
@@ -111,7 +111,7 @@ export const getAreaByRotationMode = (item, event, grid) => {
  */
 export const setRotateToZeroOnDeck = (itemProps, over) => {
     if (
-        ["trap", "furniture"].includes(over.id) && 
+        ["trap", "furniture", "door"].includes(over.id) && 
         itemProps.rotate !== 0
     ) {
         return 0;
@@ -133,6 +133,12 @@ export const setRotateToZeroOnDeck = (itemProps, over) => {
 export const setParentToItem = (items, item, over, event, grid) => {
     if (item.type === "enemy") {
         return {...item, parent: [over.id]}
+    } else if (item.type === "door") {
+        if (isADoorCanBeDropped(event, item.properties.rotate, grid, items)) {
+            return {...item, parent: [over.id]}
+        } else {
+            return {...item, parent: item.type}
+        }
     } else {
         if (
             /* Check if item is not overflow the grid on the horizontal way */
@@ -174,6 +180,13 @@ export const setParentToItem = (items, item, over, event, grid) => {
  */
 export const isItemCanBeDropped = (event, item, isFilled, activeType, overType) => {
     if (
+        item.type === "door" && 
+        !["trap", "furniture", "enemy"].includes(overType) && 
+        event.active.id === item.index
+    ) {
+        /* Dragged item is a door */
+        return true;
+    } else if (
         (isFilled === 0 || activeType === overType) && /* Is not filled or drop target is its own deck */
         (event.active.id === item.index) && /* Select the item in the list */
         ((activeType === "enemy" && !["trap", "furniture"].includes(overType)) || /* Enemy */
@@ -219,5 +232,21 @@ export const setNewItems = (event, items, grid) => {
         )
     } else {
         return items
+    }
+}
+
+export const setRoomAvailability = (bool) => {
+    return bool ? true : false;
+}
+
+export const isADoorCanBeDropped = (event, rotate, grid, items) => {
+    const destination = rotate === 0 ? grid[event.over.id + 26].type : grid[event.over.id - 1].type;
+    const doorIsBetweenTwoDifferentRooms = destination !== event.over.data.current.type;
+    const doorOnTheSameIndex = items.filter(item => item.type === "door" && item.parent[0] === event.active.id).length;
+
+    if (doorOnTheSameIndex === 0 && doorIsBetweenTwoDifferentRooms) {
+        return true
+    } else {
+        return false;
     }
 }

@@ -6,7 +6,8 @@ import {
     isItemCanBeDropped,
     getLargeObjectArea,
     setParentToItem,
-    setNewItems
+    setNewItems,
+    setRoomAvailability
 } from "./dnd";
 
 import { itemsTest } from './dnditems';
@@ -295,7 +296,7 @@ describe("setParentToItemFunc", () => {
 })
 
 /**
- * Test suites for setNewItems
+ * Test suites for setNewItems(event, items, grid)
  */
 describe("setNewItemsFunc", () => {
     it("overIsUnvalid", () => {
@@ -305,5 +306,17 @@ describe("setNewItemsFunc", () => {
     it("overIsValid", () => {
         /* If hovered element has a valid type */
         expect(setNewItems(eventTest, itemsTest, grid)).not.toBe(itemsTest);
+    })
+})
+
+/**
+ * Test suites for setRoomAvailability
+ */
+describe("setRoomAvailability", () => {
+    it("itReturnsTrue", () => {
+        expect(setRoomAvailability(true)).toBeTruthy();
+    })
+    it("itReturnsFalse", () => {
+        expect(setRoomAvailability(false)).toBeFalsy();
     })
 })

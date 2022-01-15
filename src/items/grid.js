@@ -1,7 +1,8 @@
 export const decks = [
     {title: "Enemies", type: "enemy"},
     {title: "Traps", type: "trap"},
-    {title: "Furnitures", type: "furniture"}
+    {title: "Furnitures", type: "furniture"},
+    {title: "Doors", type: "door"}
 ]
 
 export const grid = [
