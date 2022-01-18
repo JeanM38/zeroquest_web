@@ -8,13 +8,10 @@ export const ChapterEditor = styled.div`
 `
 
 export const DecksWrapper = styled.div`
-  position: sticky;
   display: flex;
   flex-direction: column;
   height: 100vh;
   max-width: 30%;
-  overflow-y: scroll;
-  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     display: none;
