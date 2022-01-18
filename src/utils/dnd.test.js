@@ -6,8 +6,15 @@ import {
     isItemCanBeDropped,
     getLargeObjectArea,
     setParentToItem,
-    setNewItems
+    setNewItems,
+    getAllowedRooms,
+    isADoorCanBeDropped
 } from "./dnd";
+
+import { enemies } from "../items/enemies";
+import { furnitures } from "../items/furnitures";
+import { traps } from "../items/traps";
+import { doors } from "../items/doors";
 
 import { itemsTest } from './dnditems';
 import { grid } from "../items/grid";
@@ -305,5 +312,53 @@ describe("setNewItemsFunc", () => {
     it("overIsValid", () => {
         /* If hovered element has a valid type */
         expect(setNewItems(eventTest, itemsTest, grid)).not.toBe(itemsTest);
+    })
+})
+
+/**
+ * Test suites for getAllowedRooms(items, grid)
+ */
+describe("getAllowedRoomsFunc", () => {
+    it("noRoomIsAllowedByDefault", () => {
+        /* By default, all pieces are on the deck, so no room is filled */
+        const standardItems = [...enemies, ...furnitures, ...traps, ...doors];
+        expect(getAllowedRooms(standardItems, grid).length).toBe(0);
+    })
+    it("roomIsAllowedAtTheMomentAPieceIsInside", () => {
+        const items = [
+            {/* ... */ parent: [27], type: "trap"},
+            {/* ... */ parent: [105], type: "enemy"}
+        ]
+        expect(getAllowedRooms(items, grid)).toStrictEqual(["r1", "r7"]);
+    })
+    it("roomIsAllowedAtTheMomentAPieceIsInsideExcludeDuplicates", () => {
+        const items = [
+            {/* ... */ parent: [27], type: "trap"},
+            {/* ... */ parent: [28], type: "enemy"}
+        ]
+        expect(getAllowedRooms(items, grid)).toStrictEqual(["r1"]);
+    })
+})
+
+/**
+ * Test suites for isADoorCanBeDropped(event, rotate, grid, items)
+ */
+describe("isADoorCanBeDroppedFunc", () => {
+    const event = {
+        over: { 
+            id: 31,
+            data: { current: { type: "r2" } }
+        },
+        active: { id: "door1"}
+    }
+    
+    it("canRenderADoorHere", () => {
+        expect(isADoorCanBeDropped(event, 1, grid, [])).toBeTruthy();
+    })
+    it("cantRenderADoorHereCauseOfRotation", () => {
+        expect(isADoorCanBeDropped(event, 0, grid, [])).toBeFalsy();
+    })
+    it("cantRenderADoorHereCauseOfAnotherDoor", () => {
+        expect(isADoorCanBeDropped(event, 0, grid, [{/* ... */parent: [31], type: "door"}])).toBeFalsy();
     })
 })

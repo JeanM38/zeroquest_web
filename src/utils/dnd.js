@@ -241,10 +241,19 @@ export const setNewItems = (event, items, grid) => {
     }
 }
 
+/**
+ * 
+ * @description Used to know if a door is places between two rooms and at a good rotate pos
+ * @param {Object} event 
+ * @param {number} rotate 
+ * @param {Array} grid 
+ * @param {Array} items 
+ * @returns {Boolean} If a door can be dropped here
+ */
 export const isADoorCanBeDropped = (event, rotate, grid, items) => {
     const destination = rotate === 0 ? grid[event.over.id + 26].type : grid[event.over.id - 1].type;
     const doorIsBetweenTwoDifferentRooms = destination !== event.over.data.current.type;
-    const doorOnTheSameIndex = items.filter(item => item.type === "door" && item.parent[0] === event.active.id).length;
+    const doorOnTheSameIndex = items.filter(item => item.type === "door" && item.parent[0] === event.over.id).length;
 
     if (doorOnTheSameIndex === 0 && doorIsBetweenTwoDifferentRooms) {
         return true
@@ -253,9 +262,17 @@ export const isADoorCanBeDropped = (event, rotate, grid, items) => {
     }
 }
 
+/**
+ * 
+ * @description Get all rooms available, so user could see if he can drop an item here.
+ * @param {Array} items 
+ * @param {Array} grid 
+ * @returns {Array} All rooms that are availables
+ */
 export const getAllowedRooms = (items, grid) => {
-    return items
+    return [...new Set(items
         .filter(item => item.parent[0] !== item.type)
         .map(item => { return item.parent[0] })
-        .map(item => { return grid[item].type });              
+        .map(item => { return grid[item].type }))
+    ]             
 }
