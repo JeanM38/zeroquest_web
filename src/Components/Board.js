@@ -50,7 +50,7 @@ export function Board() {
 
   /* Catch items movements */
   useEffect(() => {
-    setNewAvailableRooms();
+    setAllowedRooms(getAllowedRooms(items, grid));
   }, [items])
 
   /* Handle drag ending */
@@ -59,11 +59,6 @@ export function Board() {
     setOverBg("green");
     /* New instance of items */
     setItems(setNewItems(event, items, grid));
-  }
-
-  const setNewAvailableRooms = () => {
-    /* set available rooms */
-    setAllowedRooms(getAllowedRooms(items, grid))
   }
 
   /* Handle title change */

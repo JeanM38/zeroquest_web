@@ -8,11 +8,17 @@ export const ChapterEditor = styled.div`
 `
 
 export const DecksWrapper = styled.div`
+  position: sticky;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 20%;
-  overflow: scroll;
+  max-width: 30%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const Deck = styled.div`
@@ -38,7 +44,7 @@ export const GridWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 70%;
 `
 
 export const Grid = styled.div`
