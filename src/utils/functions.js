@@ -59,7 +59,7 @@ export const renderItem = (id, items) => {
       if (p.type !== "enemy" && p.properties.rotate !== 0 && p.parent[0] === p.type) {
         p.properties.rotate = 0;
       }
-      if(p.parent === id || p.parent[0] === id) {
+      if(p.parent[0] === id) {
         itemsToRender = [...itemsToRender, 
           <Draggable 
             key={p.index} 

@@ -1,4 +1,5 @@
 export const decks = [
+    {title: "Spawns", type: "spawn"},
     {title: "Enemies", type: "enemy"},
     {title: "Traps", type: "trap"},
     {title: "Furnitures", type: "furniture"},

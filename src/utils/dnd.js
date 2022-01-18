@@ -111,7 +111,7 @@ export const getAreaByRotationMode = (item, event, grid) => {
  */
 export const setRotateToZeroOnDeck = (itemProps, over) => {
     if (
-        ["trap", "furniture", "door"].includes(over.id) && 
+        ["trap", "furniture", "door", "spawn"].includes(over.id) && 
         itemProps.rotate !== 0
     ) {
         return 0;
@@ -137,7 +137,7 @@ export const setParentToItem = (items, item, over, event, grid) => {
         if (isADoorCanBeDropped(event, item.properties.rotate, grid, items)) {
             return {...item, parent: [over.id]}
         } else {
-            return {...item, parent: item.type}
+            return {...item, parent: [item.type]}
         }
     } else {
         if (
@@ -146,7 +146,7 @@ export const setParentToItem = (items, item, over, event, grid) => {
             /* Check if item is not overflow the grid on the vertical way */
             ((over.id + 1) % 26 !== 0 && item.properties.rotate === 0)
         ) {
-            if(!["trap", "furniture"].includes(over.data.current.type)) {
+            if(!["trap", "furniture", "spawn"].includes(over.data.current.type)) {
                 const objectArea = getLargeObjectArea(items, item, event, grid);
 
                 if (objectArea.isAvailable) {
@@ -180,8 +180,8 @@ export const setParentToItem = (items, item, over, event, grid) => {
  */
 export const isItemCanBeDropped = (event, item, isFilled, activeType, overType) => {
     if (
-        item.type === "door" && 
-        !["trap", "furniture", "enemy"].includes(overType) && 
+        activeType === "door" && 
+        !["trap", "furniture", "enemy", "spawn"].includes(overType) && 
         event.active.id === item.index
     ) {
         /* Dragged item is a door */
@@ -189,9 +189,15 @@ export const isItemCanBeDropped = (event, item, isFilled, activeType, overType) 
     } else if (
         (isFilled === 0 || activeType === overType) && /* Is not filled or drop target is its own deck */
         (event.active.id === item.index) && /* Select the item in the list */
-        ((activeType === "enemy" && !["trap", "furniture"].includes(overType)) || /* Enemy */
-        (activeType === "trap" && !["enemy", "furniture"].includes(overType)) || /* Trap */
-        (activeType === "furniture" && !["corridor", "trap", "enemy"].includes(overType)))  /* Furniture */
+        ((activeType === "enemy" && !["trap", "furniture", "spawn"].includes(overType)) || /* Enemy */
+        (activeType === "trap" && !["enemy", "furniture", "spawn"].includes(overType)) || /* Trap */
+        (activeType === "furniture" && !["corridor", "trap", "enemy", "spawn"].includes(overType)))  /* Furniture */
+    ) {
+        return true;
+    } else if (
+        ((item.subtype === "stairs" && !["corridor", "r13", "r14", "trap", "enemy", "furniture"].includes(overType)) ||
+        (item.subtype === "indeSpawn" && !["corridor", "trap", "enemy", "furniture"].includes(overType))) &&
+        event.active.id === item.index
     ) {
         return true;
     } else {
@@ -235,10 +241,6 @@ export const setNewItems = (event, items, grid) => {
     }
 }
 
-export const setRoomAvailability = (bool) => {
-    return bool ? true : false;
-}
-
 export const isADoorCanBeDropped = (event, rotate, grid, items) => {
     const destination = rotate === 0 ? grid[event.over.id + 26].type : grid[event.over.id - 1].type;
     const doorIsBetweenTwoDifferentRooms = destination !== event.over.data.current.type;
@@ -249,4 +251,11 @@ export const isADoorCanBeDropped = (event, rotate, grid, items) => {
     } else {
         return false;
     }
+}
+
+export const getAllowedRooms = (items, grid) => {
+    return items
+        .filter(item => item.parent[0] !== item.type)
+        .map(item => {return item.parent[0]})
+        .map(item => grid[item].type);              
 }

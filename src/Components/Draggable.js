@@ -26,10 +26,9 @@ export const Draggable = (props) => {
     backgroundRepeat: "no-repeat"
   }
 
-  const styleByType = ["furniture", "trap", "door"].includes(props.data) ? {
+  const styleByType = props.data !== "enemy" ? {
     width: `${30 * props.properties.width}px`,
     height: `${30 * props.properties.height}px`,
-    zIndex: props.data === "door" ? 998 : undefined,
     backgroundColor: props.data !== "door" ? "red": undefined,
     border: props.data !== "door" ? "1px solid black" : undefined,
     borderBottom: props.data === "door" ? "6px solid red" : undefined

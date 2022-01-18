@@ -3,20 +3,23 @@ import styled from "styled-components"
 export const ChapterEditor = styled.div`
   display: flex;
   align-items: center;
-  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 `
 
 export const DecksWrapper = styled.div`
-  width: 20%;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  width: 20%;
+  overflow: scroll;
 `
 
 export const Deck = styled.div`
-  border-radius: 5px;
-  background-color: lightgrey;
   margin-bottom: ${props => props.mb ? "20px" : "0"};
   padding: 10px;
+  border-radius: 5px;
+  background-color: lightgrey;
 
   h1 {
     margin: 0;
@@ -30,10 +33,12 @@ export const DeckItems = styled.div`
 `
 
 export const GridWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 80%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
 `
 
 export const Grid = styled.div`

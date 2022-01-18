@@ -40,8 +40,7 @@ export const Droppable = (props) => {
 
   return (
     <div ref={setNodeRef} style={style} data-testid={"droppable"} id={props.index}>
-      <div style={!isADeck && isOver ? layer : null}>
-      </div>
+      <div style={!isADeck && isOver ? layer : null} />
       {props.children}
     </div>
   );
