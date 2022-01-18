@@ -191,7 +191,7 @@ export const isItemCanBeDropped = (event, item, isFilled, activeType, overType) 
         (event.active.id === item.index) && /* Select the item in the list */
         ((activeType === "enemy" && !["trap", "furniture", "spawn", "door"].includes(overType)) || /* Enemy */
         (activeType === "trap" && !["enemy", "furniture", "spawn", "door"].includes(overType)) || /* Trap */
-        (activeType === "furniture" && !["corridor", "trap", "enemy", "spawn", , "door"].includes(overType)))  /* Furniture */
+        (activeType === "furniture" && !["corridor", "trap", "enemy", "spawn", "door"].includes(overType)))  /* Furniture */
     ) {
         return true;
     } else if (
