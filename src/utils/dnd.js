@@ -1,5 +1,13 @@
 import { allEqual } from "./functions";
 
+const itemTypes = [
+    "trap", 
+    "spawn", 
+    "door", 
+    "furniture", 
+    "enemy"
+];
+
 /**
  * 
  * @description Loop on all items to see if a parent corresponding to the hovered element
@@ -111,7 +119,7 @@ export const getAreaByRotationMode = (item, event, grid) => {
  */
 export const setRotateToZeroOnDeck = (itemProps, over) => {
     if (
-        ["trap", "furniture", "door", "spawn"].includes(over.id) && 
+        itemTypes.includes(over.id) && 
         itemProps.rotate !== 0
     ) {
         return 0;
@@ -180,24 +188,25 @@ export const setParentToItem = (items, item, over, event, grid) => {
  */
 export const isItemCanBeDropped = (event, item, isFilled, activeType, overType) => {
     if (
-        activeType === "door" && 
-        !["trap", "furniture", "enemy", "spawn"].includes(overType) && 
-        event.active.id === item.index
-    ) {
-        /* Dragged item is a door */
-        return true;
-    } else if (
-        (isFilled === 0 || activeType === overType) && /* Is not filled or drop target is its own deck */
-        (event.active.id === item.index) && /* Select the item in the list */
-        ((activeType === "enemy" && !["trap", "furniture", "spawn", "door"].includes(overType)) || /* Enemy */
-        (activeType === "trap" && !["enemy", "furniture", "spawn", "door"].includes(overType)) || /* Trap */
-        (activeType === "furniture" && !["corridor", "trap", "enemy", "spawn", "door"].includes(overType)))  /* Furniture */
-    ) {
-        return true;
-    } else if (
-        ((item.subtype === "stairs" && !["corridor", "r13", "r14", "trap", "enemy", "furniture", "door"].includes(overType)) ||
-        (item.subtype === "indeSpawn" && !["corridor", "trap", "enemy", "furniture", "door"].includes(overType))) &&
-        event.active.id === item.index
+        event.active.id === item.index && (
+            (
+                activeType === "door" &&
+                !itemTypes.filter(i => i !== activeType).includes(overType)
+            ) ||
+            (
+                ((item.subtype === "stairs" && !["corridor", "r13", "r14", "trap", "enemy", "furniture", "door"].includes(overType)) ||
+                (item.subtype === "indeSpawn" && !["corridor", "trap", "enemy", "furniture", "door"].includes(overType)))
+            ) || 
+            (
+                /* Enemy/Trap/Furniture */
+                (isFilled === 0 || activeType === overType) && /* Is not filled or drop target is its own deck */
+                ((
+                    (activeType === "enemy" || activeType === "trap") && 
+                    !itemTypes.filter(i => i !== activeType).includes(overType)
+                ) || /* Enemy */
+                (activeType === "furniture" && (!itemTypes.filter(i => i !== activeType).includes(overType)) && overType !== "corridor"))  /* Furniture */
+            )
+        )
     ) {
         return true;
     } else {

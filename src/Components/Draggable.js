@@ -45,12 +45,12 @@ export const Draggable = (props) => {
   }
 
   const rotatePiece = (key) => {
-    if (key.nativeEvent.which === 3 && ["furniture", "trap", "door"].includes(props.data)) {
+    if ((key.nativeEvent.which === 3 || key.code === "KeyR") && ["furniture", "trap", "door"].includes(props.data)) {
       props.rotate();
     }
   }
   
   return (
-    <div ref={setNodeRef} style={{...style, ...styleByType, ...styleByWidth}} {...listeners} {...attributes} onMouseDown={(e) => rotatePiece(e)} data-testid={"draggable"}></div>
+    <div ref={setNodeRef} style={{...style, ...styleByType, ...styleByWidth}} {...listeners} {...attributes} onKeyDown={(e) => rotatePiece(e)} data-testid={"draggable"}></div>
   );
 }
