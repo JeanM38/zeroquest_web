@@ -8,11 +8,20 @@ import {
     setParentToItem,
     setNewItems,
     getAllowedRooms,
-    isADoorCanBeDropped
+    isADoorCanBeDropped,
+    isASpawnCanBeDropped
 } from "./dnd";
 
 import { itemsTest } from './dnditems';
 import { grid } from "../items/grid";
+
+import { spawns } from "../items/spawns";
+import { doors } from "../items/doors";
+import { enemies } from "../items/enemies";
+import { traps } from "../items/traps";
+import { furnitures } from "../items/furnitures";
+
+const allItems = [...spawns, ...doors, ...enemies, ...traps, ...furnitures];
 
 const eventTest = {
     active: {
@@ -357,5 +366,40 @@ describe("isADoorCanBeDroppedFunc", () => {
     })
     it("cantRenderADoorHereCauseOfAnotherDoor", () => {
         expect(isADoorCanBeDropped(event, 0, grid, [{/* ... */parent: [31], type: "door"}])).toBeFalsy();
+    })
+})
+
+/**
+ * Test suites for isASpawnCanBeDropped(item, items, over)
+ */
+describe("isASpawnCanBeDroppedFunc", () => {
+    const indeSpawn = {subtype: "indeSpawn", parent: ["spawn"], type: "spawn"};
+    const stairSpawn = {subtype: "stairs", parent: ["spawn"], type: "spawn"};
+    const over = {id: 1};
+
+    const itemsWithStairPlaced = allItems.map(i => {
+        if (i.subtype === "stairs") {
+            return {...i, parent: [28]};
+        }
+        return i
+    })
+    const itemsWithIndeSpawnPlaced = allItems.map(i => {
+        if (i.subtype === "indeSpawn") {
+            return {...i, parent: [28]}
+        }
+        return i
+    })
+    console.log(itemsWithIndeSpawnPlaced);
+    it("cantDropAnIndeSpawnIfStairIsPlaced", () => {
+        expect(isASpawnCanBeDropped(indeSpawn, itemsWithStairPlaced, over)).toStrictEqual(indeSpawn);
+    })
+    it("canDropAnIndeSpawnIfStairIsntPlaced", () => {
+        expect(isASpawnCanBeDropped(indeSpawn, allItems, over)).toStrictEqual({...indeSpawn, parent: [1]});
+    })
+    it("cantDropAStairIfIndeSpawnArePlaced", () => {
+        expect(isASpawnCanBeDropped(stairSpawn, itemsWithIndeSpawnPlaced, over)).toStrictEqual(stairSpawn);
+    })
+    it("canDropAStairIfIndeSpawnArentPlaced", () => {
+        expect(isASpawnCanBeDropped(stairSpawn, allItems, over)).toStrictEqual({...stairSpawn, parent: [1]});
     })
 })

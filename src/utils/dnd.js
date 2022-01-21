@@ -301,6 +301,14 @@ export const getAllowedRooms = (items, grid) => {
     ]             
 }
 
+/**
+ * 
+ * @description Depends on the **subtype** of a spawn point and his dropping point, will tell if he can dropped here or not
+ * @param {Object} item 
+ * @param {Array} items 
+ * @param {Object} over 
+ * @returns {Boolean} If a spawn can be dropped here
+ */
 export const isASpawnCanBeDropped = (item, items, over) => {
     const spawns = items.filter(i => i.type === "spawn");
     let stairs = spawns.filter(i => i.subtype === "stairs");
