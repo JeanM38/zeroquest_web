@@ -11,11 +11,6 @@ import {
     isADoorCanBeDropped
 } from "./dnd";
 
-import { enemies } from "../items/enemies";
-import { furnitures } from "../items/furnitures";
-import { traps } from "../items/traps";
-import { doors } from "../items/doors";
-
 import { itemsTest } from './dnditems';
 import { grid } from "../items/grid";
 
@@ -49,6 +44,8 @@ const eventTestOverNull = {
     over: null
     /* ... */
 }
+
+let allowedRooms = ["enemy", "door", "trap", "furniture", "spawn", "corridor"];
 
 /**
  * Test suites for checkIfAPieceHasAlreadyTheSameParent(items, event)
@@ -166,7 +163,7 @@ describe("isItemCanBeDroppedFunc", () => {
         }
         /* ... */
     }
-    const eventTesTrap = {
+    const eventTestTrap = {
         active: {
             id: "trap1",
             data: {
@@ -188,19 +185,22 @@ describe("isItemCanBeDroppedFunc", () => {
 
     it("isItemCanBeDroppedTrue", () => {
         /* Can be dropped if tile is not filled || if dragged on its deck */
-        expect(typeof(isItemCanBeDropped(eventTest, enemy, isNotFilled, "enemy", "r1"))).toBe("boolean");
-        expect(isItemCanBeDropped(eventTest, enemy, isNotFilled, "enemy", "r1")).toBeTruthy();
-        expect(isItemCanBeDropped(eventTestFurniture, furniture, isNotFilled, "furniture", "r27")).toBeTruthy();
-        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "enemy")).toBeTruthy();
-        expect(isItemCanBeDropped(eventTesTrap, trap, isNotFilled, "trap", "r27")).toBeTruthy();
+        expect(typeof(isItemCanBeDropped(eventTest, enemy, isNotFilled, "enemy", "r1", allowedRooms))).toBe("boolean");
+        /* Push r1 and r27 to allowed rooms temporary */
+        const tempAllowedRooms = [...allowedRooms, "r1", "r27"];
+
+        expect(isItemCanBeDropped(eventTest, enemy, isNotFilled, "trap", "r1", tempAllowedRooms)).toBeTruthy();
+        expect(isItemCanBeDropped(eventTestFurniture, furniture, isNotFilled, "furniture", "r27", tempAllowedRooms)).toBeTruthy();
+        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "enemy", tempAllowedRooms)).toBeTruthy();
+        expect(isItemCanBeDropped(eventTestTrap, trap, isNotFilled, "trap", "r27", tempAllowedRooms)).toBeTruthy();
     });
     it("isItemCanBeDroppedFalse", () => {
         /* Cannot be dropped when tile is filled and not the deck || not in the good deck */
-        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "r1")).toBeFalsy();
-        expect(isItemCanBeDropped(eventTestFurniture, furniture, isFilled, "furniture", "r27")).toBeFalsy();
-        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "furniture")).toBeFalsy();
-        expect(isItemCanBeDropped(eventTest, furniture, isFilled, "furniture", "corridor")).toBeFalsy()
-        expect(isItemCanBeDropped(eventTest, furniture, isNotFilled, "furniture", "corridor")).toBeFalsy()
+        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "r1", allowedRooms)).toBeFalsy();
+        expect(isItemCanBeDropped(eventTestFurniture, furniture, isFilled, "furniture", "r27", allowedRooms)).toBeFalsy();
+        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "furniture", allowedRooms)).toBeFalsy();
+        expect(isItemCanBeDropped(eventTest, furniture, isFilled, "furniture", "corridor", allowedRooms)).toBeFalsy()
+        expect(isItemCanBeDropped(eventTest, furniture, isNotFilled, "furniture", "corridor", allowedRooms)).toBeFalsy()
     });
 })
 
@@ -307,11 +307,11 @@ describe("setParentToItemFunc", () => {
 describe("setNewItemsFunc", () => {
     it("overIsUnvalid", () => {
         /* If hovered element has an unvalid type */
-        expect(setNewItems(eventTestOverNull, itemsTest, grid)).toBe(itemsTest);
+        expect(setNewItems(eventTestOverNull, itemsTest, grid, allowedRooms)).toBe(itemsTest);
     })
     it("overIsValid", () => {
         /* If hovered element has a valid type */
-        expect(setNewItems(eventTest, itemsTest, grid)).not.toBe(itemsTest);
+        expect(setNewItems(eventTest, itemsTest, grid, allowedRooms)).not.toBe(itemsTest);
     })
 })
 
@@ -319,24 +319,21 @@ describe("setNewItemsFunc", () => {
  * Test suites for getAllowedRooms(items, grid)
  */
 describe("getAllowedRoomsFunc", () => {
-    it("noRoomIsAllowedByDefault", () => {
-        /* By default, all pieces are on the deck, so no room is filled */
-        const standardItems = [...enemies, ...furnitures, ...traps, ...doors];
-        expect(getAllowedRooms(standardItems, grid).length).toBe(0);
-    })
+
     it("roomIsAllowedAtTheMomentAPieceIsInside", () => {
         const items = [
             {/* ... */ parent: [27], type: "trap"},
-            {/* ... */ parent: [105], type: "enemy"}
+            {/* ... */ parent: [105], type: "enemy"},
+            {/* ... */ parent: [192], type: "spawn"}
         ]
-        expect(getAllowedRooms(items, grid)).toStrictEqual(["r1", "r7"]);
+        expect(getAllowedRooms(items, grid)).toStrictEqual([...allowedRooms, "r11"]);
     })
     it("roomIsAllowedAtTheMomentAPieceIsInsideExcludeDuplicates", () => {
         const items = [
-            {/* ... */ parent: [27], type: "trap"},
-            {/* ... */ parent: [28], type: "enemy"}
+            {/* ... */ parent: [27], type: "door"},
+            {/* ... */ parent: [28], type: "door"}
         ]
-        expect(getAllowedRooms(items, grid)).toStrictEqual(["r1"]);
+        expect(getAllowedRooms(items, grid)).toStrictEqual([...allowedRooms, "r1"]);
     })
 })
 
@@ -349,7 +346,7 @@ describe("isADoorCanBeDroppedFunc", () => {
             id: 31,
             data: { current: { type: "r2" } }
         },
-        active: { id: "door1"}
+        active: { id: "door1", data: { current: "r2" } }
     }
     
     it("canRenderADoorHere", () => {

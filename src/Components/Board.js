@@ -50,7 +50,7 @@ export function Board() {
 
   /* Catch items movements */
   useEffect(() => {
-    setAllowedRooms(getAllowedRooms(items, grid));
+    setAllowedRooms([...new Set(getAllowedRooms(items, grid))]);
   }, [items])
 
   /* Handle drag ending */
@@ -58,7 +58,7 @@ export function Board() {
     /* Reset OverBg */
     setOverBg("green");
     /* New instance of items */
-    setItems(setNewItems(event, items, grid));
+    setItems(setNewItems(event, items, grid, allowedRooms));
   }
 
   /* Handle title change */
@@ -90,7 +90,7 @@ export function Board() {
             <Deck mb key={deck.type} data-testid={"deck"}>
               <h1>{deck.title}</h1>
               <DeckItems data-testid={"deckitem"}>
-                <Droppable key={"drop-" + deck.type} id={deck.type} type={deck.type} disabled={true}>
+                <Droppable key={"drop-" + deck.type} id={deck.type} type={deck.type} disabled={false}>
                     {renderItem(deck.type, items, null)}
                 </Droppable>
               </DeckItems>

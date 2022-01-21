@@ -147,6 +147,8 @@ export const setParentToItem = (items, item, over, event, grid) => {
         } else {
             return {...item, parent: [item.type]}
         }
+    } else if (item.type === "spawn") {
+        return isASpawnCanBeDropped(item, items, over);
     } else {
         if (
             /* Check if item is not overflow the grid on the horizontal way */
@@ -186,7 +188,7 @@ export const setParentToItem = (items, item, over, event, grid) => {
  * @param {String} overType 
  * @returns {Boolean} if he's droppable or not
  */
-export const isItemCanBeDropped = (event, item, isFilled, activeType, overType) => {
+export const isItemCanBeDropped = (event, item, isFilled, activeType, overType, allowedRooms) => {
     if (
         event.active.id === item.index && (
             (
@@ -199,6 +201,7 @@ export const isItemCanBeDropped = (event, item, isFilled, activeType, overType) 
             ) || 
             (
                 /* Enemy/Trap/Furniture */
+                allowedRooms.includes(overType) &&
                 (isFilled === 0 || activeType === overType) && /* Is not filled or drop target is its own deck */
                 ((
                     (activeType === "enemy" || activeType === "trap") && 
@@ -222,7 +225,7 @@ export const isItemCanBeDropped = (event, item, isFilled, activeType, overType) 
  * @param {Array} grid 
  * @returns a new instance of the initial items with all modifications
  */
-export const setNewItems = (event, items, grid) => {
+export const setNewItems = (event, items, grid, allowedRooms) => {
     const {over} = event; /* Hovered element */
     const activeType = event.active.data.current; /* Type of dragged element */
     const overType = over === null ? null : over.data.current.type; /* Type of hovered element */
@@ -234,8 +237,7 @@ export const setNewItems = (event, items, grid) => {
         /* Create a new instance from items */
         return items.map(item => {
             const itemProps = item.properties;
-
-            if (isItemCanBeDropped(event, item, isFilled, activeType, overType)) {
+            if (isItemCanBeDropped(event, item, isFilled, activeType, overType, allowedRooms)) {
                 /* If item has props, set rotate depends on drop target */
                 if (itemProps) {itemProps.rotate = setRotateToZeroOnDeck(itemProps, over)}
                     item = setParentToItem(items, item, over, event, grid)
@@ -260,14 +262,18 @@ export const setNewItems = (event, items, grid) => {
  * @returns {Boolean} If a door can be dropped here
  */
 export const isADoorCanBeDropped = (event, rotate, grid, items) => {
-    const destination = rotate === 0 ? grid[event.over.id + 26].type : grid[event.over.id - 1].type;
-    const doorIsBetweenTwoDifferentRooms = destination !== event.over.data.current.type;
-    const doorOnTheSameIndex = items.filter(item => item.type === "door" && item.parent[0] === event.over.id).length;
-
-    if (doorOnTheSameIndex === 0 && doorIsBetweenTwoDifferentRooms) {
-        return true
+    if (event.over.id !== event.active.data.current) {
+        const destination = rotate === 0 ? grid[event.over.id + 26].type : grid[event.over.id - 1].type;
+        const doorIsBetweenTwoDifferentRooms = destination !== event.over.data.current.type;
+        const doorOnTheSameIndex = items.filter(item => item.type === "door" && item.parent[0] === event.over.id).length;
+        
+        if (doorOnTheSameIndex === 0 && doorIsBetweenTwoDifferentRooms) {
+            return true
+        } else {
+            return false;
+        }
     } else {
-        return false;
+        return true;
     }
 }
 
@@ -279,9 +285,31 @@ export const isADoorCanBeDropped = (event, rotate, grid, items) => {
  * @returns {Array} All rooms that are availables
  */
 export const getAllowedRooms = (items, grid) => {
-    return [...new Set(items
-        .filter(item => item.parent[0] !== item.type)
+    const alwaysAllowedRooms = [    
+        "enemy",
+        "door",
+        "trap",
+        "furniture",
+        "spawn",
+        "corridor"
+    ];
+    return [...alwaysAllowedRooms, ...new Set([...items
+        .filter(item => item.type === "spawn" || item.type === "door")
+        .filter(item => !item.parent.includes(item.type))
         .map(item => { return item.parent[0] })
-        .map(item => { return grid[item].type }))
+        .map(item => { return grid[item].type })])
     ]             
+}
+
+export const isASpawnCanBeDropped = (item, items, over) => {
+    const spawns = items.filter(i => i.type === "spawn");
+    let stairs = spawns.filter(i => i.subtype === "stairs");
+
+    if (item.subtype === "stairs") {
+        const indeSpawns = spawns.filter(i => i.parent[0] !== "spawn");
+        return indeSpawns.length > 0 ? {...item, parent: [item.type]} : {...item, parent: [over.id]};
+    } else {
+        stairs = stairs.filter(i => i.parent[0] !== "spawn");
+        return stairs.length > 0 ? {...item, parent: [item.type]} : {...item, parent: [over.id]};
+    }
 }
