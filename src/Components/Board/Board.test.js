@@ -4,19 +4,19 @@ import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom'
 
 /* Utils */
-import { container } from '../setupTests';
+import { container } from '../../setupTests';
 
 /* Grid */
-import { decks, grid } from '../items/grid';
+import { decks, grid } from '../../items/grid';
 
 /* Items */
-import { enemies } from '../items/enemies';
-import { furnitures } from '../items/furnitures';
-import { traps } from '../items/traps';
+import { enemies } from '../../items/enemies';
+import { furnitures } from '../../items/furnitures';
+import { traps } from '../../items/traps';
 
 import { Board } from './Board';
-import { doors } from '../items/doors';
-import { spawns } from '../items/spawns';
+import { doors } from '../../items/doors';
+import { spawns } from '../../items/spawns';
 
 const BoardIdsToTest = [
   "chaptereditor",

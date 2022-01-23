@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 
-import { decks } from '../items/grid';
+import { decks } from '../../items/grid';
 
 export const Droppable = (props) => {
 
-  const {isOver, setNodeRef} = useDroppable({
+  const {setNodeRef} = useDroppable({
     id: props.id,
     data: {
       type: props.type
@@ -29,18 +29,18 @@ export const Droppable = (props) => {
   const layer = {
     display: "block",
     position: "absolute",
-    zIndex: !isADeck && isOver ? 0 : undefined, 
+    zIndex: !isADeck ? 0 : undefined, 
     top: 0,
     left: 0,
     width: "30px",
     height: "30px",
-    backgroundColor: props.overBg,
+    backgroundColor: props.disabled === 0 ? "darkgrey" : undefined,
     opacity: 0.6
   }
 
   return (
     <div ref={setNodeRef} style={style} data-testid={"droppable"} id={props.index}>
-      <div style={!isADeck && isOver ? layer : null} />
+      <div style={!isADeck ? layer : null} />
       {props.children}
     </div>
   );

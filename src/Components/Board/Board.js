@@ -5,14 +5,14 @@ import { DndContext } from '@dnd-kit/core';
 import { Droppable } from './Droppable';
 
 /* Grid */
-import { grid, decks } from '../items/grid';
+import { grid, decks } from '../../items/grid';
 
 /* Items */
-import { enemies } from '../items/enemies';
-import { furnitures } from '../items/furnitures';
-import { traps } from '../items/traps';
-import { doors } from '../items/doors';
-import { spawns } from '../items/spawns';
+import { enemies } from '../../items/enemies';
+import { furnitures } from '../../items/furnitures';
+import { traps } from '../../items/traps';
+import { doors } from '../../items/doors';
+import { spawns } from '../../items/spawns';
 
 /* Styled Components */
 import { 
@@ -22,27 +22,29 @@ import {
   DecksWrapper, 
   GridWrapper, 
   Grid 
-} from '../style/BoardStyle';
+} from '../../style/BoardStyle';
 
 /* Utils */
-import { setNewItems, getAllowedRooms } from '../utils/dnd';
+import { 
+  setNewItems, 
+  getAllowedRooms,
+  removeItemsOnUnallowedRooms
+} from '../../utils/dnd';
+
 import {   
   resetBoard, 
-  renderItem, 
-  handleDragOver 
-} from '../utils/functions';
+  renderItem
+} from '../../utils/functions';
 
 export function Board() {
-  const [items, setItems] = useState(
-    [
+  const [items, setItems] = useState([
       ...spawns,
       ...enemies, 
       ...furnitures, 
       ...traps, 
       ...doors
-    ]
-  );
-  const [overBg, setOverBg] = useState("green");
+  ]);
+  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [allowedRooms, setAllowedRooms] = useState([]);
   const [description, setDescription] = useState("");
@@ -50,15 +52,18 @@ export function Board() {
 
   /* Catch items movements */
   useEffect(() => {
-    setAllowedRooms([...new Set(getAllowedRooms(items, grid))]);
+    setAllowedRooms(getAllowedRooms(items, grid, allowedRooms));
   }, [items])
+
+  useEffect(() => {
+    setItems(removeItemsOnUnallowedRooms(items, allowedRooms, grid));
+  }, [loading]);
 
   /* Handle drag ending */
   const handleDragEnd = (event) => {
-    /* Reset OverBg */
-    setOverBg("green");
     /* New instance of items */
     setItems(setNewItems(event, items, grid, allowedRooms));
+    setLoading(!loading);
   }
 
   /* Handle title change */
@@ -67,7 +72,7 @@ export function Board() {
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd} onDragOver={(e) => setOverBg(handleDragOver(e))}>
+    <DndContext onDragEnd={handleDragEnd}>
       <ChapterEditor data-testid={"chaptereditor"}>
         <DecksWrapper data-testid={"deckswrapper"}>
           {/* 
@@ -90,7 +95,7 @@ export function Board() {
             <Deck mb key={deck.type} data-testid={"deck"}>
               <h1>{deck.title}</h1>
               <DeckItems data-testid={"deckitem"}>
-                <Droppable key={"drop-" + deck.type} id={deck.type} type={deck.type} disabled={false}>
+                <Droppable key={"drop-" + deck.type} id={deck.type} type={deck.type} disabled={+allowedRooms.includes(deck.type)}>
                     {renderItem(deck.type, items, null)}
                 </Droppable>
               </DeckItems>
@@ -112,7 +117,7 @@ export function Board() {
           <Grid data-testid={"grid"}>
             {/* Foreach squares of the desk */}
             {grid.map((square, index) => (
-              <Droppable key={"drop" + index} id={index} type={square.type} overBg={overBg} disabled={square.disabled}>
+              <Droppable key={"drop" + index} id={index} type={square.type} disabled={+allowedRooms.includes(square.type)}>
                 {renderItem(index, items, square)}
               </Droppable>
             ))}

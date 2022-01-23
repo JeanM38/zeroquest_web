@@ -1,4 +1,4 @@
-import { allEqual } from "./functions";
+import { allEqual, getAllSquaresOfARoom, getAllSquaresByRoom } from "./functions";
 
 const itemTypes = [
     "trap", 
@@ -142,8 +142,10 @@ export const setParentToItem = (items, item, over, event, grid) => {
     if (item.type === "enemy") {
         return {...item, parent: [over.id]}
     } else if (item.type === "door") {
-        if (isADoorCanBeDropped(event, item.properties.rotate, grid, items)) {
-            return {...item, parent: [over.id]}
+        const doorDropped = isADoorCanBeDropped(event, item.properties.rotate, grid, items);
+
+        if (doorDropped.canDrop) {
+            return {...item, parent: [over.id, doorDropped.destination]}
         } else {
             return {...item, parent: [item.type]}
         }
@@ -192,6 +194,7 @@ export const isItemCanBeDropped = (event, item, isFilled, activeType, overType, 
     if (
         event.active.id === item.index && (
             (
+                allowedRooms.includes(overType) &&
                 activeType === "door" &&
                 !itemTypes.filter(i => i !== activeType).includes(overType)
             ) ||
@@ -237,6 +240,7 @@ export const setNewItems = (event, items, grid, allowedRooms) => {
         /* Create a new instance from items */
         return items.map(item => {
             const itemProps = item.properties;
+
             if (isItemCanBeDropped(event, item, isFilled, activeType, overType, allowedRooms)) {
                 /* If item has props, set rotate depends on drop target */
                 if (itemProps) {itemProps.rotate = setRotateToZeroOnDeck(itemProps, over)}
@@ -248,7 +252,7 @@ export const setNewItems = (event, items, grid, allowedRooms) => {
             }
         )
     } else {
-        return items
+        return items;
     }
 }
 
@@ -263,17 +267,48 @@ export const setNewItems = (event, items, grid, allowedRooms) => {
  */
 export const isADoorCanBeDropped = (event, rotate, grid, items) => {
     if (event.over.id !== event.active.data.current) {
-        const destination = rotate === 0 ? grid[event.over.id + 26].type : grid[event.over.id - 1].type;
-        const doorIsBetweenTwoDifferentRooms = destination !== event.over.data.current.type;
+        let destinationType;
+        let destinationIndex;
+
+        switch(rotate) {
+            case 0:
+                destinationIndex = event.over.id + 26;
+                destinationType = grid[event.over.id + 26].type;
+                break;
+            case 1:
+                destinationIndex = event.over.id - 1;
+                destinationType = grid[event.over.id - 1].type;
+                break;
+            case 2:
+                destinationIndex = event.over.id - 26;
+                destinationType = grid[event.over.id - 26].type;
+                break;
+            case 3:
+                destinationIndex = event.over.id + 1;
+                destinationType = grid[event.over.id + 1].type;
+                break;
+            default:
+                break;
+        }
+        const doorIsBetweenTwoDifferentRooms = destinationType !== event.over.data.current.type;
         const doorOnTheSameIndex = items.filter(item => item.type === "door" && item.parent[0] === event.over.id).length;
         
         if (doorOnTheSameIndex === 0 && doorIsBetweenTwoDifferentRooms) {
-            return true
+            return {
+                canDrop: true,
+                destination: destinationIndex
+            }
         } else {
-            return false;
+            return {
+                canDrop: false,
+                destination: destinationIndex
+            }
         }
     } else {
-        return true;
+        return {
+            canDrop: true,
+            destination: ["door"]
+        }
     }
 }
 
@@ -290,13 +325,12 @@ export const getAllowedRooms = (items, grid) => {
         "door",
         "trap",
         "furniture",
-        "spawn",
-        "corridor"
+        "spawn"
     ];
     return [...alwaysAllowedRooms, ...new Set([...items
         .filter(item => item.type === "spawn" || item.type === "door")
         .filter(item => !item.parent.includes(item.type))
-        .map(item => { return item.parent[0] })
+        .map(item => { return item.parent }).flat()
         .map(item => { return grid[item].type })])
     ]             
 }
@@ -320,4 +354,55 @@ export const isASpawnCanBeDropped = (item, items, over) => {
         stairs = stairs.filter(i => i.parent[0] !== "spawn");
         return stairs.length > 0 ? {...item, parent: [item.type]} : {...item, parent: [over.id]};
     }
+}
+
+/**
+ * 
+ * @description Remove items when the room is no longer allowed (unaccessible by a door or a spawn point)
+ * @param {Array} items 
+ * @param {Array} allowedRooms 
+ * @returns {Array} based on items
+ */
+export const removeItemsOnUnallowedRooms = (items, allowedRooms, grid) => {
+    /* Get all types covered by the allowed rooms for example ["r1", "r12", ...] */
+    const allowedTypes = [...new Set(grid.filter(square => allowedRooms.includes(square.type)))];
+
+    /* Get all squares covered by these allowed types */
+    const squares = allowedTypes.map(i => grid.indexOf(i));
+
+    /* Position of all spawn points */
+    let spawnPos = items.filter(i => i.type === "spawn").filter(i => i.parent[0] !== i.type);
+    spawnPos = spawnPos.map(spawn => { return grid[spawn.parent[0]].type });
+
+    /* Position of all doors */
+    const doorPos = items
+        .filter(i => i.type === "door")
+        .filter(i => i.parent[0] !== i.type)
+        .map(i => { return i.parent });
+
+    const doorRooms = getAllSquaresOfARoom(doorPos, grid, "doors");
+    const doorDestinations = doorRooms.map(d => { return d[1] });
+    
+    let unaccessibleRooms = [];
+
+    doorRooms.map(door => {
+        const tempDestinations = doorDestinations.map(d => {return d !== door[1] ? d : ""});
+        if (!tempDestinations.includes(door[0]) && !spawnPos.some(s => door[0].includes(s))) {
+            unaccessibleRooms = [...unaccessibleRooms, door];
+        }
+    })
+
+    unaccessibleRooms = getAllSquaresByRoom(unaccessibleRooms, grid);
+    
+    return items.map(i => {
+        if (i.type !== "spawn") {
+            if (!i.parent.some(parent => squares.includes(parent) && !unaccessibleRooms.some(room => i.parent.includes(room))) /* Heres come the unnaccessible room condition */ ) {
+                return {...i, parent: [i.type]}
+            } else {
+                return i;
+            }
+        } else {
+            return i;
+        }
+    })
 }

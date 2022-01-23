@@ -2,10 +2,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { act } from "react-dom/test-utils";
 
-import { container } from '../setupTests';
+import { container } from '../../setupTests';
 
 import { Draggable } from './Draggable';
-import { enemies } from '../items/enemies';
+import { enemies } from '../../items/enemies';
 
 it("isDraggableIsRenderedCorrectly", () => {
     const p = enemies[0];

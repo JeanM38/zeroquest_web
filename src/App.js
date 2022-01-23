@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import Board from "./Components/Board";
+import Board from "./Components/Board/Board";
 
 export function App() {
   return (

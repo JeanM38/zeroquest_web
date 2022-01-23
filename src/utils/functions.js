@@ -1,4 +1,4 @@
-import { Draggable } from "../Components/Draggable";
+import { Draggable } from "../Components/Board/Draggable";
 import React from "react";
 
 /**
@@ -35,10 +35,15 @@ export const resetBoard = (items) => {
  */
 export const setRotate = (key, items) => {
     return items.map(p => {
-      
       /* Check if item is furniture/trap, and it's scale is bigger than 1 */
-      if (p.index === key && p.properties) {
+      if (p.index === key && p.properties && p.type !== "door") {
         p.properties.rotate === 0 ? p.properties.rotate = 1 : p.properties.rotate = 0;
+      } else if (p.index === key && p.properties && p.type === "door") {
+        if (p.properties.rotate < 3) {
+          ++p.properties.rotate;
+        } else {
+          p.properties.rotate = 0;
+        }
       }
       return p
     })
@@ -107,4 +112,34 @@ export const handleDragOver = (event) => {
         return "red";
       }
     }
+}
+
+/**
+ * 
+ * @description Set a new value to a sate from an input
+ * @param {Function} setter 
+ * @param {String} value 
+ */
+export const handleInputChange = (setter, value) => {
+  setter(value);
+}
+
+export const getAllSquaresOfARoom = (items, grid, type) => {
+  return type === "spawns" ? 
+    [...new Set(items.map(item => grid[item.parent[0]].type))] :
+    [...new Set(items.map(item => [ grid[item[0]].type, grid[item[1]].type ]))];
+}
+
+export const getAllSquaresByRoom = (types, grid) => {
+  let squaresUnallowed = [];
+
+  types.map(type => {
+    grid.map(square => {
+      if (type.includes(square.type)) {
+        squaresUnallowed = [...squaresUnallowed, grid.indexOf(square)]
+      }
+    })
+  })
+
+  return squaresUnallowed;
 }

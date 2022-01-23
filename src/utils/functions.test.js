@@ -8,8 +8,7 @@ import {
     allEqual, 
     renderItem, 
     resetBoard, 
-    setRotate,
-    handleDragOver
+    setRotate
 } from "./functions";
 import { container } from '../setupTests';
 
@@ -108,24 +107,4 @@ describe("setRotateFunc", () => {
     draggableElements.map((e) => {
         expect(e).toHaveStyle("transform: rotate(0deg)")
     })
-})
-
-/**
- * Test suites for handleDragOver(event) func
- */
-describe("handleDragOverHasTheCorrectBehavior", () => {
-    const event = {
-        active: { data: { current: 'trap'} },
-        over: { data: { current: { type: 'corridor'} }},
-        /* ... */
-    };
-    const eventUnvalid = {
-        active: { data: { current: 'furniture'} },
-        over: { data: { current: { type: 'corridor'} }},
-        /* ... */
-    };
-    expect(typeof(handleDragOver(event))).toBe("string");
-    expect(handleDragOver(event)).toBe("green");
-    expect(handleDragOver(eventUnvalid)).toBe("red");
-    expect(handleDragOver(null)).toBeUndefined();
 })

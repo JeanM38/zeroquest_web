@@ -54,7 +54,7 @@ const eventTestOverNull = {
     /* ... */
 }
 
-let allowedRooms = ["enemy", "door", "trap", "furniture", "spawn", "corridor"];
+let allowedRooms = ["enemy", "door", "trap", "furniture", "spawn"];
 
 /**
  * Test suites for checkIfAPieceHasAlreadyTheSameParent(items, event)
@@ -359,13 +359,13 @@ describe("isADoorCanBeDroppedFunc", () => {
     }
     
     it("canRenderADoorHere", () => {
-        expect(isADoorCanBeDropped(event, 1, grid, [])).toBeTruthy();
+        expect(isADoorCanBeDropped(event, 1, grid, []).canDrop).toBeTruthy();
     })
     it("cantRenderADoorHereCauseOfRotation", () => {
-        expect(isADoorCanBeDropped(event, 0, grid, [])).toBeFalsy();
+        expect(isADoorCanBeDropped(event, 0, grid, []).canDrop).toBeFalsy();
     })
     it("cantRenderADoorHereCauseOfAnotherDoor", () => {
-        expect(isADoorCanBeDropped(event, 0, grid, [{/* ... */parent: [31], type: "door"}])).toBeFalsy();
+        expect(isADoorCanBeDropped(event, 0, grid, [{/* ... */parent: [31], type: "door"}]).canDrop).toBeFalsy();
     })
 })
 
@@ -389,7 +389,6 @@ describe("isASpawnCanBeDroppedFunc", () => {
         }
         return i
     })
-    console.log(itemsWithIndeSpawnPlaced);
     it("cantDropAnIndeSpawnIfStairIsPlaced", () => {
         expect(isASpawnCanBeDropped(indeSpawn, itemsWithStairPlaced, over)).toStrictEqual(indeSpawn);
     })
