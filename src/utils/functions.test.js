@@ -7,6 +7,8 @@ import { render } from '@testing-library/react';
 import { 
     allEqual, 
     getRoomsFilled, 
+    getUnaccessibleSquares, 
+    handleDragOver, 
     renderItem, 
     resetBoard, 
     setRotate
@@ -53,15 +55,19 @@ describe("resetBoardFunc", () => {
     const testedItems = resetBoard(items);
 
     /* Test if all parent have been reset */
-    expect(typeof(testedItems)).toBe("object");
-    expect(testedItems[0].parent).toStrictEqual(["furniture"]);
-    expect(testedItems[1].parent).toStrictEqual(["trap"]);
-    expect(testedItems[2].parent).toStrictEqual(["enemy"]);
+    it("resetItemToHisNativeParentPosition", () => {
+        expect(typeof(testedItems)).toBe("object");
+        expect(testedItems[0].parent).toStrictEqual(["furniture"]);
+        expect(testedItems[1].parent).toStrictEqual(["trap"]);
+        expect(testedItems[2].parent).toStrictEqual(["enemy"]);
+    })
 
     /* Test if all rotates have been set to 0 (excluded items which don't have this property)  */
-    expect(testedItems[0].properties.rotate).toBe(0);
-    expect(testedItems[1].properties.rotate).toBe(0);
-    expect(testedItems[2].properties.rotate).not.toBe(0);
+    it("resetRotatePropertiesOnEachItem", () => {
+        expect(testedItems[0].properties.rotate).toBe(0);
+        expect(testedItems[1].properties.rotate).toBe(0);
+        expect(testedItems[2].properties.rotate).not.toBe(0);
+    })
 })
 
 /**
@@ -77,20 +83,30 @@ describe("setRotateFunc", () => {
     const doorMinRotate = [{type: "door", index: "door1", parent: ["12", "13"], properties: {rotate: 0}}];
     const doorMaxRotate = [{type: "door", index: "door2", parent: ["12", "13"], properties: {rotate: 3}}];
 
-    const furnitureTest = setRotate("furniture1", items);
-    expect(furnitureTest[0].properties.rotate).toBe(1);
+    it("isAFurnitureRotateGoodWhenItsOnInitialPos", () => {        
+        const furnitureTest = setRotate("furniture1", items);
+        expect(furnitureTest[0].properties.rotate).toBe(1);
+    })
 
-    const trapTest = setRotate("trap1", items);
-    expect(trapTest[1].properties.rotate).toBe(0);
+    it("isATrapRotateGoodWhenItsOnInitialPos", () => {
+        const trapTest = setRotate("trap1", items);
+        expect(trapTest[1].properties.rotate).toBe(0);
+    })
 
-    const enemyTest = setRotate("enemy1", items);
-    expect(enemyTest).toStrictEqual(items);
+    it("isAnEnemyRotateGoodWhenItsOnInitialPos", () => {
+        const enemyTest = setRotate("enemy1", items);
+        expect(enemyTest).toStrictEqual(items);
+    })
 
-    const doorMinTest = setRotate("door1", doorMinRotate);
-    expect(doorMinTest[0].properties.rotate).toBe(1);
+    it("isADoorRotateGoodWhenItsOnInitialPos", () => {
+        const doorMinTest = setRotate("door1", doorMinRotate);
+        expect(doorMinTest[0].properties.rotate).toBe(1);
+    })
 
-    const doorMaxTest = setRotate("door2", doorMaxRotate);
-    expect(doorMaxTest[0].properties.rotate).toBe(0);
+    it("isADoorRotateToZeroWhenItsOnMaxPos", () => {
+        const doorMaxTest = setRotate("door2", doorMaxRotate);
+        expect(doorMaxTest[0].properties.rotate).toBe(0);
+    })
 })
 
 /**
@@ -112,10 +128,15 @@ describe("setRotateFunc", () => {
     /* Check if render method reset all rotate on the deck */
     act(() => { <div>{render(grid.decks.map(deck => renderItem(deck.type, gridItemsWithRotateToOne)))}</div> });
     const draggableElements = screen.queryAllByTestId("draggable");
-    expect(draggableElements.length).toBe(gridItems.length);
 
-    draggableElements.map((e) => {
-        expect(e.style.transform).toEqual("rotate(0deg)")
+    it("draggableElementsAreAllRendered", () => {
+        expect(draggableElements.length).toBe(gridItems.length);
+    })
+
+    it("allDraggableElementsHaveRotateProToZero", () => {
+        draggableElements.map((e) => {
+            expect(e.style.transform).toEqual("rotate(0deg)")
+        })
     })
 })
 
@@ -125,11 +146,77 @@ describe("setRotateFunc", () => {
 describe("getRoomsFilled", () => {
     let parents = [[292, 293]];
 
-    expect(getRoomsFilled(parents, grid.tiles, "doors")).toStrictEqual([["r13", "r14"]]);
+    it("isASinleDoorReturnCorrectFilledRooms", () => {
+        expect(getRoomsFilled(parents, grid.tiles, "doors")).toStrictEqual([["r13", "r14"]]);
+    })
 
-    parents.push([318, 344]);
-    expect(getRoomsFilled(parents, grid.tiles, "doors")).toStrictEqual([["r13", "r14"], ["r13", "r18"]])
+    it("isMultipleDoorsReturnCorrectFilledRooms", () => {
+        parents.push([318, 344]);
+        expect(getRoomsFilled(parents, grid.tiles, "doors")).toStrictEqual([["r13", "r14"], ["r13", "r18"]])
+    })
 
-    let parentSpawn = [{/* ... */ parent: [292]}];
-    expect(getRoomsFilled(parentSpawn, grid.tiles, "spawns")).toStrictEqual(["r13"]);
+    it("isASingleSpawnReturnCorrectFilledRooms", () => {
+        let parentSpawn = [{/* ... */ parent: [292]}];
+        expect(getRoomsFilled(parentSpawn, grid.tiles, "spawns")).toStrictEqual(["r13"]);
+    })
+})
+
+/**
+ * Test suites for handleDragOver(event)
+ */
+describe("handleDragOverFunc", () => {
+    const eventTestNull = {};
+    let event = {
+        active: {
+            data: {
+                current: "enemy"
+            }
+            /* ... */
+        },
+        over: {
+            data: {
+                current: {
+                    type: "r1"
+                }
+            }
+            /* ... */
+        }
+    }
+
+    it("isAnEnemyDraggedOnARoomTileIsReturnGreen", () => {
+        expect(handleDragOver(event)).toBe("green");
+    })
+
+    it("isATrapDraggedOnACorridorTileIsReturnGreen", () => {
+        const trapEvent = {...event};
+        trapEvent.active.data.current = "trap";
+        trapEvent.over.data.current.type = "corridor";
+        expect(handleDragOver(trapEvent)).toBe("green");
+    })
+    
+    it("isAFurnitureDraggedOnACorridorTileIsReturnRed", () => {
+        const furnitureEvent = {...event};
+        furnitureEvent.active.data.current = "furniture";
+        furnitureEvent.over.data.current.type = "corridor";
+        expect(handleDragOver(furnitureEvent)).toBe("red");
+    })
+    
+    it("isOverIsNullReturnsNothing", () => {
+        expect(handleDragOver(eventTestNull)).toBeUndefined();
+    })
+})
+
+/**
+ * Test suites for getUnaccessibleSquares(types, grid)
+ */
+describe("getUnaccessibleSquaresFunc", () => {
+    it("isReturnAllSquaresOfARoom", () => {
+        const types = [["r13"]];
+        expect(getUnaccessibleSquares(types, grid.tiles)).toStrictEqual([265, 266, 291, 292, 317, 318]);
+    })
+
+    it("isReturnAnEmptyArrayOnUnexistingTypes", () => {
+        const types = [["r100"]];
+        expect(getUnaccessibleSquares(types, grid.tiles)).toStrictEqual([]);
+    })
 })

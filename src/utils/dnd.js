@@ -292,8 +292,8 @@ export const isADoorCanBeDropped = (event, rotate, grid, items) => {
         }
         const doorIsBetweenTwoDifferentRooms = destinationType !== event.over.data.current.type;
         const doorOnTheSameIndex = items.filter(item => item.type === "door" && item.parent[0] === event.over.id).length;
-        
-        if (doorOnTheSameIndex === 0 && doorIsBetweenTwoDifferentRooms) {
+
+        if (destinationIndex !== null && doorOnTheSameIndex === 0 && doorIsBetweenTwoDifferentRooms) {
             return {
                 canDrop: true,
                 destination: destinationIndex

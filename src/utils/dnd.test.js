@@ -361,11 +361,25 @@ describe("isADoorCanBeDroppedFunc", () => {
     it("canRenderADoorHere", () => {
         expect(isADoorCanBeDropped(event, 1, grid.tiles, []).canDrop).toBeTruthy();
     })
+    it("canRenderADoorHereRotate2", () => {
+        expect(isADoorCanBeDropped(event, 2, grid.tiles, []).canDrop).toBeTruthy();
+    })
+    it("cantRenderADoorHereRotate3", () => {
+        expect(isADoorCanBeDropped(event, 3, grid.tiles, []).canDrop).toBeFalsy();
+    })
     it("cantRenderADoorHereCauseOfRotation", () => {
         expect(isADoorCanBeDropped(event, 0, grid.tiles, []).canDrop).toBeFalsy();
     })
     it("cantRenderADoorHereCauseOfAnotherDoor", () => {
         expect(isADoorCanBeDropped(event, 0, grid.tiles, [{/* ... */parent: [31], type: "door"}]).canDrop).toBeFalsy();
+    })
+    it("cantRenderADoorWithUnvalidRotateValue", () => {
+        expect(isADoorCanBeDropped(event, 4, grid.tiles, []).destination).toBeUndefined();
+    })
+    it("isOverIsEqualToActive", () => {
+        const eventEqual = {...event};
+        eventEqual.active.data.current = 31;
+        expect(isADoorCanBeDropped(eventEqual, 0, grid, []).destination[0]).toBe("door");
     })
 })
 
