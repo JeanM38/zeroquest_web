@@ -5,14 +5,14 @@ import { DndContext } from '@dnd-kit/core';
 import { Droppable } from './Droppable';
 
 /* Grid */
-import { grid, decks } from '../../items/grid';
+import grid from '../../items/grid';
 
 /* Items */
-import { enemies } from '../../items/enemies';
-import { furnitures } from '../../items/furnitures';
-import { traps } from '../../items/traps';
-import { doors } from '../../items/doors';
-import { spawns } from '../../items/spawns';
+import doorsArray from '../../items/doors';
+import enemiesArray from '../../items/enemies';
+import furnituresArray from '../../items/furnitures';
+import spawnsArray from '../../items/spawns';
+import trapsArray from '../../items/traps';
 
 /* Styled Components */
 import { 
@@ -38,11 +38,11 @@ import {
 
 export function Board() {
   const [items, setItems] = useState([
-      ...spawns,
-      ...enemies, 
-      ...furnitures, 
-      ...traps, 
-      ...doors
+    ...spawnsArray.spawns,
+    ...enemiesArray.enemies, 
+    ...furnituresArray.furnitures, 
+    ...trapsArray.traps, 
+    ...doorsArray.doors
   ]);
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
@@ -52,17 +52,17 @@ export function Board() {
 
   /* Catch items movements */
   useEffect(() => {
-    setAllowedRooms(getAllowedRooms(items, grid, allowedRooms));
+    setAllowedRooms(getAllowedRooms(items, grid.tiles, allowedRooms));
   }, [items])
 
   useEffect(() => {
-    setItems(removeItemsOnUnallowedRooms(items, allowedRooms, grid));
+    setItems(removeItemsOnUnallowedRooms(items, allowedRooms, grid.tiles));
   }, [loading]);
 
   /* Handle drag ending */
   const handleDragEnd = (event) => {
     /* New instance of items */
-    setItems(setNewItems(event, items, grid, allowedRooms));
+    setItems(setNewItems(event, items, grid.tiles, allowedRooms));
     setLoading(!loading);
   }
 
@@ -91,7 +91,7 @@ export function Board() {
           <input onChange={(e) => handleInputChange(setTitle, e.target.value)}></input>
           <input onChange={(e) => handleInputChange(setDescription, e.target.value)}></input>
           <input onChange={(e) => handleInputChange(setNotes, e.target.value)}></input>
-          {decks.map(deck => (
+          {grid.decks.map(deck => (
             <Deck mb key={deck.type} data-testid={"deck"}>
               <h1>{deck.title}</h1>
               <DeckItems data-testid={"deckitem"}>
@@ -116,7 +116,7 @@ export function Board() {
           <p>{notes}</p>
           <Grid data-testid={"grid"}>
             {/* Foreach squares of the desk */}
-            {grid.map((square, index) => (
+            {grid.tiles.map((square, index) => (
               <Droppable key={"drop" + index} id={index} type={square.type} disabled={+allowedRooms.includes(square.type)}>
                 {renderItem(index, items, square)}
               </Droppable>

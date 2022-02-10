@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 
-import { decks } from '../../items/grid';
+import grid from '../../items/grid';
 
 export const Droppable = (props) => {
 
@@ -12,7 +12,7 @@ export const Droppable = (props) => {
     }
   });
 
-  const isADeck = decks.filter(d => d.type === props.type).length === 1;
+  const isADeck = grid.decks.filter(d => d.type === props.type).length === 1;
 
   const style = {
     display: isADeck ? "flex" : "block",

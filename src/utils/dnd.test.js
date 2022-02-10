@@ -13,7 +13,7 @@ import {
 } from "./dnd";
 
 import { itemsTest } from './dnditems';
-import { grid } from "../items/grid";
+import grid from "../items/grid";
 
 import { spawns } from "../items/spawns";
 import { doors } from "../items/doors";
@@ -104,9 +104,9 @@ describe("getAreaByRotationModeFunc", () => {
         }
     }
     /* Generate multiple results for differents drag events */
-    const result = getAreaByRotationMode(item, event, grid);
-    const result2 = getAreaByRotationMode(item2, event, grid);
-    const result3 = getAreaByRotationMode(item3, event, grid);
+    const result = getAreaByRotationMode(item, event, grid.tiles);
+    const result2 = getAreaByRotationMode(item2, event, grid.tiles);
+    const result3 = getAreaByRotationMode(item3, event, grid.tiles);
 
     /* Expected coveredArea results for differents items props */
     it("getAreaForDifferentsWidthHeighAndRotate", () => {
@@ -224,7 +224,7 @@ describe("getLargeObjectAreaFunc", () => {
 
     it("returnAValidLargeObjectArea", () => {
         /* Replace the table to the closest tile */
-        const largeObjectArea = getLargeObjectArea(itemsTest, itemsTest[3], event, grid);
+        const largeObjectArea = getLargeObjectArea(itemsTest, itemsTest[3], event, grid.tiles);
         expect(typeof(largeObjectArea.isAvailable)).toBe("boolean");
         expect(typeof(largeObjectArea.coveredArea)).toBe("object");
         expect(largeObjectArea.isAvailable).toBeTruthy();
@@ -235,12 +235,12 @@ describe("getLargeObjectAreaFunc", () => {
     it("returnAnUnvalidLargeObjectArea", () => {
         /* Replace the table in two differents rooms at the same time, an impossible move */
         event.over.id = 29
-        const largeObjectArea2 = getLargeObjectArea(itemsTest, itemsTest[3], event, grid);
+        const largeObjectArea2 = getLargeObjectArea(itemsTest, itemsTest[3], event, grid.tiles);
         expect(largeObjectArea2.isAvailable).toBeFalsy();
 
         /* Places the table where an item is already located (f.e. itemsTest[4]) */
         event.over.id = 220;
-        const largeObjectArea3 = getLargeObjectArea(itemsTest, itemsTest[3], event, grid);
+        const largeObjectArea3 = getLargeObjectArea(itemsTest, itemsTest[3], event, grid.tiles);
         expect(largeObjectArea3.isAvailable).toBeFalsy();
     })
 
@@ -270,7 +270,7 @@ describe("setParentToItemFunc", () => {
     }
 
     it("itemIsAnEnemy", () =>  {
-        const result = setParentToItem(itemsTest, itemsTest[0], eventTest.over, eventTest, grid);
+        const result = setParentToItem(itemsTest, itemsTest[0], eventTest.over, eventTest, grid.tiles);
         expect(typeof(result)).toBe("object");
         expect(result.parent[0]).toBe(25);
     })
@@ -279,32 +279,32 @@ describe("setParentToItemFunc", () => {
         /* Item is on vertical mode and at the extrem bottom of the board */
         eventTest.over.id = 468;
         itemsTest[3].properties.rotate = 1;
-        const result = setParentToItem(itemsTest, itemsTest[3], eventTest.over, eventTest, grid);
+        const result = setParentToItem(itemsTest, itemsTest[3], eventTest.over, eventTest, grid.tiles);
         expect(result.parent[0]).toBe(itemsTest[3].type);
     })
     it("itemIsNotAnEnemyAndAtTheRightOfTheBoard", () => {
         /* Item is on horizontal mode and at the extrem right of the board */
         eventTest.over.id = 25;
-        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid.tiles);
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })
     it("itemIsNotAnEnemyAndAreaIsAvailable", () => {
         /* Item is on an available area */
         eventTest.over.id = 27;
-        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid.tiles);
         expect(result.parent[0]).toBe(27);
     })
     it("itemIsNotAnEnemyAndAreaIsUnavailable", () => {
         /* Item is on an available area */
         eventTest.over.id = 29;
-        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid.tiles);
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })
     it("itemIsNotAnEnemyAndDraggedOnTheDeck", () => {
         /* Item is dragged on a desk */
         eventTest.over.id = "trap";
         itemsTest[8].properties.rotate = 1;
-        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid);
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid.tiles);
         expect(result.properties.rotate).toBe(0);
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })
@@ -316,11 +316,11 @@ describe("setParentToItemFunc", () => {
 describe("setNewItemsFunc", () => {
     it("overIsUnvalid", () => {
         /* If hovered element has an unvalid type */
-        expect(setNewItems(eventTestOverNull, itemsTest, grid, allowedRooms)).toBe(itemsTest);
+        expect(setNewItems(eventTestOverNull, itemsTest, grid.tiles, allowedRooms)).toBe(itemsTest);
     })
     it("overIsValid", () => {
         /* If hovered element has a valid type */
-        expect(setNewItems(eventTest, itemsTest, grid, allowedRooms)).not.toBe(itemsTest);
+        expect(setNewItems(eventTest, itemsTest, grid.tiles, allowedRooms)).not.toBe(itemsTest);
     })
 })
 
@@ -335,14 +335,14 @@ describe("getAllowedRoomsFunc", () => {
             {/* ... */ parent: [105], type: "enemy"},
             {/* ... */ parent: [192], type: "spawn"}
         ]
-        expect(getAllowedRooms(items, grid)).toStrictEqual([...allowedRooms, "r11"]);
+        expect(getAllowedRooms(items, grid.tiles)).toStrictEqual([...allowedRooms, "r11"]);
     })
     it("roomIsAllowedAtTheMomentAPieceIsInsideExcludeDuplicates", () => {
         const items = [
             {/* ... */ parent: [27], type: "door"},
             {/* ... */ parent: [28], type: "door"}
         ]
-        expect(getAllowedRooms(items, grid)).toStrictEqual([...allowedRooms, "r1"]);
+        expect(getAllowedRooms(items, grid.tiles)).toStrictEqual([...allowedRooms, "r1"]);
     })
 })
 
@@ -359,13 +359,13 @@ describe("isADoorCanBeDroppedFunc", () => {
     }
     
     it("canRenderADoorHere", () => {
-        expect(isADoorCanBeDropped(event, 1, grid, []).canDrop).toBeTruthy();
+        expect(isADoorCanBeDropped(event, 1, grid.tiles, []).canDrop).toBeTruthy();
     })
     it("cantRenderADoorHereCauseOfRotation", () => {
-        expect(isADoorCanBeDropped(event, 0, grid, []).canDrop).toBeFalsy();
+        expect(isADoorCanBeDropped(event, 0, grid.tiles, []).canDrop).toBeFalsy();
     })
     it("cantRenderADoorHereCauseOfAnotherDoor", () => {
-        expect(isADoorCanBeDropped(event, 0, grid, [{/* ... */parent: [31], type: "door"}]).canDrop).toBeFalsy();
+        expect(isADoorCanBeDropped(event, 0, grid.tiles, [{/* ... */parent: [31], type: "door"}]).canDrop).toBeFalsy();
     })
 })
 

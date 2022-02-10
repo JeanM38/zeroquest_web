@@ -9,7 +9,7 @@ import { Droppable } from './Droppable';
 
 it("isDroppableIsRenderedCorrectly", () => {
     act(() => {
-      render(<Droppable />, container);
+      render(<Droppable />);
     });
     expect(container).not.toBeNull();
-  })
+})

@@ -1,0 +1,16 @@
+{
+    "collectCoverage": true,
+    "moduleFileExtensions": [
+        "js",
+        "mjs",
+        "json"
+    ],
+    "coverageReporters": [
+      "lcov"
+    ],
+    "transform": {
+        "^.+\\.js$": "babel-jest",
+        "^.+\\.mjs$": "babel-jest"
+    },
+    "coverageDirectory": "./output/code-coverage/"
+}

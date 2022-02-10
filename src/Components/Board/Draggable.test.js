@@ -18,7 +18,7 @@ it("isDraggableIsRenderedCorrectly", () => {
             parent={p.parent}
             properties={p.properties ? p.properties : null} /* For furnitures & traps not 1*1 item */
             rotate={() => setRotate(p.index, items)} /* Pass rotate func to the draggable element, she will return rotate value's of it at the run time */
-          />, container);
+          />);
     });
     expect(container).not.toBeNull();
 })

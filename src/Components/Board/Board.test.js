@@ -7,7 +7,7 @@ import { screen } from '@testing-library/dom'
 import { container } from '../../setupTests';
 
 /* Grid */
-import { decks, grid } from '../../items/grid';
+import grid from '../../items/grid';
 
 /* Items */
 import { enemies } from '../../items/enemies';
@@ -46,18 +46,18 @@ describe("BoardRendering", () => {
  */
 describe("DecksRendering", () => {
   it("isDecksAreAllRendered", () => {
-    act(() => { render(<Board />, container) });
-    expect(screen.queryAllByTestId("deck").length).toBe(decks.length);
+    act(() => { render(<Board />) });
+    expect(screen.queryAllByTestId("deck").length).toBe(grid.decks.length);
   })
   
   it("isDecksItemsAreAllRendered", () => {
-    act(() => { render(<Board />, container) });
-    expect(screen.queryAllByTestId("deckitem").length).toBe(decks.length);
+    act(() => { render(<Board />) });
+    expect(screen.queryAllByTestId("deckitem").length).toBe(grid.decks.length);
   })
   
   it("isDecksHaveCorrectTitles", () => {
-    act(() => { render(<Board />, container) });
-    decks.map((deck, index) => { expect(screen.queryAllByTestId("deck")[index]).toHaveTextContent(deck.title) })
+    act(() => { render(<Board />) });
+    grid.decks.map((deck, index) => { expect(screen.queryAllByTestId("deck")[index]).toHaveTextContent(deck.title) })
   })
 })
 
@@ -66,16 +66,16 @@ describe("DecksRendering", () => {
  */
 describe("DragAndDropElementsTest", () => {
   it("isDraggableItemsArAllRendered", () => {
-    act(() => { render(<Board />, container) });
+    act(() => { render(<Board />) });
     expect(screen.queryAllByTestId("draggable").length).toBe(
       enemies.length + furnitures.length + traps.length + doors.length + spawns.length
     )
   })
   
   it("isDroppableItemsArAllRendered", () => {
-    act(() => { render(<Board />, container) });
+    act(() => { render(<Board />) });
   
-    // If DOM has a droppable item for each grid squares AND each decks
-    expect(screen.queryAllByTestId("droppable").length).toBe(decks.length + grid.length);
+    // If DOM has a droppable item for each grid squares AND each grid.decks
+    expect(screen.queryAllByTestId("droppable").length).toBe(grid.decks.length + grid.tiles.length);
   })
 })

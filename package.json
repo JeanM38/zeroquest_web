@@ -19,22 +19,6 @@
     "test-watch": "jest --watchAll --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "jest": {
-    "collectCoverage": true,
-    "coverageReporters": [
-      "lcov"
-    ],
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    },
-    "coverageDirectory": "./output/code-coverage/"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -48,7 +32,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.16.8",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
