@@ -124,13 +124,28 @@ export const handleInputChange = (setter, value) => {
   setter(value);
 }
 
-export const getAllSquaresOfARoom = (items, grid, type) => {
+/**
+ * 
+ * @description Get all squares of a room by room type (ie: all r1 type squares)
+ * @param {Array} items 
+ * @param {Array} grid 
+ * @param {String} type 
+ * @returns {Array} of all squares of the room
+ */
+export const getRoomsFilled = (items, grid, type) => {
   return type === "spawns" ? 
     [...new Set(items.map(item => grid[item.parent[0]].type))] :
     [...new Set(items.map(item => [ grid[item[0]].type, grid[item[1]].type ]))];
 }
 
-export const getAllSquaresByRoom = (types, grid) => {
+/**
+ * 
+ * @description get squares of all unaccessible rooms
+ * @param {Array} types 
+ * @param {Array} grid 
+ * @returns {Array} of unaccessible squares
+ */
+export const getUnaccessibleSquares = (types, grid) => {
   let squaresUnallowed = [];
 
   types.map(type => {
@@ -138,7 +153,9 @@ export const getAllSquaresByRoom = (types, grid) => {
       if (type.includes(square.type)) {
         squaresUnallowed = [...squaresUnallowed, grid.indexOf(square)]
       }
+      return grid;
     })
+    return types;
   })
 
   return squaresUnallowed;

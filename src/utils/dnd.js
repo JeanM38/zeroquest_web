@@ -1,4 +1,4 @@
-import { allEqual, getAllSquaresOfARoom, getAllSquaresByRoom } from "./functions";
+import { allEqual, getRoomsFilled, getUnaccessibleSquares } from "./functions";
 
 const itemTypes = [
     "trap", 
@@ -380,7 +380,7 @@ export const removeItemsOnUnallowedRooms = (items, allowedRooms, grid) => {
         .filter(i => i.parent[0] !== i.type)
         .map(i => { return i.parent });
 
-    const doorRooms = getAllSquaresOfARoom(doorPos, grid, "doors");
+    const doorRooms = getRoomsFilled(doorPos, grid, "doors");
     const doorDestinations = doorRooms.map(d => { return d[1] });
     
     let unaccessibleRooms = [];
@@ -390,9 +390,10 @@ export const removeItemsOnUnallowedRooms = (items, allowedRooms, grid) => {
         if (!tempDestinations.includes(door[0]) && !spawnPos.some(s => door[0].includes(s))) {
             unaccessibleRooms = [...unaccessibleRooms, door];
         }
+        return doorRooms;
     })
 
-    unaccessibleRooms = getAllSquaresByRoom(unaccessibleRooms, grid);
+    unaccessibleRooms = getUnaccessibleSquares(unaccessibleRooms, grid);
     
     return items.map(i => {
         if (i.type !== "spawn") {

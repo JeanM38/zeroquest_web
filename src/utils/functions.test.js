@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 /* Utils */
 import { 
     allEqual, 
+    getRoomsFilled, 
     renderItem, 
     resetBoard, 
     setRotate
@@ -73,6 +74,9 @@ describe("setRotateFunc", () => {
         {type: "enemy", index: "enemy1", parent: null}
         /* ... */
     ]
+    const doorMinRotate = [{type: "door", index: "door1", parent: ["12", "13"], properties: {rotate: 0}}];
+    const doorMaxRotate = [{type: "door", index: "door2", parent: ["12", "13"], properties: {rotate: 3}}];
+
     const furnitureTest = setRotate("furniture1", items);
     expect(furnitureTest[0].properties.rotate).toBe(1);
 
@@ -81,6 +85,12 @@ describe("setRotateFunc", () => {
 
     const enemyTest = setRotate("enemy1", items);
     expect(enemyTest).toStrictEqual(items);
+
+    const doorMinTest = setRotate("door1", doorMinRotate);
+    expect(doorMinTest[0].properties.rotate).toBe(1);
+
+    const doorMaxTest = setRotate("door2", doorMaxRotate);
+    expect(doorMaxTest[0].properties.rotate).toBe(0);
 })
 
 /**
@@ -107,4 +117,19 @@ describe("setRotateFunc", () => {
     draggableElements.map((e) => {
         expect(e.style.transform).toEqual("rotate(0deg)")
     })
+})
+
+/**
+ * Test suites for getRoomsFilled(items, grid, type)
+ */
+describe("getRoomsFilled", () => {
+    let parents = [[292, 293]];
+
+    expect(getRoomsFilled(parents, grid.tiles, "doors")).toStrictEqual([["r13", "r14"]]);
+
+    parents.push([318, 344]);
+    expect(getRoomsFilled(parents, grid.tiles, "doors")).toStrictEqual([["r13", "r14"], ["r13", "r18"]])
+
+    let parentSpawn = [{/* ... */ parent: [292]}];
+    expect(getRoomsFilled(parentSpawn, grid.tiles, "spawns")).toStrictEqual(["r13"]);
 })
