@@ -375,29 +375,12 @@ export const removeItemsOnUnallowedRooms = (items, allowedRooms, grid) => {
     /* Get all squares covered by these allowed types */
     const squares = allowedTypes.map(i => grid.indexOf(i));
 
-    /* Position of all spawn points */
-    let spawnPos = items.filter(i => i.type === "spawn").filter(i => i.parent[0] !== i.type);
-    spawnPos = spawnPos.map(spawn => { return grid[spawn.parent[0]].type });
+    /* Get spawns and doors positions */
+    const itemsPos = getItemsPos(items, grid);
 
-    /* Position of all doors */
-    const doorPos = items
-        .filter(i => i.type === "door")
-        .filter(i => i.parent[0] !== i.type)
-        .map(i => { return i.parent });
-
-    const doorRooms = getRoomsFilled(doorPos, grid, "doors");
-    const doorDestinations = doorRooms.map(d => { return d[1] });
+    const doorRooms = getRoomsFilled(itemsPos.doors, grid, "doors");
     
-    let unaccessibleRooms = [];
-
-    doorRooms.map(door => {
-        const tempDestinations = doorDestinations.map(d => {return d !== door[1] ? d : ""});
-        if (!tempDestinations.includes(door[0]) && !spawnPos.some(s => door[0].includes(s))) {
-            unaccessibleRooms = [...unaccessibleRooms, door];
-        }
-        return doorRooms;
-    })
-
+    let unaccessibleRooms = getRoomsNotProvidedByDoors(doorRooms, itemsPos.spawns);
     unaccessibleRooms = getUnaccessibleSquares(unaccessibleRooms, grid);
     
     return items.map(i => {
@@ -411,4 +394,55 @@ export const removeItemsOnUnallowedRooms = (items, allowedRooms, grid) => {
             return i;
         }
     })
+}
+
+/**
+ * 
+ * @description get a path between all doors 
+ * @param {Array} doorRooms 
+ * @param {Array} destinations 
+ * @param {String} spawnPos 
+ * @returns rooms where path is broken
+ */
+export const getRoomsNotProvidedByDoors = (doorRooms, spawnPos) => {
+    let unaccessibleRooms = [];
+    const doorDestinations = doorRooms.map(d => { return d[1] });
+
+    doorRooms.map(door => {
+        const tempDestinations = doorDestinations.map(d => {return d !== door[1] ? d : ""});
+        if (!tempDestinations.includes(door[0]) && !spawnPos.some(s => door[0].includes(s))) {
+            unaccessibleRooms = [...unaccessibleRooms, door];
+        }
+        return doorRooms;
+    })
+
+    return unaccessibleRooms;
+}
+
+/**
+ * 
+ * @description get all doors & spawns positions in all items
+ * @param {Array} items 
+ * @param {Array} grid 
+ * @returns doors & spawns positions (parents)
+ */
+export const getItemsPos = (items, grid) => {
+    /* Position of all spawn points */
+    const spawnsPos = 
+        items
+            .filter(i => i.type === "spawn")
+            .filter(i => i.parent[0] !== i.type)
+            .map(spawn => { return grid[spawn.parent[0]].type });
+
+    /* Position of all door points */
+    const doorsPos = 
+        items
+            .filter(i => i.type === "door")
+            .filter(i => i.parent[0] !== i.type)
+            .map(i => { return i.parent });
+
+    return {
+        doors:  doorsPos,
+        spawns: spawnsPos
+    }
 }
