@@ -326,6 +326,38 @@ describe("setParentToItemFunc", () => {
         expect(result.properties.rotate).toBe(0);
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })
+    it("itemIsNotAnEnemyAndObjectAreaIsAvailable", () => {
+        eventTest.active.data.current = "spawn";
+        eventTest.over.id = 27;
+        eventTest.over.data.current.type = "r1";
+        const result = setParentToItem(itemsTest, itemsTest[11], eventTest, tiles);
+        expect(result.parent).toStrictEqual([27, 28, 53, 54]);
+    })
+    it("itemIsNotAnEnemyAndDraggedOnAnUnvalidTile", () => {
+        /* Insert a spawn in the test items */
+        const spawnInsertion = {
+            "index": "spawn3",
+            "parent": [42],
+            "type": "spawn",
+            "subtype": "indeSpawn",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 1
+            }
+        }
+        const itemsWithSpawnAdd = [...itemsTest, spawnInsertion];
+
+        /* Create a new event */
+        eventTest.active.data.current = "spawn";
+        eventTest.over.id = "enemy";
+        eventTest.over.data.current.type = "spawn";
+
+        /* Expect to a spawn being dragged on his deck to reset its rotate value */
+        const result = setParentToItem(itemsTest, itemsWithSpawnAdd[itemsWithSpawnAdd.length - 1], eventTest, tiles);
+        expect(result.properties.rotate).toBe(0);
+        expect(result.parent[0]).toBe("spawn");
+    })
 })
 
 /**
