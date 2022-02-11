@@ -86,4 +86,46 @@ export const itemsTest = [
             rotate: 0
         }
     },
+    {
+        index: "door1",
+        parent: ["door"],
+        type: "door",
+        properties : {
+            width: 1,
+            height: 1,
+            rotate: 1
+        }
+    },
+    {
+        index: "door1",
+        parent: ["door"],
+        type: "door",
+        properties : {
+            width: 1,
+            height: 1,
+            rotate: 3
+        }
+    },
+    {
+        index: "spawn1",
+        parent: ["spawn"],
+        type: "spawn",
+        subtype: "stairs",
+        properties : {
+            width: 2,
+            height: 2,
+            rotate: 0
+        }
+    },
+    {
+        index: "spawn2",
+        parent: ["spawn"],
+        type: "spawn",
+        subtype: "indeSpawn",
+        properties : {
+            width: 1,
+            height: 1,
+            rotate: 0
+        }
+    },
 ];

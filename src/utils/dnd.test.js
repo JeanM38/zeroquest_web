@@ -268,43 +268,57 @@ describe("setParentToItemFunc", () => {
         }
         /* ... */
     }
+    const eventDoor = {
+        active: { id: "door1", data: { current: "door" } },
+        over: { 
+            id: 31,
+            data: { current: { type: "r2" } }
+        },
+    }
 
     it("itemIsAnEnemy", () =>  {
-        const result = setParentToItem(itemsTest, itemsTest[0], eventTest.over, eventTest, grid.tiles);
+        const result = setParentToItem(itemsTest, itemsTest[0], eventTest, grid.tiles);
         expect(typeof(result)).toBe("object");
         expect(result.parent[0]).toBe(25);
     })
-
+    it("itemIsADoorAndCanBeDropped", () => {
+        const result = setParentToItem(itemsTest, itemsTest[9], eventDoor, grid.tiles);
+        expect(result.parent[0]).toBe(31);
+    })
+    it("itemIsADoorAndCantBeDropped", () => {
+        const result = setParentToItem(itemsTest, itemsTest[10], eventDoor, grid.tiles);
+        expect(result.parent[0]).toBe("door");
+    })
     it("itemIsNotAnEnemyAndAtTheBottomOfTheBoard", () => {
         /* Item is on vertical mode and at the extrem bottom of the board */
         eventTest.over.id = 468;
         itemsTest[3].properties.rotate = 1;
-        const result = setParentToItem(itemsTest, itemsTest[3], eventTest.over, eventTest, grid.tiles);
+        const result = setParentToItem(itemsTest, itemsTest[3], eventTest, grid.tiles);
         expect(result.parent[0]).toBe(itemsTest[3].type);
     })
     it("itemIsNotAnEnemyAndAtTheRightOfTheBoard", () => {
         /* Item is on horizontal mode and at the extrem right of the board */
         eventTest.over.id = 25;
-        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid.tiles);
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest, grid.tiles);
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })
     it("itemIsNotAnEnemyAndAreaIsAvailable", () => {
         /* Item is on an available area */
         eventTest.over.id = 27;
-        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid.tiles);
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest, grid.tiles);
         expect(result.parent[0]).toBe(27);
     })
     it("itemIsNotAnEnemyAndAreaIsUnavailable", () => {
         /* Item is on an available area */
         eventTest.over.id = 29;
-        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid.tiles);
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest, grid.tiles);
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })
     it("itemIsNotAnEnemyAndDraggedOnTheDeck", () => {
         /* Item is dragged on a desk */
         eventTest.over.id = "trap";
         itemsTest[8].properties.rotate = 1;
-        const result = setParentToItem(itemsTest, itemsTest[8], eventTest.over, eventTest, grid.tiles);
+        const result = setParentToItem(itemsTest, itemsTest[8], eventTest, grid.tiles);
         expect(result.properties.rotate).toBe(0);
         expect(result.parent[0]).toBe(itemsTest[8].type);
     })

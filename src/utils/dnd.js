@@ -138,43 +138,48 @@ export const setRotateToZeroOnDeck = (itemProps, over) => {
  * @param {Array} grid 
  * @returns {Object} item with new/initial parent property
  */
-export const setParentToItem = (items, item, over, event, grid) => {
+export const setParentToItem = (items, item, event, grid) => {
+    const over = event.over;
+    const iProps = item.properties;
+
     if (item.type === "enemy") {
         return {...item, parent: [over.id]}
     } else if (item.type === "door") {
-        const doorDropped = isADoorCanBeDropped(event, item.properties.rotate, grid, items);
+        const doorDropped = isADoorCanBeDropped(event, iProps.rotate, grid, items);
 
         if (doorDropped.canDrop) {
             return {...item, parent: [over.id, doorDropped.destination]}
         } else {
             return {...item, parent: [item.type]}
         }
-    } else if (item.type === "spawn") {
-        return isASpawnCanBeDropped(item, items, over);
-    } else {
+    } {
         if (
             /* Check if item is not overflow the grid on the horizontal way */
-            (over.id < 468 && item.properties.rotate === 1) ||
+            (over.id < 468 && iProps.rotate === 1) ||
             /* Check if item is not overflow the grid on the vertical way */
-            ((over.id + 1) % 26 !== 0 && item.properties.rotate === 0)
+            ((over.id + 1) % 26 !== 0 && iProps.rotate === 0)
         ) {
             if(!["trap", "furniture", "spawn"].includes(over.data.current.type)) {
                 const objectArea = getLargeObjectArea(items, item, event, grid);
 
                 if (objectArea.isAvailable) {
                     /* If there are no items in the area, and types of tiles are all equal, else return the last parent */
-                    return {...item, parent: objectArea.coveredArea};
+                    if (item.type === "spawn") {
+                        return isASpawnCanBeDropped(item, items, over, objectArea.coveredArea);
+                    } else {
+                        return {...item, parent: objectArea.coveredArea};
+                    }
                 } else {
                     /* If there items in the area, or types of tiles are not all equal, else return item to its deck */
-                    item.properties.rotate = 0;
+                    iProps.rotate = 0;
                     return {...item, parent: [item.type]};
                 }
             } else {
-                item.properties.rotate = 0;
+                iProps.rotate = 0;
                 return {...item, parent: [item.type]}
             }
         } else {
-            item.properties.rotate = 0;
+            iProps.rotate = 0;
             return {...item, parent: [item.type]}
         }
     }
@@ -244,7 +249,7 @@ export const setNewItems = (event, items, grid, allowedRooms) => {
             if (isItemCanBeDropped(event, item, isFilled, activeType, overType, allowedRooms)) {
                 /* If item has props, set rotate depends on drop target */
                 if (itemProps) {itemProps.rotate = setRotateToZeroOnDeck(itemProps, over)}
-                    item = setParentToItem(items, item, over, event, grid)
+                    item = setParentToItem(items, item, event, grid)
                 } else {
                     return item
                 }
@@ -343,16 +348,16 @@ export const getAllowedRooms = (items, grid) => {
  * @param {Object} over 
  * @returns {Boolean} If a spawn can be dropped here
  */
-export const isASpawnCanBeDropped = (item, items, over) => {
-    const spawns = items.filter(i => i.type === "spawn");
-    let stairs = spawns.filter(i => i.subtype === "stairs");
+export const isASpawnCanBeDropped = (item, items, over, area) => {
+    const spawns = items.filter(i => i.type === "spawn").filter(i => i.index !== item.index);
+    let stairs = spawns.filter(i => i.subtype === "stairs").filter(i => i.index !== item.index);
 
     if (item.subtype === "stairs") {
         const indeSpawns = spawns.filter(i => i.parent[0] !== "spawn");
-        return indeSpawns.length > 0 ? {...item, parent: [item.type]} : {...item, parent: [over.id]};
+        return indeSpawns.length > 0 ? {...item, parent: [item.type]} : {...item, parent: area ? area : over.id};
     } else {
         stairs = stairs.filter(i => i.parent[0] !== "spawn");
-        return stairs.length > 0 ? {...item, parent: [item.type]} : {...item, parent: [over.id]};
+        return stairs.length > 0 ? {...item, parent: [item.type]} : {...item, parent: area ? area : over.id};
     }
 }
 
