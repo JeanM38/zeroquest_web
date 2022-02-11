@@ -421,12 +421,14 @@ describe("isASpawnCanBeDroppedFunc", () => {
         expect(isASpawnCanBeDropped(indeSpawn, itemsWithStairPlaced, over)).toStrictEqual(indeSpawn);
     })
     it("canDropAnIndeSpawnIfStairIsntPlaced", () => {
-        expect(isASpawnCanBeDropped(indeSpawn, allItems, over)).toStrictEqual({...indeSpawn, parent: [1]});
+        expect(isASpawnCanBeDropped(indeSpawn, allItems, over, [27, 28, 53, 54]))
+            .toStrictEqual({...indeSpawn, parent: [27, 28, 53, 54]});
     })
     it("cantDropAStairIfIndeSpawnArePlaced", () => {
         expect(isASpawnCanBeDropped(stairSpawn, itemsWithIndeSpawnPlaced, over)).toStrictEqual(stairSpawn);
     })
     it("canDropAStairIfIndeSpawnArentPlaced", () => {
-        expect(isASpawnCanBeDropped(stairSpawn, allItems, over)).toStrictEqual({...stairSpawn, parent: [1]});
+        expect(isASpawnCanBeDropped(stairSpawn, allItems, over, [27, 28, 53, 54]))
+            .toStrictEqual({...stairSpawn, parent: [27, 28, 53, 54]});
     })
 })
