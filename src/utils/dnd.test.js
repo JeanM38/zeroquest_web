@@ -148,7 +148,7 @@ describe("setRotateToZeroOnDeckFunc", () => {
 })
 
 /**
- * Test suites for isItemCanBeDropped(event, item, isFilled, activeType, overType)
+ * Test suites for isItemCanBeDropped(event, item, isFilled, allowedRooms)
  */
 describe("isItemCanBeDroppedFunc", () => {
     const isFilled = 1;

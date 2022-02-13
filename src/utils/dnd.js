@@ -191,11 +191,12 @@ export const setParentToItem = (items, item, event, grid) => {
  * @param {Object} event 
  * @param {Object} item 
  * @param {Boolean} isFilled 
- * @param {String} activeType 
- * @param {String} overType 
+ * @param {Array} allowedRooms
  * @returns {Boolean} if he's droppable or not
  */
-export const isItemCanBeDropped = (event, item, isFilled, activeType, overType, allowedRooms) => {
+export const isItemCanBeDropped = (event, item, isFilled, allowedRooms) => {
+    const overType = event.over.data.current.type;
+    const activeType = event.active.data.current;
     if (
         event.active.id === item.index && (
             (
@@ -204,8 +205,8 @@ export const isItemCanBeDropped = (event, item, isFilled, activeType, overType, 
                 !itemTypes.filter(i => i !== activeType).includes(overType)
             ) ||
             (
-                ((item.subtype === "stairs" && !["corridor", "r13", "r14", "trap", "enemy", "furniture", "door"].includes(overType)) ||
-                (item.subtype === "indeSpawn" && !["corridor", "trap", "enemy", "furniture", "door"].includes(overType)))
+                ((item.subtype === "stairs" && !["r13", "r14", "trap", "enemy", "furniture", "door"].includes(overType)) && overType[0] !== "c" ||
+                (item.subtype === "indeSpawn" && !["trap", "enemy", "furniture", "door"].includes(overType)) && overType[0] !== "c")
             ) || 
             (
                 /* Enemy/Trap/Furniture */
@@ -215,7 +216,7 @@ export const isItemCanBeDropped = (event, item, isFilled, activeType, overType, 
                     (activeType === "enemy" || activeType === "trap") && 
                     !itemTypes.filter(i => i !== activeType).includes(overType)
                 ) || /* Enemy */
-                (activeType === "furniture" && (!itemTypes.filter(i => i !== activeType).includes(overType)) && overType !== "corridor"))  /* Furniture */
+                (activeType === "furniture" && (!itemTypes.filter(i => i !== activeType).includes(overType)) && overType[0] !== "c"))  /* Furniture */
             )
         )
     ) {
@@ -235,8 +236,6 @@ export const isItemCanBeDropped = (event, item, isFilled, activeType, overType, 
  */
 export const setNewItems = (event, items, grid, allowedRooms) => {
     const {over} = event; /* Hovered element */
-    const activeType = event.active.data.current; /* Type of dragged element */
-    const overType = over === null ? null : over.data.current.type; /* Type of hovered element */
 
     /* If hovered element has a valid type */
     if (over) {
@@ -246,7 +245,7 @@ export const setNewItems = (event, items, grid, allowedRooms) => {
         return items.map(item => {
             const itemProps = item.properties;
 
-            if (isItemCanBeDropped(event, item, isFilled, activeType, overType, allowedRooms)) {
+            if (isItemCanBeDropped(event, item, isFilled, allowedRooms)) {
                 /* If item has props, set rotate depends on drop target */
                 if (itemProps) {itemProps.rotate = setRotateToZeroOnDeck(itemProps, over)}
                     item = setParentToItem(items, item, event, grid)
@@ -272,6 +271,7 @@ export const setNewItems = (event, items, grid, allowedRooms) => {
  */
 export const isADoorCanBeDropped = (event, rotate, grid, items) => {
     if (event.over.id !== event.active.data.current) {
+        const overType = event.over.data.current.type;
         let destinationType;
         let destinationIndex;
 
@@ -295,7 +295,7 @@ export const isADoorCanBeDropped = (event, rotate, grid, items) => {
             default:
                 break;
         }
-        const doorIsBetweenTwoDifferentRooms = destinationType !== event.over.data.current.type;
+        const doorIsBetweenTwoDifferentRooms = destinationType !== overType && destinationType[0] !== overType[0];
         const doorOnTheSameIndex = items.filter(item => item.type === "door" && item.parent[0] === event.over.id).length;
 
         if (destinationIndex !== null && doorOnTheSameIndex === 0 && doorIsBetweenTwoDifferentRooms) {
@@ -332,12 +332,22 @@ export const getAllowedRooms = (items, grid) => {
         "furniture",
         "spawn"
     ];
+    corridorPathFinding(grid, items);
     return [...alwaysAllowedRooms, ...new Set([...items
         .filter(item => item.type === "spawn" || item.type === "door")
         .filter(item => !item.parent.includes(item.type))
         .map(item => { return item.parent }).flat()
         .map(item => { return grid[item].type })])
     ]             
+}
+
+export const corridorPathFinding = (grid, items) => {
+    const doorExits = 
+        items
+            .filter(item => item.type === "door" && item.parent[0] !== item.type)
+            .map(item => { return item.parent }).flat()
+            .map(item => { return grid[item].type })
+            .filter(item => item[0] === "c")
 }
 
 /**

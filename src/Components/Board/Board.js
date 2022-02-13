@@ -88,12 +88,12 @@ export function Board() {
           {/* <button onClick={addEnemy}>Add an enemy</button> */}
           
           {/* Generate multiple decks by deck type */}
-          <input onChange={(e) => handleInputChange(setTitle, e.target.value)}></input>
+          {/* <input onChange={(e) => handleInputChange(setTitle, e.target.value)}></input>
           <input onChange={(e) => handleInputChange(setDescription, e.target.value)}></input>
-          <input onChange={(e) => handleInputChange(setNotes, e.target.value)}></input>
+          <input onChange={(e) => handleInputChange(setNotes, e.target.value)}></input> */}
           {grid.decks.map(deck => (
             <Deck mb key={deck.type} data-testid={"deck"}>
-              <h1>{deck.title}</h1>
+              <h3>{deck.title}</h3>
               <DeckItems data-testid={"deckitem"}>
                 <Droppable key={"drop-" + deck.type} id={deck.type} type={deck.type} disabled={+allowedRooms.includes(deck.type)}>
                     {renderItem(deck.type, items, null)}

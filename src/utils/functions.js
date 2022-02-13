@@ -102,7 +102,7 @@ export const handleDragOver = (event) => {
       /* Check valid types of drop elements for draggable elements */
       if (
         (activeType === "enemy" && !["trap", "furniture"].includes(overType)) ||
-        (activeType === "furniture" && !["trap", "enemy", "corridor"].includes(overType)) ||
+        (activeType === "furniture" && !["trap", "enemy"].includes(overType) && overType[0] !== "c") ||
         (activeType === "trap" && !["trap", "enemy"].includes(overType))
       ) {
         /* User can drop here, square overlay pass to green */
