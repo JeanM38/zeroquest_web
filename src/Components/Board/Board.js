@@ -45,11 +45,12 @@ export function Board() {
     ...trapsArray.traps, 
     ...doorsArray.doors
   ]);
+  const [allowedRooms, setAllowedRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
-  const [allowedRooms, setAllowedRooms] = useState([]);
   const [description, setDescription] = useState("");
   const [notes, setNotes] = useState("");
+  const [privateC, setPrivateC] = useState(true);
 
   /* Catch items movements */
   useEffect(() => {
@@ -86,13 +87,15 @@ export function Board() {
           =================================================
           */}
           <button onClick={() => setItems(resetBoard(items))} data-testid={"resestboard"}>Reset the board</button>
-          <button type="button" onClick={() => registerCreation(items)}>Submit</button>
+          <button type="button" onClick={() => registerCreation(items, title, description, notes, privateC, 1)}>Submit</button>
           {/* <button onClick={addEnemy}>Add an enemy</button> */}
           
           {/* Generate multiple decks by deck type */}
-          {/* <input onChange={(e) => handleInputChange(setTitle, e.target.value)}></input>
+          <input onChange={(e) => handleInputChange(setTitle, e.target.value)}></input>
           <input onChange={(e) => handleInputChange(setDescription, e.target.value)}></input>
-          <input onChange={(e) => handleInputChange(setNotes, e.target.value)}></input> */}
+          <input onChange={(e) => handleInputChange(setNotes, e.target.value)}></input>
+          <input type="checkbox" onChange={() => setPrivateC(!privateC)} id="private" name="private" defaultChecked={privateC}></input>
+          <label htmlFor="private">Private</label>
           {grid.decks.map(deck => (
             <Deck mb key={deck.type} data-testid={"deck"}>
               <h3>{deck.title}</h3>

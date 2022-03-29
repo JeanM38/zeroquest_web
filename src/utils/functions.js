@@ -178,24 +178,12 @@ export const getItemsOnBoard = (items, type) => {
  * @description construct array of creation data
  * @param {Array} items 
  */
-export const registerCreation = (items) => {
-  const itemTypes = ['furniture', 'spawn', 'enemy', 'trap', 'door'];
-  itemTypes.map(item => `data_${item}` = getItemsOnBoard(items, item));
+export const registerCreation = (items, title, desc, notes, privateC, author_id) => {
+  const enemies = getItemsOnBoard(items, 'enemy');
+  const traps = getItemsOnBoard(items, 'trap');
+  const doors = getItemsOnBoard(items, 'door');
+  const spawns = getItemsOnBoard(items, 'spawn');
+  const furnitures = getItemsOnBoard(items, 'furniture');
 
-  /* Construct object */
-  const creation = new Creation(
-    null, 
-    "JeanJean", 
-    "Vazek", 
-    true, 
-    "Oulouloulou", 
-    "alalala", 
-    1647971952, 
-    1647971952, 
-    data_enemies, 
-    data_traps, 
-    data_doors, 
-    data_spawns, 
-    data_furnitures
-  );
+  /* Filter and verify data */
 }

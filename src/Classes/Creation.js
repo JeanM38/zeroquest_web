@@ -1,8 +1,8 @@
 export class Creation {
     constructor(
         id, 
-        title,
         author,
+        title,
         isPrivate, 
         description,
         notes,
@@ -15,8 +15,8 @@ export class Creation {
         furnitures
     ) {
         this.id = id;
-        this.title = title;
         this.author = author;
+        this.title = title;
         this.isPrivate = isPrivate;
         this.description = description;
         this.notes = notes;
