@@ -7,16 +7,15 @@ import { screen } from '@testing-library/dom'
 import { container } from '../../setupTests';
 
 /* Grid */
-import grid from '../../items/grid';
+import grid from '../../data/grid';
 
 /* Items */
-import { enemies } from '../../items/enemies';
-import { furnitures } from '../../items/furnitures';
-import { traps } from '../../items/traps';
-
 import { Board } from './Board';
-import { doors } from '../../items/doors';
-import { spawns } from '../../items/spawns';
+import { enemies } from '../../data/enemies';
+import { furnitures } from '../../data/furnitures';
+import { traps } from '../../data/traps';
+import { doors } from '../../data/doors';
+import { spawns } from '../../data/spawns';
 
 const BoardIdsToTest = [
   "chaptereditor",

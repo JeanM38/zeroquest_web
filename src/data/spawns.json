@@ -15,7 +15,7 @@
         },
         {
             "index": "spawn1",
-            "parent": [54],
+            "parent": ["spawn"],
             "type": "spawn",
             "subtype": "indeSpawn",
             "properties" : {
@@ -26,7 +26,7 @@
         },
         {
             "index": "spawn2",
-            "parent": [392],
+            "parent": ["spawn"],
             "type": "spawn",
             "subtype": "indeSpawn",
             "properties" : {
@@ -37,7 +37,7 @@
         },
         {
             "index": "spawn3",
-            "parent": [246],
+            "parent": ["spawn"],
             "type": "spawn",
             "subtype": "indeSpawn",
             "properties" : {
@@ -48,7 +48,7 @@
         },
         {
             "index": "spawn4",
-            "parent": [412],
+            "parent": ["spawn"],
             "type": "spawn",
             "subtype": "indeSpawn",
             "properties" : {

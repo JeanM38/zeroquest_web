@@ -1,0 +1,455 @@
+{
+    "enemies":
+    [    
+        {
+            "name": "Orc", 
+            "index": "orc1",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "orc",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Orc", 
+            "index": "orc2",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "orc",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Orc", 
+            "index": "orc3",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "orc",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Orc", 
+            "index": "orc4",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "orc",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Orc", 
+            "index": "orc5",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "orc",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Orc", 
+            "index": "orc6",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "orc",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Orc", 
+            "index": "orc7",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "orc",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Orc", 
+            "index": "orc8",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "orc",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Mummy", 
+            "index": "mummy1",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "mummy",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Mummy", 
+            "index": "mummy2",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "mummy",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Chaos warrior", 
+            "index": "chaos_warrior1",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "chaos_warrior",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Chaos warrior", 
+            "index": "chaos_warrior2",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "chaos_warrior",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Chaos warrior", 
+            "index": "chaos_warrior3",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "chaos_warrior",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Chaos warrior", 
+            "index": "chaos_warrior4",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "chaos_warrior",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Fimmir",
+            "index": "fimmir1", 
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "fimmir",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Fimmir",
+            "index": "fimmir2", 
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "fimmir",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Fimmir",
+            "index": "fimmir3", 
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "fimmir",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Gargoyle", 
+            "index": "gargoyle",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "gargoyle",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Goblin", 
+            "index": "goblin1",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "goblin",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Goblin", 
+            "index": "goblin2",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "goblin",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Goblin", 
+            "index": "goblin3",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "goblin",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Goblin", 
+            "index": "goblin4",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "goblin",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Goblin", 
+            "index": "goblin5",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "goblin",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Goblin", 
+            "index": "goblin6",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "goblin",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Skeleton", 
+            "index": "skeleton1",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "skeleton",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Skeleton", 
+            "index": "skeleton2",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "skeleton",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Skeleton", 
+            "index": "skeleton3",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "skeleton",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Skeleton", 
+            "index": "skeleton4",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "skeleton",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }, 
+        {
+            "name": "Zombie", 
+            "index": "zombie1",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "zombie",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        },
+        {
+            "name": "Zombie", 
+            "index": "zombie2",
+            "parent": ["enemy"],
+            "type": "enemy",
+            "subtype": "zombie",
+            "data": {
+                "body": 1,
+                "spirit": 2,
+                "reward": {
+                    "type": "gold",
+                    "amount": 10
+                }
+            }
+        }
+    ]
+}

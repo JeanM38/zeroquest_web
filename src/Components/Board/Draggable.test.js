@@ -5,7 +5,7 @@ import { act } from "react-dom/test-utils";
 import { container } from '../../setupTests';
 
 import { Draggable } from './Draggable';
-import { enemies } from '../../items/enemies';
+import { enemies } from '../../data/enemies';
 
 it("isDraggableIsRenderedCorrectly", () => {
     const p = enemies[0];

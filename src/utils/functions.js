@@ -1,5 +1,6 @@
 import { Draggable } from "../Components/Board/Draggable";
 import React from "react";
+import { Creation } from "../Classes/Creation";
 
 /**
  * 
@@ -58,7 +59,6 @@ export const setRotate = (key, items) => {
  */
 export const renderItem = (id, items) => {
     let itemsToRender = [];
-
     items.map((p) => {
       /* Insure rotate to zero on deck */
       if (p.type !== "enemy" && p.properties.rotate !== 0 && p.parent[0] === p.type) {
@@ -70,6 +70,7 @@ export const renderItem = (id, items) => {
             key={p.index} 
             id={p.index} 
             data={p.type} 
+            itemdata={p.data}
             image={p.subtype} 
             parent={p.parent}
             properties={p.properties ? p.properties : null} /* For furnitures & traps not 1*1 item */
@@ -159,4 +160,42 @@ export const getUnaccessibleSquares = (types, grid) => {
   })
 
   return squaresUnallowed;
+}
+
+/**
+ * 
+ * @description return array of items placed on the board
+ * @param {Array} items 
+ * @param {String} type 
+ * @returns 
+ */
+export const getItemsOnBoard = (items, type) => {
+  return items.filter(item => item.type === type && item.type !== item.parent[0]);
+}
+
+/**
+ * 
+ * @description construct array of creation data
+ * @param {Array} items 
+ */
+export const registerCreation = (items) => {
+  const itemTypes = ['furniture', 'spawn', 'enemy', 'trap', 'door'];
+  itemTypes.map(item => `data_${item}` = getItemsOnBoard(items, item));
+
+  /* Construct object */
+  const creation = new Creation(
+    null, 
+    "JeanJean", 
+    "Vazek", 
+    true, 
+    "Oulouloulou", 
+    "alalala", 
+    1647971952, 
+    1647971952, 
+    data_enemies, 
+    data_traps, 
+    data_doors, 
+    data_spawns, 
+    data_furnitures
+  );
 }

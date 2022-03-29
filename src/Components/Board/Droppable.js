@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 
-import grid from '../../items/grid';
+import grid from '../../data/grid';
 
 export const Droppable = (props) => {
 

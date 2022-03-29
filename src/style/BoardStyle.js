@@ -50,7 +50,7 @@ export const Grid = styled.div`
   grid-template-rows: repeat(19, 1fr);
   grid-auto-flow: row;
   gap: 0px;
-  background-image: url("${process.env.PUBLIC_URL}/Resources/board.jpg");
+  background-image: url("${process.env.PUBLIC_URL}/Resources/Images/board.jpg");
   background-size: contain;
   background-repeat: no-repeat;
   box-shadow: -5px 5px 15px -3px rgba(0,0,0,0.6);

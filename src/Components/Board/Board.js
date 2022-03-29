@@ -5,14 +5,14 @@ import { DndContext } from '@dnd-kit/core';
 import { Droppable } from './Droppable';
 
 /* Grid */
-import grid from '../../items/grid';
+import grid from '../../data/grid';
 
 /* Items */
-import doorsArray from '../../items/doors';
-import enemiesArray from '../../items/enemies';
-import furnituresArray from '../../items/furnitures';
-import spawnsArray from '../../items/spawns';
-import trapsArray from '../../items/traps';
+import doorsArray from '../../data/doors';
+import enemiesArray from '../../data/enemies';
+import furnituresArray from '../../data/furnitures';
+import spawnsArray from '../../data/spawns';
+import trapsArray from '../../data/traps';
 
 /* Styled Components */
 import { 
@@ -33,7 +33,8 @@ import {
 
 import {   
   resetBoard, 
-  renderItem
+  renderItem,
+  registerCreation
 } from '../../utils/functions';
 
 export function Board() {
@@ -85,6 +86,7 @@ export function Board() {
           =================================================
           */}
           <button onClick={() => setItems(resetBoard(items))} data-testid={"resestboard"}>Reset the board</button>
+          <button type="button" onClick={() => registerCreation(items)}>Submit</button>
           {/* <button onClick={addEnemy}>Add an enemy</button> */}
           
           {/* Generate multiple decks by deck type */}

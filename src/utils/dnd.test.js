@@ -122,9 +122,9 @@ describe("getAreaByRotationModeFunc", () => {
 
     /* Expected tilesTypesInTheArea results for differents items props */
     it("getDifferentTypeOfTilesInTheItemArea", () => {
-        expect(result.tilesTypesInTheArea).toStrictEqual(["corridor", "corridor", "corridor", "corridor", "r1", "r1"]);
-        expect(result2.tilesTypesInTheArea).toStrictEqual(["corridor", "corridor", "corridor"]);
-        expect(result3.tilesTypesInTheArea).toStrictEqual(["corridor", "corridor", "corridor"]);
+        expect(result.tilesTypesInTheArea).toStrictEqual(["c0", "c1", "c2", "c26", "r1", "r1"]);
+        expect(result2.tilesTypesInTheArea).toStrictEqual(["c0", "c1", "c2"]);
+        expect(result3.tilesTypesInTheArea).toStrictEqual(["c0", "c26", "c52"]);
     })
 })
 
