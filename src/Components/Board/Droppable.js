@@ -8,7 +8,9 @@ export const Droppable = (props) => {
   const {setNodeRef} = useDroppable({
     id: props.id,
     data: {
-      type: props.type
+      type: props.type,
+      posX: props.posX,
+      posY: props.posY
     }
   });
 

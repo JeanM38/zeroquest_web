@@ -12,6 +12,28 @@
             }
         },
         {
+            "index": "table2",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "table",
+            "properties" : {
+                "width": 3,
+                "height": 2,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "chair1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "chair",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
             "index": "chest1",
             "parent": ["furniture"],
             "type": "furniture",
@@ -23,13 +45,123 @@
             }
         },
         {
-            "index": "wardrobe1",
+            "index": "chest2",
             "parent": ["furniture"],
             "type": "furniture",
-            "subtype": "wardrobe",
+            "subtype": "chest",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "chest3",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "chest",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "chimney1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "chimney",
             "properties" : {
                 "width": 3,
                 "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "library1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "library",
+            "properties" : {
+                "width": 3,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "library2",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "library",
+            "properties" : {
+                "width": 3,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "rack1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "rack",
+            "properties" : {
+                "width": 3,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "torture_table1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "torture_table",
+            "properties" : {
+                "width": 3,
+                "height": 2,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "buffet1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "buffet",
+            "properties" : {
+                "width": 3,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "lectern1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "lectern",
+            "properties" : {
+                "width": 3,
+                "height": 2,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "tumb1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "tumb",
+            "properties" : {
+                "width": 3,
+                "height": 2,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "desk1",
+            "parent": ["furniture"],
+            "type": "furniture",
+            "subtype": "desk",
+            "properties" : {
+                "width": 3,
+                "height": 2,
                 "rotate": 0
             }
         }

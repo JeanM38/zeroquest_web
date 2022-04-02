@@ -37,5 +37,6 @@
     "@testing-library/user-event": "^13.5.0",
     "babel-jest": "^27.4.6",
     "react-test-renderer": "^17.0.2"
-  }
+  },
+  "proxy": "http://127.0.0.1:8000/"
 }

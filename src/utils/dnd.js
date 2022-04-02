@@ -140,15 +140,17 @@ export const setRotateToZeroOnDeck = (itemProps, over) => {
  */
 export const setParentToItem = (items, item, event, grid) => {
     const over = event.over;
+    const overData = over.data.current;
     const iProps = item.properties;
+    console.log(over);
 
     if (item.type === "enemy") {
-        return {...item, parent: [over.id]}
+        return {...item, parent: [over.id], posX: overData.posX, posY: overData.posY}
     } else if (item.type === "door") {
         const doorDropped = isADoorCanBeDropped(event, iProps.rotate, grid, items);
 
         return doorDropped.canDrop ? 
-            {...item, parent: [over.id, doorDropped.destination]} : 
+            {...item, parent: [over.id, doorDropped.destination], posX: overData.posX, posY:overData.posY} : 
             {...item, parent: [item.type]};
     } else {
         if (
@@ -156,7 +158,7 @@ export const setParentToItem = (items, item, event, grid) => {
             ((over.id < 468 && iProps.rotate === 1) ||
             /* Check if item is not overflow the grid on the vertical way */
             ((over.id + 1) % 26 !== 0 && iProps.rotate === 0)) &&
-            !["trap", "furniture", "spawn"].includes(over.data.current.type)
+            !["trap", "furniture", "spawn"].includes(overData.type)
         ) {
             const objectArea = getLargeObjectArea(items, item, event, grid);
 
@@ -165,7 +167,7 @@ export const setParentToItem = (items, item, event, grid) => {
                 if (item.type === "spawn") {
                     return isASpawnCanBeDropped(item, items, over, objectArea.coveredArea);
                 } else {
-                    return {...item, parent: objectArea.coveredArea};
+                    return {...item, parent: objectArea.coveredArea, posX: overData.posX, posY: overData.posY};
                 }
             } else {
                 /* If there items in the area, or types of tiles are not all equal, else return item to its deck */
@@ -242,8 +244,12 @@ export const setNewItems = (event, items, grid, allowedRooms) => {
 
             if (isItemCanBeDropped(event, item, isFilled, allowedRooms)) {
                 /* If item has props, set rotate depends on drop target */
-                if (itemProps) {itemProps.rotate = setRotateToZeroOnDeck(itemProps, over)}
-                    item = setParentToItem(items, item, event, grid)
+                if (itemProps) {
+                    itemProps.rotate = setRotateToZeroOnDeck(itemProps, over)
+                }
+                    
+                item = setParentToItem(items, item, event, grid);
+                
                 } else {
                     return item
                 }
@@ -352,16 +358,6 @@ export const getDoorExits = (grid, items, allowedRooms) => {
             .map(item => { return item.parent }).flat()
             .map(item => { return {type: grid[item].type, index: item} })
             .filter(item => item.type[0] === "c");
-
-    pathFinder(grid, doorExits, allowedRooms)
-}
-
-export const pathFinder = (grid, items, allowedRooms) => {
-    items.map(item => {
-        const tempNodes = [];
-
-        
-    })
 }
 
 /**

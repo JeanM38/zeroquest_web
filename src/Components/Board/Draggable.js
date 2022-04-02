@@ -20,15 +20,12 @@ export const Draggable = (props) => {
       translate3d(${transform.x}px, ${transform.y}px, 0) rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)` : 
       `rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)`, /* Rotate event display */
     opacity: transform ? '0.8' : '1',
-    backgroundImage: `url('${process.env.PUBLIC_URL}/Resources/Images/Characters/${props.image}.png')`,
+    backgroundImage: `url('${process.env.PUBLIC_URL}/Resources/Images/${props.image}.png')`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     transformOrigin: props.properties ? setTransformPosByPieceType(props.properties) : 'unset',
-    
-    /* !!!!!! TEMPORARY !!!!!! */
-    backgroundColor: props.data !== 'door' && props.data !== 'enemy' ? 'red': undefined,
-    border: props.data !== 'door' && props.data !== 'enemy' ? '1px solid black' : undefined,
-    borderBottom: props.data === 'door' ? '6px solid red' : undefined
+
+    borderBottom: props.data === "door" ? '2px solid red' : '0px'
   }
 
   const rotatePiece = (key) => {

@@ -5,7 +5,7 @@
             "index": "trap1",
             "parent": ["trap"],
             "type": "trap",
-            "subtype": "trap",
+            "subtype": "double_rocks",
             "properties" : {
                 "width": 2,
                 "height": 1,
@@ -16,7 +16,7 @@
             "index": "trap2",
             "parent": ["trap"],
             "type": "trap",
-            "subtype": "trap",
+            "subtype": "double_rocks",
             "properties" : {
                 "width": 2,
                 "height": 1,
@@ -24,10 +24,65 @@
             }
         },
         {
-            "index": "trap3",
+            "index": "hole1",
             "parent": ["trap"],
             "type": "trap",
-            "subtype": "trap",
+            "subtype": "hole",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "hole2",
+            "parent": ["trap"],
+            "type": "trap",
+            "subtype": "hole",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "hole3",
+            "parent": ["trap"],
+            "type": "trap",
+            "subtype": "hole",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "hole4",
+            "parent": ["trap"],
+            "type": "trap",
+            "subtype": "hole",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "hole5",
+            "parent": ["trap"],
+            "type": "trap",
+            "subtype": "hole",
+            "properties" : {
+                "width": 1,
+                "height": 1,
+                "rotate": 0
+            }
+        },
+        {
+            "index": "hole6",
+            "parent": ["trap"],
+            "type": "trap",
+            "subtype": "hole",
             "properties" : {
                 "width": 1,
                 "height": 1,

@@ -70,8 +70,7 @@ export const renderItem = (id, items) => {
             key={p.index} 
             id={p.index} 
             data={p.type} 
-            itemdata={p.data}
-            image={p.subtype} 
+            image={`${p.type}/${p.subtype}`} 
             parent={p.parent}
             properties={p.properties ? p.properties : null} /* For furnitures & traps not 1*1 item */
             rotate={() => setRotate(p.index, items)} /* Pass rotate func to the draggable element, she will return rotate value's of it at the run time */
@@ -171,19 +170,4 @@ export const getUnaccessibleSquares = (types, grid) => {
  */
 export const getItemsOnBoard = (items, type) => {
   return items.filter(item => item.type === type && item.type !== item.parent[0]);
-}
-
-/**
- * 
- * @description construct array of creation data
- * @param {Array} items 
- */
-export const registerCreation = (items, title, desc, notes, privateC, author_id) => {
-  const enemies = getItemsOnBoard(items, 'enemy');
-  const traps = getItemsOnBoard(items, 'trap');
-  const doors = getItemsOnBoard(items, 'door');
-  const spawns = getItemsOnBoard(items, 'spawn');
-  const furnitures = getItemsOnBoard(items, 'furniture');
-
-  /* Filter and verify data */
 }

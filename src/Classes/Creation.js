@@ -1,9 +1,9 @@
 export class Creation {
     constructor(
         id, 
-        author,
+        author_id,
         title,
-        isPrivate, 
+        privateC, 
         description,
         notes,
         created_at,
@@ -15,9 +15,9 @@ export class Creation {
         furnitures
     ) {
         this.id = id;
-        this.author = author;
+        this.author_id = author_id;
         this.title = title;
-        this.isPrivate = isPrivate;
+        this.privateC = privateC;
         this.description = description;
         this.notes = notes;
         this.created_at = created_at;
