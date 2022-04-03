@@ -142,7 +142,6 @@ export const setParentToItem = (items, item, event, grid) => {
     const over = event.over;
     const overData = over.data.current;
     const iProps = item.properties;
-    console.log(over);
 
     if (item.type === "enemy") {
         return {...item, parent: [over.id], posX: overData.posX, posY: overData.posY}

@@ -15,10 +15,10 @@ import {
 } from "./functions";
 
 /* Items */
-import enemiesArray from '../items/enemies';
-import furnituresArray from '../items/furnitures';
-import trapsArray from '../items/traps';
-import grid from '../items/grid';
+import enemiesArray from '../data/enemies';
+import furnituresArray from '../data/furnitures';
+import trapsArray from '../data/traps';
+import grid from '../data/grid';
 
 
 /**

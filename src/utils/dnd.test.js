@@ -14,14 +14,14 @@ import {
     getItemsPos
 } from "./dnd";
 
-import items from '../items/itemstest';
-import grid from "../items/grid";
+import items from '../data/itemstest';
+import grid from "../data/grid";
 
-import { spawns } from "../items/spawns";
-import { doors } from "../items/doors";
-import { enemies } from "../items/enemies";
-import { traps } from "../items/traps";
-import { furnitures } from "../items/furnitures";
+import { spawns } from "../data/spawns";
+import { doors } from "../data/doors";
+import { enemies } from "../data/enemies";
+import { traps } from "../data/traps";
+import { furnitures } from "../data/furnitures";
 
 const allItems = [...spawns, ...doors, ...enemies, ...traps, ...furnitures];
 
@@ -200,20 +200,20 @@ describe("isItemCanBeDroppedFunc", () => {
         /* Can be dropped if tile is not filled || if dragged on its deck */
         expect(typeof(isItemCanBeDropped(eventTest, enemy, isNotFilled, "enemy", "r1", allowedRooms))).toBe("boolean");
         /* Push r1 and r27 to allowed rooms temporary */
-        const tempAllowedRooms = [...allowedRooms, "r1", "r27"];
+        const tempAllowedRooms = [...allowedRooms, "r1", "r27", "r28"];
 
-        expect(isItemCanBeDropped(eventTest, enemy, isNotFilled, "trap", "r1", tempAllowedRooms)).toBeTruthy();
-        expect(isItemCanBeDropped(eventTestFurniture, furniture, isNotFilled, "furniture", "r27", tempAllowedRooms)).toBeTruthy();
-        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "enemy", tempAllowedRooms)).toBeTruthy();
-        expect(isItemCanBeDropped(eventTestTrap, trap, isNotFilled, "trap", "r27", tempAllowedRooms)).toBeTruthy();
+        expect(isItemCanBeDropped(eventTest, enemy, isNotFilled, tempAllowedRooms)).toBeTruthy();
+        expect(isItemCanBeDropped(eventTestFurniture, furniture, isNotFilled, tempAllowedRooms)).toBeTruthy();
+        expect(isItemCanBeDropped(eventTest, enemy, isNotFilled, tempAllowedRooms)).toBeTruthy();
+        expect(isItemCanBeDropped(eventTestTrap, trap, isNotFilled, tempAllowedRooms)).toBeTruthy();
     });
     it("isItemCanBeDroppedFalse", () => {
         /* Cannot be dropped when tile is filled and not the deck || not in the good deck */
-        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "r1", allowedRooms)).toBeFalsy();
-        expect(isItemCanBeDropped(eventTestFurniture, furniture, isFilled, "furniture", "r27", allowedRooms)).toBeFalsy();
-        expect(isItemCanBeDropped(eventTest, enemy, isFilled, "enemy", "furniture", allowedRooms)).toBeFalsy();
-        expect(isItemCanBeDropped(eventTest, furniture, isFilled, "furniture", "corridor", allowedRooms)).toBeFalsy()
-        expect(isItemCanBeDropped(eventTest, furniture, isNotFilled, "furniture", "corridor", allowedRooms)).toBeFalsy()
+        expect(isItemCanBeDropped(eventTest, enemy, isFilled, allowedRooms)).toBeFalsy();
+        expect(isItemCanBeDropped(eventTestFurniture, furniture, isFilled, allowedRooms)).toBeFalsy();
+        expect(isItemCanBeDropped(eventTest, enemy, isFilled, allowedRooms)).toBeFalsy();
+        expect(isItemCanBeDropped(eventTest, furniture, isFilled, allowedRooms)).toBeFalsy()
+        expect(isItemCanBeDropped(eventTest, furniture, isNotFilled, allowedRooms)).toBeFalsy()
     });
 })
 
@@ -496,14 +496,14 @@ describe("getItemsPosFunc", () => {
 /**
  * Test suites for getRoomsNotProvidedByDoors(doorRooms, destinations, spawnPos)
  */
-describe("getRoomsNotProvidedByDoorsFunc", () => {
-    const doorRooms = [["r1", "r2"], ["r2", "r3"], ["r3", "r4"]];
-    const doorRoomsCut = [["r1", "r2"], ["r3", "r4"], ["r5", "r6"]];
+// describe("getRoomsNotProvidedByDoorsFunc", () => {
+//     const doorRooms = [["r1", "r2"], ["r2", "r3"], ["r3", "r4"]];
+//     const doorRoomsCut = [["r1", "r2"], ["r3", "r4"], ["r5", "r6"]];
     
-    it("isPathIsNotCut", () => {
-        expect(getRoomsNotProvidedByDoors(doorRooms, ["r1"])).toStrictEqual([]);
-    })
-    it("isPathIsCut", () => {
-        expect(getRoomsNotProvidedByDoors(doorRoomsCut, ["r1"])).toStrictEqual([["r3", "r4"], ["r5", "r6"]]);
-    })
-})
+//     it("isPathIsNotCut", () => {
+//         expect(getRoomsNotProvidedByDoors(doorRooms, ["r1"])).toStrictEqual([]);
+//     })
+//     it("isPathIsCut", () => {
+//         expect(getRoomsNotProvidedByDoors(doorRoomsCut, ["r1"])).toStrictEqual([["r3", "r4"], ["r5", "r6"]]);
+//     })
+// })
