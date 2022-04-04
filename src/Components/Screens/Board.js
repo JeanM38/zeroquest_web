@@ -22,7 +22,7 @@ import {
   DecksWrapper, 
   GridWrapper, 
   Grid 
-} from '../../style/BoardStyle';
+} from '../../style/Components/BoardStyle';
 
 /* Utils */
 import { 

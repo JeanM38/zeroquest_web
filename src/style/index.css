@@ -2,8 +2,25 @@
             VARIABLES
 =================================*/
 :root {
+    /* Colors */
     --light-grey: #f7f7f8;
     --dark-grey: #141E26;
+    --gold: #fadd25;
+
+    /* Spacing */
+    --s1: 10px;
+    --s2: 25px;
+    --s3: 50px;
+
+    /* Miscelleanous */
+    --radius: 5px;
+    --btn-width: 200px;
+
+    /* Fonts */
+    --cyrunicorn: "Cyrunicorn", Arial, sans-serif;
+    --morpheus: "Morpheus", Helvetica, sans-serif;
+    --transition-in: all 0.12s ease-in;
+    --transition-out: all 0.12s ease-out;
 }
 
 /* ==============================
@@ -35,4 +52,8 @@ h1 {
 
 h3 {
     margin: 5px;
+}
+
+strong {
+    color: --var(--gold);
 }

@@ -1,20 +1,23 @@
-import {
-    Link,
-    Outlet,
-} from "react-router-dom";
-import { Header } from "../style/UIStyle";
-import { NavLink } from "../style/UIStyle";
+import { Outlet } from "react-router-dom";
+import { Header, NavLink, NavLinkList, Btn } from "../style/Components/UIStyle";
 
 export const Layout = () => {
     return (
       <div>
         <Header>
-            <h1>ZeroQuest!</h1>
-            <NavLink to="board">Board</NavLink>
+            <h1>ZeroQuest</h1>
+            <NavLinkList>
+              <NavLink to="account">Account</NavLink>
+              <NavLink to="board">Creations</NavLink>
+              <NavLink to="news">News</NavLink>
+              <NavLink to="faq">FAQ</NavLink>
+              <NavLink to="contact">Contact</NavLink>
+            </NavLinkList>
+            <Btn>Play Now</Btn>
         </Header>
-        <div className="content">
+        <main className="content">
           <Outlet />
-        </div>
+        </main>
       </div>
     );
 }

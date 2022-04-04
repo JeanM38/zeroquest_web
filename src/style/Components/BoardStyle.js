@@ -3,15 +3,19 @@ import styled from "styled-components"
 export const ChapterEditor = styled.div`
   display: flex;
   align-items: center;
-  max-height: 100vh;
+  max-height: calc(100vh - 70px);
   overflow: hidden;
+  background-image: url("${process.env.PUBLIC_URL}/Resources/Images/smoke-bg-16-9.jpg");
+  background-color: black;
+  background-size: 100vw calc(100vh - 70px);
 `
 
 export const DecksWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - 70px);
   max-width: 30%;
+  overflow-y: scroll;
 
   &::-webkit-scrollbar {
     display: none;
