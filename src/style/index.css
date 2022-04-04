@@ -1,8 +1,36 @@
+/* ==============================
+            VARIABLES
+=================================*/
+:root {
+    --light-grey: #f7f7f8;
+    --dark-grey: #141E26;
+}
+
+/* ==============================
+              FONTS
+=================================*/
+@font-face {
+    font-family: 'Cyrunicorn';
+    src: url('../../public/Resources/fonts/HEROQUESTCYRUNICORN.TTF');
+}
+
+@font-face {
+    font-family: 'Morpheus';
+    src: url('../../public/Resources/fonts/MORPHEUS.TTF');
+}
+
+/* ==============================
+            GLOBALS
+=================================*/
 body {
-    background-color: #262626;
+    background-color: #262626; /* TEMP */
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+h1 {
+    margin: 0;
 }
 
 h3 {

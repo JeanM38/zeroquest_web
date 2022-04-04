@@ -1,4 +1,4 @@
-import { allEqual, getItemsOnBoard, getRoomsFilled, getUnaccessibleSquares } from "./functions";
+import { allEqual, getRoomsFilled, getUnaccessibleSquares } from "./functions";
 
 const itemTypes = [
     "trap", 
@@ -193,16 +193,15 @@ export const isItemCanBeDropped = (event, item, isFilled, allowedRooms) => {
     const overType = event.over.data.current.type;
     const activeType = event.active.data.current;
     if (
-        event.active.id === 
-            item.index && (
+        event.active.id === item.index && (
             (
                 allowedRooms.includes(overType) &&
                 activeType === "door" &&
                 !itemTypes.filter(i => i !== activeType).includes(overType)
             ) ||
             (
-                (((item.subtype === "stairs" && !["r13", "r14", "trap", "enemy", "furniture", "door"].includes(overType)) && overType[0] !== "c") ||
-                (item.subtype === "indeSpawn" && !["trap", "enemy", "furniture", "door"].includes(overType)) && overType[0] !== "c")
+                (item.subtype === "stairs" && !["r13", "r14", "trap", "enemy", "furniture", "door"].includes(overType) && overType[0] !== "c") ||
+                (item.subtype === "indeSpawn" && !["trap", "enemy", "furniture", "door"].includes(overType) && overType[0] !== "c")
             ) || 
             (
                 /* Enemy/Trap/Furniture */
@@ -339,7 +338,7 @@ export const getAllowedRooms = (items, grid) => {
         .map(item => { return grid[item].type })])
     ]             
 
-    getDoorExits(grid, items, allowedRooms);
+    // getDoorExits(grid, items, allowedRooms);
 
     return allowedRooms;
 }
@@ -350,14 +349,14 @@ export const getAllowedRooms = (items, grid) => {
  * @param {Array} grid 
  * @param {Array} items 
  */
-export const getDoorExits = (grid, items, allowedRooms) => {
-    const doorExits = 
-        items
-            .filter(item => item.type === "door" && item.parent[0] !== item.type)
-            .map(item => { return item.parent }).flat()
-            .map(item => { return {type: grid[item].type, index: item} })
-            .filter(item => item.type[0] === "c");
-}
+// export const getDoorExits = (grid, items, allowedRooms) => {
+//     const doorExits = 
+//         items
+//             .filter(item => item.type === "door" && item.parent[0] !== item.type)
+//             .map(item => { return item.parent }).flat()
+//             .map(item => { return {type: grid[item].type, index: item} })
+//             .filter(item => item.type[0] === "c");
+// }
 
 /**
  * 
@@ -428,7 +427,7 @@ export const getRoomsNotProvidedByDoors = (doorRooms, spawnPos) => {
 
 
     spawnPos.map(spawn => {
-        allowedRooms = [...allowedRooms, ...doorRooms.flat().filter(d => d !== spawn)];
+        return allowedRooms = [...allowedRooms, ...doorRooms.flat().filter(d => d !== spawn)];
     })
     return [];
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DndContext } from '@dnd-kit/core';
 
 /* Dnd context components */
-import { Droppable } from './Droppable';
+import { Droppable } from '../Dnd/Droppable';
 
 /* Grid */
 import grid from '../../data/grid';

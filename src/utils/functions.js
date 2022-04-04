@@ -1,6 +1,5 @@
-import { Draggable } from "../Components/Board/Draggable";
+import { Draggable } from "../Components/Dnd/Draggable";
 import React from "react";
-import { Creation } from "../Classes/Creation";
 
 /**
  * 
