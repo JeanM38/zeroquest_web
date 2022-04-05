@@ -13,9 +13,9 @@ export const ChapterEditor = styled.div`
 export const DecksWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 70px);
-  max-width: 30%;
+  height: calc(100vh - 120px);
   overflow-y: scroll;
+  padding: var(--s2) 0 var(--s2) var(--s2);
 
   &::-webkit-scrollbar {
     display: none;
@@ -23,20 +23,23 @@ export const DecksWrapper = styled.div`
 `
 
 export const Deck = styled.div`
-  margin-bottom: ${props => props.mb ? "20px" : "0"};
-  padding: 10px;
-  border-radius: 5px;
-  background-color: lightgrey;
+  margin-bottom: var(--s2);
 
-  h1 {
+  h3 {
     margin: 0;
-    text-align: center;
+    padding-bottom: 10px;
+    font-family: var(--morpheus);
+    font-weight: 500;
+    color: var(--gold);
   }
 `
 
 export const DeckItems = styled.div`
   display: flex;
   flex-wrap: wrap;
+  background: rgba(var(--dark-grey-rgb), var(--opacity));
+  border-radius: var(--radius);
+  padding: var(--s1);
 `
 
 export const GridWrapper = styled.div`
@@ -45,7 +48,13 @@ export const GridWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 70%;
+  flex: 100%;
+
+  h1 {
+    color: var(--gold);
+    font-family: var(--morpheus);
+    font-weight: 500;
+  }
 `
 
 export const Grid = styled.div`

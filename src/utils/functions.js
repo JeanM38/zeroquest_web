@@ -1,5 +1,7 @@
-import { Draggable } from "../Components/Dnd/Draggable";
 import React from "react";
+import { Draggable } from "../Components/Dnd/Draggable";
+
+import { Creation } from "../Classes/Creation";
 
 /**
  * 
@@ -56,7 +58,7 @@ export const setRotate = (key, items) => {
  * @param {Array} items 
  * @returns All items needs to be rendered at a specific position
  */
-export const renderItem = (id, items) => {
+export const renderItem = (id, items, scrollTop) => {
     let itemsToRender = [];
     items.map((p) => {
       /* Insure rotate to zero on deck */
@@ -69,6 +71,7 @@ export const renderItem = (id, items) => {
             key={p.index} 
             id={p.index} 
             data={p.type} 
+            scrollTop={scrollTop}
             image={`${p.type}/${p.subtype}`} 
             parent={p.parent}
             properties={p.properties ? p.properties : null} /* For furnitures & traps not 1*1 item */
@@ -169,4 +172,47 @@ export const getUnaccessibleSquares = (types, grid) => {
  */
 export const getItemsOnBoard = (items, type) => {
   return items.filter(item => item.type === type && item.type !== item.parent[0]);
+}
+
+export const buildCreation = (items, title, notes, description, privateC) => {
+  /* Retrieve board items data */
+  const enemiesData = getItemsOnBoard(items, 'enemy');
+  const trapsData = getItemsOnBoard(items, 'trap');
+  const furnituresData = getItemsOnBoard(items, 'furniture');
+  const spawnsData = getItemsOnBoard(items, 'spawn');
+  const doorsData = getItemsOnBoard(items, 'door');
+
+  /* Validate data */
+  const enemiesJSON = enemiesData.length <= 30 ? JSON.stringify({'enemies': enemiesData}) : null;
+  const trapsJSON = trapsData.length <= 8 ? JSON.stringify({'traps' : trapsData}) : null;
+  const furnituresJSON = furnituresData.length <= 15 ? JSON.stringify({'furnitures' : furnituresData}) : null;
+  const spawnsJSON = spawnsData.length <= 4 ? JSON.stringify({'spawns' : spawnsData}) : null;
+  const doorsJSON = doorsData.length <= 26 ? JSON.stringify({'doors' : doorsData}) : null;
+
+  let creation = null
+
+  if (
+    ![enemiesJSON, trapsJSON, furnituresJSON, spawnsJSON, doorsJSON].includes(null) &&
+    title.length !== 0 &&
+    notes.length !== 0 &&
+    description.length !== 0
+  ) {
+    creation = new Creation (
+      null,
+      1 /* Temporary user ID */,
+      title,
+      privateC,
+      description,
+      notes,
+      Date.now(),
+      Date.now(),
+      enemiesJSON,
+      trapsJSON,
+      doorsJSON,
+      spawnsJSON,
+      furnituresJSON
+    )
+  }
+
+  return creation;
 }

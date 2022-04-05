@@ -5,7 +5,10 @@
     /* Colors */
     --light-grey: #f7f7f8;
     --dark-grey: #141E26;
+    --dark-grey-rgb: 20, 30, 38;
     --gold: #fadd25;
+    --success: #04d82a;
+    --error: #d92b04;
 
     /* Spacing */
     --s1: 10px;
@@ -15,6 +18,7 @@
     /* Miscelleanous */
     --radius: 5px;
     --btn-width: 200px;
+    --opacity: 70%;
 
     /* Fonts */
     --cyrunicorn: "Cyrunicorn", Arial, sans-serif;
@@ -40,7 +44,6 @@
             GLOBALS
 =================================*/
 body {
-    background-color: #262626; /* TEMP */
     margin: 0;
     padding: 0;
     box-sizing: border-box;

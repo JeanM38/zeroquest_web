@@ -21,7 +21,6 @@ export const Droppable = (props) => {
     position: !isADeck ? "relative" : undefined,
     flexWrap: isADeck ? "wrap" : undefined,
     minHeight: "30px",
-    backgroundColor: isADeck ? "purple" : "",
     borderRadius: isADeck ? "5px": "0",
     height: isADeck ? "100%" : "30px",
     width: isADeck ? "100%" : "30px",
