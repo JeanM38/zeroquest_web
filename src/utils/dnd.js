@@ -229,7 +229,7 @@ export const isItemCanBeDropped = (event, item, isFilled, allowedRooms) => {
  * @param {Array} grid 
  * @returns a new instance of the initial items with all modifications
  */
-export const setNewItems = (event, items, grid, allowedRooms) => {
+export const getNewItems = (event, items, grid, allowedRooms) => {
     const {over} = event; /* Hovered element */
 
     /* If hovered element has a valid type */

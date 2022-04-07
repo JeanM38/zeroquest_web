@@ -26,7 +26,7 @@ import {
 
 /* Utils */
 import { 
-  setNewItems, 
+  getNewItems, 
   getAllowedRooms,
   removeItemsOnUnallowedRooms
 } from '../../utils/dnd';
@@ -42,7 +42,8 @@ import {
   InputGroup, 
   Btn, 
   TextArea,
-  ResultMessage
+  ResultMessage,
+  CheckboxGroup
 } from '../../style/Components/UIStyle';
 
 export function Board() {
@@ -76,7 +77,7 @@ export function Board() {
   /* Handle drag ending */
   const handleDragEnd = (event) => {
     /* New instance of items */
-    setItems(setNewItems(event, items, grid.tiles, allowedRooms));
+    setItems(getNewItems(event, items, grid.tiles, allowedRooms));
     setLoading(!loading);
   }
 
@@ -159,10 +160,12 @@ export function Board() {
             </Deck>
           ))}
 
-          <div className="form-group">
-            <label htmlFor="private">Private</label>
-            <input type="checkbox" onChange={() => setPrivateC(!privateC)} id="private" name="private" defaultChecked={privateC}></input>
-          </div>
+          <CheckboxGroup mb>
+            <label class="container" htmlFor="private">Private
+              <input type="checkbox" onChange={() => setPrivateC(!privateC)} id="private" name="private" defaultChecked={privateC} />
+              <span class="checkmark"></span>
+            </label>
+          </CheckboxGroup>
 
           <Btn rounded mb type="button" onClick={() => setItems(resetBoard(items))} data-testid={"resestboard"}>Reset the board</Btn>
           <Btn rounded mb primary type="submit" onClick={() => handleCreation(items, title, notes, description, privateC)} form="creationForm">Submit</Btn>
