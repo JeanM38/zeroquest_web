@@ -161,9 +161,9 @@ export function Board() {
           ))}
 
           <CheckboxGroup mb>
-            <label class="container" htmlFor="private">Private
+            <label className="container" htmlFor="private">Private
               <input type="checkbox" onChange={() => setPrivateC(!privateC)} id="private" name="private" defaultChecked={privateC} />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
           </CheckboxGroup>
 

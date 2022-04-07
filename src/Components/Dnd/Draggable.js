@@ -1,4 +1,4 @@
-import {React} from 'react';
+import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { setTransformPosByPieceType } from '../../utils/dnd';
 
@@ -33,15 +33,13 @@ export const Draggable = (props) => {
   }
   
   return (
-    <div>
-      <div 
-        {...listeners} 
-        {...attributes} 
-        ref={setNodeRef} 
-        style={{...style}} 
-        onKeyDown={(e) => rotatePiece(e)} data-testid={'draggable'}
-      >
-      </div>
+    <div 
+      {...listeners} 
+      {...attributes} 
+      ref={setNodeRef} 
+      style={{...style}} 
+      onKeyDown={(e) => rotatePiece(e)} data-testid={'draggable'}
+    >
     </div>
   );
 }

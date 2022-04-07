@@ -6,7 +6,7 @@ import {
     isItemCanBeDropped,
     getLargeObjectArea,
     setParentToItem,
-    setNewItems,
+    getNewItems,
     getAllowedRooms,
     isADoorCanBeDropped,
     isASpawnCanBeDropped,
@@ -361,16 +361,16 @@ describe("setParentToItemFunc", () => {
 })
 
 /**
- * Test suites for setNewItems(event, items, grid)
+ * Test suites for getNewItems(event, items, grid)
  */
-describe("setNewItemsFunc", () => {
+describe("getNewItemsFunc", () => {
     it("overIsUnvalid", () => {
         /* If hovered element has an unvalid type */
-        expect(setNewItems(eventTestOverNull, itemsTest, tiles, allowedRooms)).toBe(itemsTest);
+        expect(getNewItems(eventTestOverNull, itemsTest, tiles, allowedRooms)).toBe(itemsTest);
     })
     it("overIsValid", () => {
         /* If hovered element has a valid type */
-        expect(setNewItems(eventTest, itemsTest, tiles, allowedRooms)).not.toBe(itemsTest);
+        expect(getNewItems(eventTest, itemsTest, tiles, allowedRooms)).not.toBe(itemsTest);
     })
 })
 
