@@ -369,13 +369,14 @@ export const getAllowedRooms = (items, grid) => {
 export const isASpawnCanBeDropped = (item, items, over, area) => {
     const spawns = items.filter(i => i.type === "spawn").filter(i => i.index !== item.index);
     let stairs = spawns.filter(i => i.subtype === "stairs").filter(i => i.index !== item.index);
+    const overData = over.data.current;
 
     if (item.subtype === "stairs") {
         const indeSpawns = spawns.filter(i => i.parent[0] !== "spawn");
-        return indeSpawns.length > 0 ? {...item, parent: [item.type]} : {...item, parent: area ? area : over.id};
+        return indeSpawns.length > 0 ? {...item, parent: [item.type]} : {...item, parent: area ? area : over.id, posX: overData.posX, posY:overData.posY};
     } else {
         stairs = stairs.filter(i => i.parent[0] !== "spawn");
-        return stairs.length > 0 ? {...item, parent: [item.type]} : {...item, parent: area ? area : over.id};
+        return stairs.length > 0 ? {...item, parent: [item.type]} : {...item, parent: area ? area : over.id, posX: overData.posX, posY:overData.posY};
     }
 }
 
