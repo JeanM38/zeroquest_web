@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import { CustomLink } from "../../Components/UI/CustomLink";
 
+export const Main = styled.main`
+    min-height: calc(100vh - 70px);
+    background-image: url("${process.env.PUBLIC_URL}/Resources/Images/smoke-bg-16-9.jpg");
+    background-color: black;
+    background-size: 100vw calc(100vh - 70px);
+`
+
 export const Header = styled.nav`
     display: flex;
     align-items: center;
@@ -54,6 +61,7 @@ export const Btn = styled.button`
 
     &:hover {
         transition: var(--transition-in);
+        color: var(--dark-grey);
         background-color: ${props => props.primary ? "var(--gold)" : "var(--gold)"};
     }
 `;

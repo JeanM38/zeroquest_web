@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import Board from "./Components/Screens/Board";
+import NotFound from "./Components/Screens/NotFound";
 import { Layout } from "./Components/Layout";
 
 export function App() {
@@ -8,9 +9,8 @@ export function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
-          {/* <Route index element={<Activity />} /> */}
           <Route path="board" element={<Board />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </div>

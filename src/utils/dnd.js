@@ -331,12 +331,20 @@ export const getAllowedRooms = (items, grid) => {
         "furniture",
         "spawn"
     ];
-    const allowedRooms = [...alwaysAllowedRooms, ...new Set([...items
+
+    let allowedRooms = [...alwaysAllowedRooms, ...new Set([...items
         .filter(item => item.type === "spawn" || item.type === "door")
         .filter(item => !item.parent.includes(item.type))
         .map(item => { return item.parent }).flat()
         .map(item => { return grid[item].type })])
-    ]             
+    ]
+
+    let doorToCorridor = allowedRooms.filter(i => i[0] === "c");
+    
+    if (doorToCorridor.length > 0) {
+        console.log(grid.map(i => i.type[0] === "c"));
+        allowedRooms = [...allowedRooms, ...grid.filter(i => i.type[0] === "c").map(i => i.type)];
+    }
 
     // getDoorExits(grid, items, allowedRooms);
 
@@ -425,7 +433,6 @@ export const removeItemsOnUnallowedRooms = (items, allowedRooms, grid) => {
  */
 export const getRoomsNotProvidedByDoors = (doorRooms, spawnPos) => {
     let allowedRooms = [];
-
 
     spawnPos.map(spawn => {
         return allowedRooms = [...allowedRooms, ...doorRooms.flat().filter(d => d !== spawn)];

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Header, NavLink, NavLinkList, Btn } from "../style/Components/UIStyle";
+import { Header, NavLink, NavLinkList, Btn, Main } from "../style/Components/UIStyle";
 
 export const Layout = () => {
     return (
@@ -15,9 +15,9 @@ export const Layout = () => {
             </NavLinkList>
             <Btn>Play Now</Btn>
         </Header>
-        <main className="content">
+        <Main className="content">
           <Outlet />
-        </main>
+        </Main>
       </div>
     );
 }

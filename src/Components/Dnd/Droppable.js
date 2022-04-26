@@ -17,7 +17,6 @@ export const Droppable = (props) => {
   const isADeck = grid.decks.filter(d => d.type === props.type).length === 1;
 
   const style = {
-    display: isADeck ? "flex" : "block",
     position: !isADeck ? "relative" : undefined,
     flexWrap: isADeck ? "wrap" : undefined,
     minHeight: "30px",

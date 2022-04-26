@@ -7,23 +7,34 @@ export const Draggable = (props) => {
     id: props.id,
     data: props.data
   });
+
+  const modifyDoorPos = (props, rotationIndex) => {
+    return props.data === 'door' && props.properties && props.properties.rotate === rotationIndex && props.parent[0] !== props.data ? '6px' : 'unset';
+  }
  
   const style = {
     display: 'flex',
     position: props.parent[0] !== props.data || isDragging ? 'absolute' : undefined, /* Check if piece is on his deck */
     justifyContent: 'center',
     alignItems: 'center',
+    float: 'left',
     width: props.data !== 'enemy' ? `${30 * props.properties.width}px` : '30px',   /* If is an anemy, doesn't care of scaling */
     height: props.data !== 'enemy' ? `${30 * props.properties.height}px` : '30px', /* # */
     zIndex: isDragging ? 999: undefined,
     transform: transform ? `
-      translate3d(${transform.x}px, ${transform.y - (props.parent[0] === props.data ? props.scrollTop : 0)}px, 0) rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)` : 
+    translate3d(${transform.x}px, ${transform.y - (props.parent[0] === props.data ? props.scrollTop : 0)}px, 0) rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)` : 
       `rotate(${(props.properties ? props.properties.rotate : 0) * 90}deg)`, /* Rotate event display */
     opacity: transform ? '0.8' : '1',
     backgroundImage: `url('${process.env.PUBLIC_URL}/Resources/Images/${props.image}.png')`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     transformOrigin: props.properties ? setTransformPosByPieceType(props.properties) : 'unset',
+
+    /* Door styles */
+    top: modifyDoorPos(props, 0),
+    right: modifyDoorPos(props, 1),
+    bottom: modifyDoorPos(props, 2),
+    left: modifyDoorPos(props, 3),
   }
 
   const rotatePiece = (key) => {
